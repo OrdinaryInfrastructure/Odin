@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <PackageId>Odin.BackgroundProcessing.Hangfire</PackageId>
+        <RootNamespace>Odin.BackgroundProcessing</RootNamespace>
+        <Nullable>enable</Nullable>
+        <Version>0.1.61</Version>
+        <Authors>Mark Derman</Authors>
+        <Company>Soulv Software (Pty) Ltd</Company>
+        <Description>Implements IBackgroundProcessor using Hangfire.</Description>
+        <Copyright>Copyright (c) Soulv Software 2022</Copyright>
+        <PackageProjectUrl>https://soulv.co.za</PackageProjectUrl>
+        
+        <RepositoryUrl>https://dev.azure.com/soulvsoftware/Home/_git/Odin</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+        <WarningLevel>3</WarningLevel>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <NoWarn>NU5104;5104</NoWarn>
+        <DocumentationFile>bin\Debug\Odin.BackgroundProcessing.xml</DocumentationFile>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+        <WarningLevel>4</WarningLevel>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <NoWarn>1701;1702;1591;1573;NU5104;5104</NoWarn>
+        <DocumentationFile>bin\Release\Odin.BackgroundProcessing.xml</DocumentationFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Hangfire.Core" Version="1.8.2" />
+        <PackageReference Include="Hangfire.AspNetCore" Version="1.8.2" />
+        <PackageReference Include="Hangfire.SqlServer" Version="1.8.2" />
+        <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Odin.BackgroundProcessing\Odin.BackgroundProcessing.csproj" />
+      <ProjectReference Include="..\Odin.Common\Odin.Common.csproj" />
+    </ItemGroup>
+</Project>
