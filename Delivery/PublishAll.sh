@@ -1,5 +1,5 @@
 TargetFramework=net7.0
-ApiKey=oy2czxzguy43uewudv7qm64cga3nsq4ubhxmdzeibqa4l4
+ApiKey=%1
 
 sudo rm -f Packaging/* 
 
