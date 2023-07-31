@@ -1,5 +1,5 @@
 set TargetFramework=net7.0
-set ApiKey=oy2fceh23lcdlgqjexhqsztnmlv5wveuxnsbc6tznjotzu
+set ApiKey=%1
 
 @echo off
 @mkdir "Packaging"
