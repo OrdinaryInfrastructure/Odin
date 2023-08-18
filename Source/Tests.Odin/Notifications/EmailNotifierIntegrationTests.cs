@@ -16,6 +16,7 @@ namespace Tests.Odin.Notifications
     public sealed class EmailNotifierIntegrationTests : IntegrationTest
     {
         [Test]
+        [Ignore("Ignoring for GitHub actions")]
         public async Task EmailNotifier_sends_real_email_notification()
         {
             IConfiguration config = AppFactory.GetConfiguration();
