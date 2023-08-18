@@ -5,6 +5,10 @@ name: Publish to Nuget
 
 on: workflow_dispatch
 
+env:
+  SOLUTION: './Source/Odin.sln'
+  BUILD_CONFIGURATION: Release
+
 jobs:
   build:
 
@@ -17,8 +21,8 @@ jobs:
       with:
         dotnet-version: 7.x.x
     - name: Restore dependencies
-      run: dotnet restore ./Source/Odin.sln
+      run: dotnet restore ${{env.SOLUTION}}
     - name: Build Odin Solution
-      run: dotnet build ./Source/Odin.sln --no-restore --configuration Release 
+      run: dotnet build ${{env.SOLUTION}} --no-restore --configuration ${{env.BUILD_CONFIGURATION}} 
     - name: Test
-      run: dotnet test --no-build --verbosity normal --configuration Release
+      run: dotnet test ${{env.SOLUTION}} --no-build --verbosity normal --configuration ${{env.BUILD_CONFIGURATION}}
