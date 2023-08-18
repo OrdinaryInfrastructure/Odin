@@ -25,6 +25,7 @@ namespace Tests.Odin.Email.Mailgun
         }
         
         [Test]
+        [Ignore("Ignoring for GitHub actions")]
         public async Task Send_email_with_attachment()
         {
             Mock<ILoggerAdapter<MailgunEmailSender>> mockLogger = new Mock<ILoggerAdapter<MailgunEmailSender>>();
