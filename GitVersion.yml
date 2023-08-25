@@ -1,4 +1,5 @@
 mode: MainLine # Only add this if you want every version to be created automatically on your main branch.
-major-version-bump-message: "^(break|major)(\\([\\w\\s-]*\\))?:"
-minor-version-bump-message: "^(feature|minor)(\\([\\w\\s-]*\\))?:"
-patch-version-bump-message: "^(fix|patch)(\\([\\w\\s-]*\\))?:"
+major-version-bump-message: "^(break|major)"
+minor-version-bump-message: "^(feature|minor)"
+patch-version-bump-message: "^(fix|patch)"
+no-bump-message: "^(none|skip)"
