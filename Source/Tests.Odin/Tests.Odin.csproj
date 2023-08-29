@@ -1,24 +1,24 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <GenerateProgramFile>false</GenerateProgramFile>
     <UserSecretsId>Tests.Odin</UserSecretsId>
+    <AssemblyVersion>0.1.62.0</AssemblyVersion>
+    <FileVersion>0.1.62.0</FileVersion>
+    <InformationalVersion>0.1.62+Branch.master.Sha.0e4b7a0e32552620888c034b462bb99fb74d30c3</InformationalVersion>
+    <Version>0.1.62</Version>
   </PropertyGroup>
-
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
     <NoWarn>1701;1702;1591;1573</NoWarn>
   </PropertyGroup>
-
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <NoWarn>1701;1702;1591;1573</NoWarn>
   </PropertyGroup>
-  
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="7.0.9" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.1" />
@@ -26,12 +26,11 @@
     <PackageReference Include="Microsoft.Extensions.Logging" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.0" />
     <PackageReference Include="nunit" Version="3.13.3" />
-    <PackageReference Include="Moq" Version="4.18.4" />    
+    <PackageReference Include="Moq" Version="4.18.4" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.4.2" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.0" />
     <PackageReference Include="System.Text.Json" Version="7.0.2" />
   </ItemGroup>
-  
   <ItemGroup>
     <ProjectReference Include="..\Odin.Common\Odin.Common.csproj" />
     <ProjectReference Include="..\Odin.Email\Odin.Email.csproj" />
@@ -41,5 +40,4 @@
     <ProjectReference Include="..\Odin.Notifications\Odin.Notifications.csproj" />
     <ProjectReference Include="..\Odin.RemoteFiles\Odin.RemoteFiles.csproj" />
   </ItemGroup>
-
 </Project>

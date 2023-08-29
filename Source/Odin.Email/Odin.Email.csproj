@@ -1,39 +1,40 @@
-﻿
-<Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <TargetFramework>net7.0</TargetFramework>
-        <RootNamespace>Odin.Email</RootNamespace>
-        <PackageId>Odin.Email</PackageId>
-        <Version>0.1.61</Version>
-        <Nullable>enable</Nullable>
-        <Authors>Mark Derman</Authors>
-        <Company>Soulv Software (Pty) Ltd</Company>
-        <Description>
-        </Description>
-        <Copyright>Copyright (c) Soulv Software 2022</Copyright>
-        <PackageProjectUrl>https://soulv.co.za</PackageProjectUrl>
-        <RepositoryUrl>https://dev.azure.com/soulvsoftware/Home/_git/Odin</RepositoryUrl>
-        <RepositoryType>git</RepositoryType>
-    </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-        <WarningLevel>4</WarningLevel>
-        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-        <WarningsAsErrors />
-        <NoWarn></NoWarn>
-        <DocumentationFile>bin\Debug\Odin.Email.xml</DocumentationFile>
-    </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-        <WarningLevel>4</WarningLevel>
-        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-        <NoWarn>1701;1702;1591;1573</NoWarn>
-        <DocumentationFile>bin\Release\Odin.Email.xml</DocumentationFile>
-    </PropertyGroup>
-    <ItemGroup>
-      <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="7.0.0" />
-      <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="7.0.4" />
-      <PackageReference Include="System.Text.Json" Version="7.0.2" />
-    </ItemGroup>
-    <ItemGroup>
-      <ProjectReference Include="..\Odin.Common\Odin.Common.csproj" />
-    </ItemGroup>
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <RootNamespace>Odin.Email</RootNamespace>
+    <PackageId>Odin.Email</PackageId>
+    <Version>0.1.62</Version>
+    <Nullable>enable</Nullable>
+    <Authors>Mark Derman</Authors>
+    <Company>Soulv Software (Pty) Ltd</Company>
+    <Description></Description>
+    <Copyright>Copyright (c) Soulv Software 2022</Copyright>
+    <PackageProjectUrl>https://soulv.co.za</PackageProjectUrl>
+    <RepositoryUrl>https://dev.azure.com/soulvsoftware/Home/_git/Odin</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <AssemblyVersion>0.1.62.0</AssemblyVersion>
+    <FileVersion>0.1.62.0</FileVersion>
+    <InformationalVersion>0.1.62+Branch.master.Sha.0e4b7a0e32552620888c034b462bb99fb74d30c3</InformationalVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+    <NoWarn></NoWarn>
+    <DocumentationFile>bin\Debug\Odin.Email.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>1701;1702;1591;1573</NoWarn>
+    <DocumentationFile>bin\Release\Odin.Email.xml</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="7.0.4" />
+    <PackageReference Include="System.Text.Json" Version="7.0.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Odin.Common\Odin.Common.csproj" />
+  </ItemGroup>
 </Project>

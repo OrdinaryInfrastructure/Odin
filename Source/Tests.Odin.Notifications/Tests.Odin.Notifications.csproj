@@ -1,33 +1,31 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <IsPackable>false</IsPackable>
     <RootNamespace>Tests.Odin</RootNamespace>
+    <AssemblyVersion>0.1.62.0</AssemblyVersion>
+    <FileVersion>0.1.62.0</FileVersion>
+    <InformationalVersion>0.1.62+Branch.master.Sha.0e4b7a0e32552620888c034b462bb99fb74d30c3</InformationalVersion>
+    <Version>0.1.62</Version>
   </PropertyGroup>
-
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
     <NoWarn>1701;1702;1591;1573</NoWarn>
   </PropertyGroup>
-
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <NoWarn>1701;1702;1591;1573</NoWarn>
   </PropertyGroup>
-  
   <ItemGroup>
     <PackageReference Include="nunit" Version="3.13.2" />
-    <PackageReference Include="Moq" Version="4.16.1" />    
+    <PackageReference Include="Moq" Version="4.16.1" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.10.0" />
   </ItemGroup>
-  
   <ItemGroup>
     <ProjectReference Include="..\Odin.Notifications\Odin.Notifications.csproj" />
   </ItemGroup>
-
 </Project>
