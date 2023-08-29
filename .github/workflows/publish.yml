@@ -7,8 +7,6 @@ env:
   BUILD_CONFIGURATION: Release
   PACKAGE_DIR: Packaging
   NUGET_SOURCE: https://api.nuget.org/v3/index.json
-  REPO_OWNER: OrdinaryInfrastructure
-  REPO: Odin
 
 jobs:
   publish:
@@ -92,31 +90,18 @@ jobs:
 
     - name: Create GitHub Release
       run: |
-        if [[ "$BRANCH_NAME" == "master" ]]; then
-          IS_PRERELEASE=false
-        else
-          IS_PRERELEASE=true
-        fi
         echo "Release tag: $RELEASE_TAG"
-        echo "Owner: $OWNER"
-        echo "Repo: $REPO"
         echo "Branch: $BRANCH_NAME"
-        echo "Is prerelease: $IS_PRERELEASE" 
-        gh api \
-        --method POST \
-        -H "Accept: application/vnd.github+json" \
-        -H "X-GitHub-Api-Version: 2022-11-28" \
-        /repos/$OWNER/$REPO/releases \
-        -f tag_name="$RELEASE_TAG" \
-        -f name="$RELEASE_TAG" \
-        -f body="Publish of $RELEASE_TAG" \
-        -F draft=false \
-        -F prerelease=$IS_PRERELEASE \
-        -F generate_release_notes=true
+        if [[ "$BRANCH_NAME" == "master" ]]; then
+          echo "Generating latest release from master"
+          gh release create $RELEASE_TAG ./$PACKAGE_DIR/*.nupkg --title "$RELEASE_TAG" --generate-notes --verify-tag --latest
+        else
+          echo "Generating prerelease version"
+          gh release create $RELEASE_TAG ./$PACKAGE_DIR/*.nupkg --title "$RELEASE_TAG" --generate-notes --verify-tag --prerelease
+        fi
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         RELEASE_TAG: ${{ steps.update-version-and-tag.outputs.releaseTag }}
         BRANCH_NAME: ${{ steps.gitversion.outputs.branchName }}
-        OWNER: ${{ env.REPO_OWNER }}
-        REPO: ${{ env.REPO }}
+        PACKAGE_DIR: ${{ env.PACKAGE_DIR }}
     
