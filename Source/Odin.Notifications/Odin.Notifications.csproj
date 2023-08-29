@@ -3,7 +3,7 @@
     <TargetFramework>net7.0</TargetFramework>
     <RootNamespace>Odin.Notifications</RootNamespace>
     <PackageId>Odin.Notifications</PackageId>
-    <Version>0.1.62</Version>
+    <Version>0.1.63</Version>
     <Authors>Mark Derman</Authors>
     <Company>Soulv Software (Pty) Ltd</Company>
     <Description></Description>
@@ -11,9 +11,9 @@
     <PackageProjectUrl>https://soulv.co.za</PackageProjectUrl>
     <RepositoryUrl>https://dev.azure.com/soulvsoftware/Home/_git/Odin</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <AssemblyVersion>0.1.62.0</AssemblyVersion>
-    <FileVersion>0.1.62.0</FileVersion>
-    <InformationalVersion>0.1.62+Branch.master.Sha.0e4b7a0e32552620888c034b462bb99fb74d30c3</InformationalVersion>
+    <AssemblyVersion>0.1.63.0</AssemblyVersion>
+    <FileVersion>0.1.63.0</FileVersion>
+    <InformationalVersion>0.1.63+Branch.master.Sha.d64716e1d6ebc0cb2af60d9612dcb45c0337e372</InformationalVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <WarningLevel>3</WarningLevel>
