@@ -3,10 +3,6 @@
     <TargetFramework>net7.0</TargetFramework>
     <GenerateProgramFile>false</GenerateProgramFile>
     <UserSecretsId>Tests.Odin</UserSecretsId>
-    <AssemblyVersion>0.1.63.0</AssemblyVersion>
-    <FileVersion>0.1.63.0</FileVersion>
-    <InformationalVersion>0.1.63+Branch.master.Sha.d64716e1d6ebc0cb2af60d9612dcb45c0337e372</InformationalVersion>
-    <Version>0.1.63</Version>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <WarningLevel>4</WarningLevel>
