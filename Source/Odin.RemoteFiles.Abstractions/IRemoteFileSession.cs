@@ -66,7 +66,7 @@ public interface IRemoteFileSession
     IEnumerable<IRemoteFileInfo> ListDirectory(string path);
 
     /// <summary>
-    /// File existence
+    /// Checks for file or directory existence. Path can contain * and ? wildcards for pattern matching.
     /// </summary>
     /// <param name="path"></param>
     /// <returns></returns>

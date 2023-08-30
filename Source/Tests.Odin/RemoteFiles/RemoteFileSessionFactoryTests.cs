@@ -112,4 +112,25 @@ public class RemoteFileSessionFactoryTests
         Assert.IsTrue(result.Success);
         Assert.IsInstanceOf(resultType, result.Value);
     }
+    
+    [Test]
+    [Ignore("TestCases required SFTP password")]
+    [TestCase("/Sandulela/Import/Sandulela_Daily_Electricity_Transaction_Recon_Flash_client_2023-08-13.csv")]
+    [TestCase("/Sandulela/Import/Sandulela_Daily_Electricity_Transaction_Recon_Flash_??????_2023-08-13.csv")]
+    [TestCase("/Sandulela/Import/Sandulela_Daily_Electricity_Transaction_*_2023-08-13.csv")]
+    [TestCase("/Sandulela/Import/Sandulela_Daily_Electricity_Transaction_*.csv", false, Description = "file exists should return false if multiple files match.")]
+    public void FileSession_successfully_checks_if_file_exists(string filePath, bool expectedMatch = true)
+    {
+        RemoteFilesOptions remoteFileConfig = new RemoteFilesOptions
+        {
+            ConnectionStrings = new Dictionary<string, string>
+            {
+                { "transfer.flash.co.za", $"Protocol=sftp;Host=transfer.flash.co.za;Port=22;UserName=svc-FinanceRecons;Password=Rubbish!"}
+            }
+        };
+        RemoteFileSessionFactory sut = new RemoteFileSessionFactory(remoteFileConfig);
+        Outcome<IRemoteFileSession> resultFileSession = sut.CreateRemoteFileSession("transfer.flash.co.za");
+        bool result = resultFileSession.Value.Exists(filePath);
+        Assert.That(result, Is.EqualTo(expectedMatch));
+    }
 }

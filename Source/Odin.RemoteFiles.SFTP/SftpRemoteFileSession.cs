@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using Odin.DesignContracts;
 using Renci.SshNet;
 using Renci.SshNet.Sftp;
@@ -187,7 +188,7 @@ namespace Odin.RemoteFiles
         }
 
         /// <summary>
-        /// Checks for file or directory existence
+        /// Checks for file or directory existence. Path can contain * and ? wildcards for pattern matching.
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -195,7 +196,28 @@ namespace Odin.RemoteFiles
         {
             PreCondition.Requires<ArgumentNullException>(!string.IsNullOrWhiteSpace(path), nameof(path));
             EnsureConnected();
+            
+            if (path.Contains("?") || path.Contains("*"))
+            {
+                var files = _client.ListDirectory(path.Substring(0, path.LastIndexOf('/')))
+                    .OrderBy(file => file.LastWriteTime)
+                    .Where(file => !file.IsDirectory && IsMatch(file.FullName, path))
+                    .ToList();
+                if (files.Count > 1)
+                {
+                    //use Outcome here?
+                    return false;
+                }
+                return true;
+            }
             return _client.Exists(path);
+        }
+        
+        private static bool IsMatch(string fileName, string pattern)
+        {
+            // Replace '*' with '.*' and '?' with '.' in the pattern
+            string regexPattern = "^" + Regex.Escape(pattern).Replace("\\*", ".*").Replace("\\?", ".") + "$";
+            return Regex.IsMatch(fileName, regexPattern, RegexOptions.IgnoreCase);
         }
     }
 }
