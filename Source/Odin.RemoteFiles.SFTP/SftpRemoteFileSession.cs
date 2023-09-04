@@ -178,7 +178,7 @@ namespace Odin.RemoteFiles
         /// List files in a directory...
         /// </summary>
         /// <param name="path"></param>
-        public IEnumerable<IRemoteFileInfo> ListDirectory(string path)
+        public IEnumerable<IRemoteFileInfo> GetFiles(string path)
         {
             PreCondition.Requires<ArgumentNullException>(!string.IsNullOrWhiteSpace(path), nameof(path));
             EnsureConnected();

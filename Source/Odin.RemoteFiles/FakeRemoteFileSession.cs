@@ -115,7 +115,7 @@ namespace Odin.RemoteFiles
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        public IEnumerable<IRemoteFileInfo> ListDirectory(string path)
+        public IEnumerable<IRemoteFileInfo> GetFiles(string path)
         {
             switch (Behaviour)
             {

@@ -59,11 +59,12 @@ public interface IRemoteFileSession
     void Delete(string filePath);
 
     /// <summary>
-    /// Lists files in a directory
+    /// Returns the files (IRemoteFileInfo) that match the specified search pattern in the specified directory
     /// </summary>
-    /// <param name="path"></param>
+    /// <param name="path">The path to the directory to search under</param>
+    /// <param name="searchPattern">Optional search pattern, supporting wildcards (*) and (?).</param>
     /// <returns></returns>
-    IEnumerable<IRemoteFileInfo> ListDirectory(string path);
+    IEnumerable<IRemoteFileInfo> GetFiles(string path, string searchPattern = null);
 
     /// <summary>
     /// Checks for file or directory existence. Path can contain * and ? wildcards for pattern matching.
