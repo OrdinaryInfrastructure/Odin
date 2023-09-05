@@ -111,11 +111,12 @@ namespace Odin.RemoteFiles
         }
 
         /// <summary>
-        /// List fake
+        /// list fake
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">The path to the directory to search under</param>
+        /// <param name="searchPattern">Optional search pattern, supporting wildcards (*) and (?).</param>
         /// <returns></returns>
-        public IEnumerable<IRemoteFileInfo> ListDirectory(string path)
+        public IEnumerable<IRemoteFileInfo> GetFiles(string path, string searchPattern)
         {
             switch (Behaviour)
             {
