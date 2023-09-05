@@ -33,10 +33,10 @@ namespace Odin.RemoteFiles
         /// Connects to the SFTP server. Throws an Exception if failure occurs...
         /// </summary>
         public void Connect()
-        { 
+        {
             EnsureConnected();
         }
-        
+
         private void EnsureConnected()
         {
             if (_client == null)
@@ -47,24 +47,30 @@ namespace Odin.RemoteFiles
                     PrivateKeyFile pk;
                     if (_connectionInfo.HasPrivateKeyPassphrase())
                     {
-                        pk = new PrivateKeyFile(new MemoryStream(Encoding.ASCII.GetBytes(_connectionInfo.PrivateKey)),_connectionInfo.PrivateKeyPassphrase);
+                        pk = new PrivateKeyFile(new MemoryStream(Encoding.ASCII.GetBytes(_connectionInfo.PrivateKey)),
+                            _connectionInfo.PrivateKeyPassphrase);
                     }
                     else
                     {
                         pk = new PrivateKeyFile(new MemoryStream(Encoding.ASCII.GetBytes(_connectionInfo.PrivateKey)));
                     }
+
                     PrivateKeyFile[] keyFiles = { pk };
                     authMethods.Add(new PrivateKeyAuthenticationMethod(_connectionInfo.UserName, keyFiles));
                 }
-                if (_connectionInfo.HasUsernameAndPassword()) 
+
+                if (_connectionInfo.HasUsernameAndPassword())
                 {
-                    authMethods.Add(new PasswordAuthenticationMethod(_connectionInfo.UserName, _connectionInfo.Password));
+                    authMethods.Add(
+                        new PasswordAuthenticationMethod(_connectionInfo.UserName, _connectionInfo.Password));
                 }
 
                 if (!authMethods.Any())
                 {
-                    throw new ApplicationException("Either Username and Password must be specified, or UserName, PrivateKey and PrivateKeyPhrase, or both.");
+                    throw new ApplicationException(
+                        "Either Username and Password must be specified, or UserName, PrivateKey and PrivateKeyPhrase, or both.");
                 }
+
                 ConnectionInfo connInfo = new ConnectionInfo(_connectionInfo.Host,
                     _connectionInfo.Port,
                     _connectionInfo.UserName, authMethods.ToArray());
@@ -96,16 +102,15 @@ namespace Odin.RemoteFiles
         /// <returns></returns>
         public void UploadFile(string textFileContents, string fileName)
         {
-            PreCondition.Requires<ArgumentNullException>(textFileContents!=null, nameof(textFileContents));
+            PreCondition.Requires<ArgumentNullException>(textFileContents != null, nameof(textFileContents));
             PreCondition.Requires<ArgumentNullException>(!string.IsNullOrWhiteSpace(fileName), nameof(fileName));
-            
+
             EnsureConnected();
             MemoryStream stream = new MemoryStream(Encoding.ASCII.GetBytes(textFileContents));
             _client.BufferSize = 4096;
-            _client.UploadFile(stream,fileName);
-            
+            _client.UploadFile(stream, fileName);
         }
-        
+
         /// <summary>
         /// Downloads a file via Sftp to the remote server 
         /// </summary>
@@ -115,10 +120,10 @@ namespace Odin.RemoteFiles
         public void DownloadFile(string fileName, in Stream output)
         {
             PreCondition.Requires<ArgumentNullException>(!string.IsNullOrWhiteSpace(fileName), nameof(fileName));
-            
+
             EnsureConnected();
             _client.BufferSize = 4096;
-            _client.DownloadFile(fileName,output);
+            _client.DownloadFile(fileName, output);
         }
 
         /// <summary>
@@ -151,7 +156,7 @@ namespace Odin.RemoteFiles
             EnsureConnected();
             _client.ChangeDirectory(path);
         }
-        
+
         /// <summary>
         /// CreateDirectory
         /// </summary>
@@ -173,22 +178,36 @@ namespace Odin.RemoteFiles
             EnsureConnected();
             _client.DeleteFile(filePath);
         }
-        
+
         /// <summary>
-        /// List files in a directory...
+        /// Returns the files (IRemoteFileInfo) that match the specified search pattern in the specified directory
         /// </summary>
-        /// <param name="path"></param>
-        public IEnumerable<IRemoteFileInfo> GetFiles(string path)
+        /// <param name="path">The path to the directory to search under</param>
+        /// <param name="searchPattern">Optional search pattern for the file name under the specified path. Supports wildcards (*) and (?).</param>
+        /// <returns></returns>
+        public IEnumerable<IRemoteFileInfo> GetFiles(string path, string searchPattern = null)
         {
             PreCondition.Requires<ArgumentNullException>(!string.IsNullOrWhiteSpace(path), nameof(path));
+            PreCondition.Requires(!(path!.Contains('*') || path.Contains('?')));
             EnsureConnected();
-            // List results and exclude . and ..
-            List<SftpFile> results = _client.ListDirectory(path).ToList();
-            return results.Select(c => new RemoteFileInfo(c.FullName, c.Name, c.LastWriteTimeUtc));
+            //return results
+            var files = _client.ListDirectory(path);
+            if (!string.IsNullOrWhiteSpace(searchPattern))
+            {
+                if (searchPattern.Contains('?') || searchPattern.Contains('*'))
+                {
+                    return files.OrderBy(file => file.LastWriteTime)
+                        .Where(file => !file.IsDirectory && IsMatch(file.Name, searchPattern))
+                        .Select(p => new RemoteFileInfo(p.FullName, p.Name, p.LastWriteTimeUtc));
+                }
+                return files.Where(p => string.Equals(p.Name, searchPattern))
+                    .Select(p => new RemoteFileInfo(p.FullName, p.Name, p.LastWriteTimeUtc));
+            }
+            return files.Select(c => new RemoteFileInfo(c.FullName, c.Name, c.LastWriteTimeUtc));
         }
 
         /// <summary>
-        /// Checks for file or directory existence. Path can contain * and ? wildcards for pattern matching.
+        /// Checks for file or directory existence. 
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -196,23 +215,9 @@ namespace Odin.RemoteFiles
         {
             PreCondition.Requires<ArgumentNullException>(!string.IsNullOrWhiteSpace(path), nameof(path));
             EnsureConnected();
-            
-            if (path.Contains("?") || path.Contains("*"))
-            {
-                var files = _client.ListDirectory(path.Substring(0, path.LastIndexOf('/')))
-                    .OrderBy(file => file.LastWriteTime)
-                    .Where(file => !file.IsDirectory && IsMatch(file.FullName, path))
-                    .ToList();
-                if (files.Count > 1)
-                {
-                    //use Outcome here?
-                    return false;
-                }
-                return true;
-            }
             return _client.Exists(path);
         }
-        
+
         private static bool IsMatch(string fileName, string pattern)
         {
             // Replace '*' with '.*' and '?' with '.' in the pattern
