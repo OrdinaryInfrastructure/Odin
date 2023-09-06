@@ -69,13 +69,20 @@ namespace Odin.BackgroundProcessing
         public int? ServerWorkerCount { get; set; } 
 
         public bool IgnoreAntiforgeryToken { get; set; } = false;
+        
+        /// <summary>
+        /// How often the dashboard UI polls the /stats endpoint in milliseconds. Default is 10000 milliseconds.
+        /// </summary>
         public int StatsPollingInterval { get; set; } = 10000;
 
         public int? SqlServerCommandBatchMaxTimeoutSeconds { get; set; }
 
         public int? SqlServerSlidingInvisibilityTimeoutSeconds { get; set; }
 
-        public int? SqlServerQueuePollIntervalSeconds { get; set; }
+        /// <summary>
+        /// How often Hangfire polls the job queue when using SQL Server. Odin default is 20 seconds.
+        /// </summary>
+        public int? SqlServerQueuePollIntervalSeconds { get; set; } = 20;
 
         public bool? SqlServerUseRecommendedIsolationLevel { get; set; }
 
