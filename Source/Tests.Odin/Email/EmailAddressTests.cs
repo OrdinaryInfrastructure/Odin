@@ -22,8 +22,8 @@ namespace Tests.Odin.Email
         {
             EmailAddress sut = new EmailAddress(testEmailAddress);
          
-            Assert.AreEqual(expectedAddress, sut.Address);
-            Assert.AreEqual(expectedDisplayName, sut.DisplayName);
+            Assert.That(expectedAddress, Is.EqualTo(sut.Address));       
+            Assert.That(expectedDisplayName, Is.EqualTo(sut.DisplayName));       
         }
         
     }

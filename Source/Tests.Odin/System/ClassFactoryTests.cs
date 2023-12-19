@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿#nullable enable
+using NUnit.Framework;
 using Odin.Email;
 using Odin.System;
 
@@ -13,10 +14,10 @@ namespace Tests.Odin.System
             ClassFactory activator = new ClassFactory();
             Outcome<IEmailSenderServiceInjector> result = activator.TryCreate<IEmailSenderServiceInjector>(typeof(MailgunServiceInjector));
 
-            Assert.NotNull(result);
-            Assert.True(result.Success);
-            Assert.NotNull(result.Value);
-            Assert.IsInstanceOf<IEmailSenderServiceInjector>(result.Value);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Success, Is.True);
+            Assert.That(result.Value, Is.Not.Null);
+            Assert.That(result.Value, Is.InstanceOf<IEmailSenderServiceInjector>());
         }
         
         [Test]
@@ -25,10 +26,10 @@ namespace Tests.Odin.System
             ClassFactory activator = new ClassFactory();
             Outcome<IEmailSenderServiceInjector> result = activator.TryCreate<IEmailSenderServiceInjector>("Odin.Email.MailgunServiceInjector");
 
-            Assert.NotNull(result);
-            Assert.True(result.Success);
-            Assert.NotNull(result.Value);
-            Assert.IsInstanceOf<IEmailSenderServiceInjector>(result.Value);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Success, Is.True);
+            Assert.That(result.Value, Is.Not.Null);
+            Assert.That(result.Value, Is.InstanceOf<IEmailSenderServiceInjector>());
         }
     }
 }

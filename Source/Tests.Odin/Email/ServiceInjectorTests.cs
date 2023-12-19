@@ -23,9 +23,9 @@ namespace Tests.Odin.Email
             IEmailSender mailSender = sut.Services.GetService<IEmailSender>();
             EmailSendingOptions config = sut.Services.GetService<EmailSendingOptions>();
             
-            Assert.NotNull(mailSender);
-            Assert.IsInstanceOf<FakeEmailSender>(mailSender);
-            Assert.NotNull(config);
+            Assert.That(mailSender, Is.Not.Null);
+            Assert.That(mailSender, Is.InstanceOf<FakeEmailSender>());
+            Assert.That(config, Is.Not.Null);
         }
 
         [Test]
@@ -41,7 +41,7 @@ namespace Tests.Odin.Email
             EmailSendingOptions config = sut.Services.GetService<EmailSendingOptions>();
             MailgunOptions mailgunConfig = sut.Services.GetService<MailgunOptions>();
             
-            Assert.NotNull(provider);
+            Assert.That(provider, Is.Not.Null);
             Assert.IsInstanceOf<MailgunEmailSender>(provider);
             Assert.NotNull(config);
             Assert.NotNull(mailgunConfig);

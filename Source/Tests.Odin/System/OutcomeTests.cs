@@ -13,9 +13,9 @@ namespace Tests.Odin.System
         {
             Outcome sut = Outcome.Succeed();
             
-            Assert.True(sut.Success);
+            Assert.That(sut.Success, Is.True);
             Assert.That(sut.MessagesToString(), Is.Empty);
-            Assert.IsEmpty(sut.Messages);
+            Assert.That(sut.Messages, Is.Empty);
         }
 
         [Test]
@@ -23,10 +23,10 @@ namespace Tests.Odin.System
         {
             Outcome sut = Outcome.Fail("Reason");
             
-            Assert.False(sut.Success);
-            Assert.AreEqual("Reason", sut.MessagesToString());
-            Assert.AreEqual("Reason", sut.Messages[0]);
-            Assert.AreEqual(1, sut.Messages.Count);
+            Assert.That(sut.Success, Is.False);
+            Assert.That("Reason", Is.EqualTo(sut.MessagesToString()));         
+            Assert.That("Reason", Is.EqualTo(sut.Messages[0]));        
+            Assert.That(1, Is.EqualTo(sut.Messages.Count));  
         }
         
         [Test]
@@ -34,10 +34,10 @@ namespace Tests.Odin.System
         {
             Outcome sut = Outcome.Succeed("lovely");
             
-            Assert.True(sut.Success);
-            Assert.AreEqual("lovely", sut.MessagesToString());
-            Assert.AreEqual("lovely", sut.Messages[0]);
-            Assert.AreEqual(1, sut.Messages.Count);
+            Assert.That(sut.Success, Is.True);
+            Assert.That("lovely", Is.EqualTo(sut.MessagesToString()));         
+            Assert.That("lovely", Is.EqualTo(sut.Messages[0]));        
+            Assert.That(1, Is.EqualTo(sut.Messages.Count));  
         }
         
         [Test]
@@ -62,7 +62,7 @@ namespace Tests.Odin.System
             Assert.That(sut.MessagesToString(), Is.Empty.Or.Null);
             Assert.IsEmpty(sut.Messages);
             Assert.AreSame(stringVal, sut.Value);
-            Assert.AreEqual(stringVal, sut.Value);
+            Assert.That(XXXX, Is.EqualTo(YYYYY));          stringVal, sut.Value);
         }
         
         [Test]
@@ -75,7 +75,7 @@ namespace Tests.Odin.System
             Assert.That(sut.MessagesToString(), Is.EqualTo("message"));
             Assert.That(1, Is.EqualTo(sut.Messages.Count));
             Assert.AreSame(stringVal, sut.Value);
-            Assert.AreEqual(stringVal, sut.Value);
+            Assert.That(XXXX, Is.EqualTo(YYYYY));          stringVal, sut.Value);
         }
         
         [Test]
@@ -87,7 +87,7 @@ namespace Tests.Odin.System
             Assert.True(sut.Success);
             Assert.That(sut.MessagesToString(), Is.EqualTo("message"));
             Assert.That(1, Is.EqualTo(sut.Messages.Count));
-            Assert.AreEqual(num, sut.Value);
+            Assert.That(XXXX, Is.EqualTo(YYYYY));          num, sut.Value);
         }
         
         [Test]
@@ -107,9 +107,9 @@ namespace Tests.Odin.System
             Outcome sut = Outcome.Fail(failValue, "Reason");
 
             Assert.False(sut.Success);
-            Assert.AreEqual("Reason", sut.MessagesToString());
-            Assert.AreEqual("Reason", sut.Messages[0]);
-            Assert.AreEqual(1, sut.Messages.Count);
+            Assert.That(XXXX, Is.EqualTo(YYYYY));          "Reason", sut.MessagesToString());
+            Assert.That(XXXX, Is.EqualTo(YYYYY));          "Reason", sut.Messages[0]);
+            Assert.That(XXXX, Is.EqualTo(YYYYY));          1, sut.Messages.Count);
         }
         
         [Test]
@@ -118,9 +118,9 @@ namespace Tests.Odin.System
             Outcome sut = new Outcome();
 
             Assert.False(sut.Success);
-            Assert.AreEqual("An uninitialised outcome is a failure by default.", sut.MessagesToString());
-            Assert.AreEqual("An uninitialised outcome is a failure by default.", sut.Messages[0]);
-            Assert.AreEqual(1, sut.Messages.Count);
+            Assert.That(XXXX, Is.EqualTo(YYYYY));          "An uninitialised outcome is a failure by default.", sut.MessagesToString());
+            Assert.That(XXXX, Is.EqualTo(YYYYY));          "An uninitialised outcome is a failure by default.", sut.Messages[0]);
+            Assert.That(XXXX, Is.EqualTo(YYYYY));          1, sut.Messages.Count);
         }
         
         [Test]
