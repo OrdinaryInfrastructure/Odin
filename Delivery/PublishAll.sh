@@ -1,4 +1,4 @@
-TargetFramework=net7.0
+TargetFramework=net8.0
 ApiKey=%1
 
 sudo rm -f Packaging/* 
