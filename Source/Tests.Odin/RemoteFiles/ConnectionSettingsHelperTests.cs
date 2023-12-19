@@ -83,60 +83,60 @@ public class ConnectionSettingsHelperTests
             {
                 Assert.That(result.Host, Is.EqualTo("test.flash.co.za"));
                 Assert.That(result.Port, Is.EqualTo(22));
-                Assert.IsNull(result.UserName);
-                Assert.IsNull(result.Password);
-                Assert.IsNull(result.PrivateKey);
-                Assert.IsNull(result.PrivateKeyPassphrase);
+                Assert.That(result.UserName, Is.Null);      
+                Assert.That(result.Password, Is.Null);     
+                Assert.That(result.PrivateKey, Is.Null);     
+                Assert.That(result.PrivateKeyPassphrase, Is.Null);     
                 break;
             }
             case "port":
             {
                 Assert.That(result.Port, Is.EqualTo(30));
-                Assert.IsNull(result.Host);
-                Assert.IsNull(result.UserName);
-                Assert.IsNull(result.Password);
-                Assert.IsNull(result.PrivateKey);
-                Assert.IsNull(result.PrivateKeyPassphrase);
+                Assert.That(result.Host, Is.Null);     
+                Assert.That(result.UserName, Is.Null);     
+                Assert.That(result.Password, Is.Null);     
+                Assert.That(result.PrivateKey, Is.Null);     
+                Assert.That(result.PrivateKeyPassphrase, Is.Null);    
                 break;
             }
             case "username":
             {
                 Assert.That(result.UserName, Is.EqualTo("mark.derman"));
                 Assert.That(result.Port, Is.EqualTo(22));
-                Assert.IsNull(result.Host);
-                Assert.IsNull(result.Password);
-                Assert.IsNull(result.PrivateKey);
-                Assert.IsNull(result.PrivateKeyPassphrase);
+                Assert.That(result.Host, Is.Null);     
+                Assert.That(result.Password, Is.Null);     
+                Assert.That(result.PrivateKey, Is.Null);      
+                Assert.That(result.PrivateKeyPassphrase, Is.Null);    
                 break;
             }
             case "password":
             {
                 Assert.That(result.Password, Is.EqualTo("He_likes-to(kitesurf)"));
                 Assert.That(result.Port, Is.EqualTo(22));
-                Assert.IsNull(result.Host);
-                Assert.IsNull(result.UserName);
-                Assert.IsNull(result.PrivateKey);
-                Assert.IsNull(result.PrivateKeyPassphrase);
+                Assert.That(result.Host, Is.Null);   
+                Assert.That(result.UserName, Is.Null);      
+                Assert.That(result.PrivateKey, Is.Null);     
+                Assert.That(result.PrivateKeyPassphrase, Is.Null);   
                 break;
             }
             case "privatekey":
             {
                 Assert.That(result.PrivateKey, Is.EqualTo("the/super/private.key"));
                 Assert.That(result.Port, Is.EqualTo(22));
-                Assert.IsNull(result.Host);
-                Assert.IsNull(result.UserName);
-                Assert.IsNull(result.Password);
-                Assert.IsNull(result.PrivateKeyPassphrase);
+                Assert.That(result.Host, Is.Null);     
+                Assert.That(result.UserName, Is.Null);     
+                Assert.That(result.Password, Is.Null);    
+                Assert.That(result.PrivateKeyPassphrase, Is.Null);  
                 break;
             }
             case "privatekeypassphrase":
             {
                 Assert.That(result.PrivateKeyPassphrase, Is.EqualTo("This_is_the_fancy_passphrase"));
                 Assert.That(result.Port, Is.EqualTo(22));
-                Assert.IsNull(result.Host);
-                Assert.IsNull(result.UserName);
-                Assert.IsNull(result.Password);
-                Assert.IsNull(result.PrivateKey);
+                Assert.That(result.Host, Is.Null);      
+                Assert.That(result.UserName, Is.Null);   
+                Assert.That(result.Password, Is.Null);      
+                Assert.That(result.PrivateKey, Is.Null);
                 break;
             }
         }

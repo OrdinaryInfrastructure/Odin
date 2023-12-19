@@ -47,11 +47,11 @@ namespace Tests.Odin.Email.Mailgun
 
             Outcome<string> result = await mailgunSender.SendEmail(message);
 
-            Assert.NotNull(result);
-            Assert.True(result.Success, result.MessagesToString());
-            Assert.NotNull(result.Value);
+            Assert.That(result, Is.Not.Null);    
+            Assert.That(result.Success, Is.True, result.MessagesToString());    
+            Assert.That(result.Value, Is.Not.Null);   
             mockLogger.Verify(c =>c.LogWarning(It.IsAny<string>()), Times.Never);
-            Assert.False(string.IsNullOrWhiteSpace(result.Value), "Message Id expected from Mailgun");
+            Assert.That(string.IsNullOrWhiteSpace(result.Value), Is.False,"Message Id expected from Mailgun");
         }
         
         [Test]
@@ -71,10 +71,10 @@ namespace Tests.Odin.Email.Mailgun
             
             Outcome<string> result = await mailgunSender.SendEmail(message);
 
-            Assert.NotNull(result);
-            Assert.False(result.Success);
-            Assert.True(result.Messages[0].Contains("401"), result.Messages[0]);
-            Assert.True(result.Messages[0].Contains("Unauthorized"), result.Messages[0]);
+            Assert.That(result, Is.Not.Null);     
+            Assert.That(result.Success, Is.False);
+            Assert.That(result.Messages[0].Contains("401"), Is.True, result.Messages[0]);
+            Assert.That(result.Messages[0].Contains("Unauthorized"), Is.True, result.Messages[0]);
         }
     }
 }

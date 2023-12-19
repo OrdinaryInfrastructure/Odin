@@ -46,10 +46,10 @@ namespace Tests.Odin.System
             object obj = new CategoryAttribute("123");
             Outcome<object> sut = Outcome.Succeed<object>(obj);
             
-            Assert.True(sut.Success);
+            Assert.That(sut.Success, Is.True);
             Assert.That(sut.MessagesToString(), Is.Empty.Or.Null);
-            Assert.IsEmpty(sut.Messages);
-            Assert.AreSame(obj, sut.Value);
+            Assert.That(sut.Messages, Is.Empty);
+            Assert.That(obj, Is.EqualTo(sut.Value));
         }
         
         [Test]
@@ -58,11 +58,11 @@ namespace Tests.Odin.System
             string stringVal = "123";
             Outcome<string> sut = Outcome.Succeed<string>(stringVal);
             
-            Assert.True(sut.Success);
+            Assert.That(sut.Success, Is.True);
             Assert.That(sut.MessagesToString(), Is.Empty.Or.Null);
-            Assert.IsEmpty(sut.Messages);
-            Assert.AreSame(stringVal, sut.Value);
-            Assert.That(XXXX, Is.EqualTo(YYYYY));          stringVal, sut.Value);
+            Assert.That(sut.Messages, Is.Empty);
+            Assert.That(stringVal,Is.EqualTo(sut.Value));
+            Assert.That(stringVal, Is.EqualTo(sut.Value));      
         }
         
         [Test]
@@ -71,11 +71,11 @@ namespace Tests.Odin.System
             string stringVal = "123";
             Outcome<string> sut = Outcome.Succeed<string>(stringVal, "message");
             
-            Assert.True(sut.Success);
+            Assert.That(sut.Success, Is.True);      
             Assert.That(sut.MessagesToString(), Is.EqualTo("message"));
             Assert.That(1, Is.EqualTo(sut.Messages.Count));
-            Assert.AreSame(stringVal, sut.Value);
-            Assert.That(XXXX, Is.EqualTo(YYYYY));          stringVal, sut.Value);
+            Assert.That(stringVal, Is.EqualTo(sut.Value));       
+
         }
         
         [Test]
@@ -84,10 +84,10 @@ namespace Tests.Odin.System
             double num = 13.8;
             Outcome<double> sut = Outcome.Succeed<double>(num, "message");
             
-            Assert.True(sut.Success);
+            Assert.That(sut.Success, Is.True);       
             Assert.That(sut.MessagesToString(), Is.EqualTo("message"));
             Assert.That(1, Is.EqualTo(sut.Messages.Count));
-            Assert.That(XXXX, Is.EqualTo(YYYYY));          num, sut.Value);
+            Assert.That(num, Is.EqualTo(sut.Value));        
         }
         
         [Test]
@@ -106,10 +106,10 @@ namespace Tests.Odin.System
             string failValue = "this is the value";
             Outcome sut = Outcome.Fail(failValue, "Reason");
 
-            Assert.False(sut.Success);
-            Assert.That(XXXX, Is.EqualTo(YYYYY));          "Reason", sut.MessagesToString());
-            Assert.That(XXXX, Is.EqualTo(YYYYY));          "Reason", sut.Messages[0]);
-            Assert.That(XXXX, Is.EqualTo(YYYYY));          1, sut.Messages.Count);
+            Assert.That(sut.Success, Is.False);
+            Assert.That("Reason", Is.EqualTo(sut.MessagesToString()));         
+            Assert.That("Reason", Is.EqualTo(sut.Messages[0]));       
+            Assert.That(1, Is.EqualTo(sut.Messages.Count));      
         }
         
         [Test]
@@ -117,10 +117,10 @@ namespace Tests.Odin.System
         {
             Outcome sut = new Outcome();
 
-            Assert.False(sut.Success);
-            Assert.That(XXXX, Is.EqualTo(YYYYY));          "An uninitialised outcome is a failure by default.", sut.MessagesToString());
-            Assert.That(XXXX, Is.EqualTo(YYYYY));          "An uninitialised outcome is a failure by default.", sut.Messages[0]);
-            Assert.That(XXXX, Is.EqualTo(YYYYY));          1, sut.Messages.Count);
+            Assert.That(sut.Success, Is.False);
+            Assert.That("An uninitialised outcome is a failure by default.", Is.EqualTo(sut.MessagesToString()));         
+            Assert.That("An uninitialised outcome is a failure by default.", Is.EqualTo(sut.Messages[0]));       
+            Assert.That(1, Is.EqualTo(sut.Messages.Count));  
         }
         
         [Test]
@@ -140,8 +140,8 @@ namespace Tests.Odin.System
             
             Outcome result = JsonSerializer.Deserialize<Outcome>(serialised);
             
-            Assert.NotNull(result);
-            Assert.True(result.Success);
+            Assert.That(result, Is.Not.Null);    
+            Assert.That(result.Success, Is.True);       
             Assert.That(result.Messages[0], Is.EqualTo("cool man"));
             
         }
@@ -154,7 +154,7 @@ namespace Tests.Odin.System
             
             string result = JsonSerializer.Serialize(sut);
 
-            Assert.True(string.Compare(result, "{\"Value\":3,\"Success\":true,\"Messages\":[\"cool man\"]}", CultureInfo.CurrentCulture , CompareOptions.IgnoreCase | CompareOptions.IgnoreSymbols)==0);
+            Assert.That(string.Compare(result, "{\"Value\":3,\"Success\":true,\"Messages\":[\"cool man\"]}", CultureInfo.CurrentCulture , CompareOptions.IgnoreCase | CompareOptions.IgnoreSymbols)==0, Is.True);
         }
         
         [Test]
@@ -164,12 +164,10 @@ namespace Tests.Odin.System
             
             Outcome<int> result = JsonSerializer.Deserialize<Outcome<int>>(serialised);
             
-            Assert.NotNull(result);
-            Assert.True(result.Success);
-            Assert.True(result.Value==3);
+            Assert.That(result, Is.Not.Null);    
+            Assert.That(result.Success, Is.True);       
+            Assert.That(result.Value, Is.EqualTo(3));      
             Assert.That(result.Messages[0], Is.EqualTo("cool man"));
         }
-        
-        
     }
 }

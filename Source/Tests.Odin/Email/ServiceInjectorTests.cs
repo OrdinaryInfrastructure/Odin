@@ -42,9 +42,9 @@ namespace Tests.Odin.Email
             MailgunOptions mailgunConfig = sut.Services.GetService<MailgunOptions>();
             
             Assert.That(provider, Is.Not.Null);
-            Assert.IsInstanceOf<MailgunEmailSender>(provider);
-            Assert.NotNull(config);
-            Assert.NotNull(mailgunConfig);
+            Assert.That(provider, Is.InstanceOf<MailgunEmailSender>());
+            Assert.That(config, Is.Not.Null);    
+            Assert.That(mailgunConfig, Is.Not.Null);  
         }
 
         public static string[] GetFakeSenderConfigs()

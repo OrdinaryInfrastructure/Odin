@@ -23,9 +23,9 @@ namespace Tests.Odin.BackgroundProcessing
             IBackgroundProcessor provider = sut.Services.GetService<IBackgroundProcessor>();
             BackgroundProcessingOptions config = sut.Services.GetService<BackgroundProcessingOptions>();
             
-            Assert.NotNull(provider);
-            Assert.IsInstanceOf<FakeBackgroundProcessor>(provider);
-            Assert.NotNull(config);
+            Assert.That(provider, Is.Not.Null);     
+            Assert.That(provider, Is.InstanceOf<FakeBackgroundProcessor>());
+            Assert.That(config, Is.Not.Null);    
         }
 
         [Test]
@@ -42,9 +42,9 @@ namespace Tests.Odin.BackgroundProcessing
             // We don't put HangfireOptions into config... It is only used to start Hangfire on app start only.
             // HangfireOptions providerConfig = sut.Services.GetService<HangfireOptions>();
             
-            Assert.NotNull(provider);
-            Assert.IsInstanceOf<HangfireBackgroundProcessor>(provider);
-            Assert.NotNull(config);
+            Assert.That(provider, Is.Not.Null);    
+            Assert.That(provider, Is.InstanceOf<HangfireBackgroundProcessor>());
+            Assert.That(config, Is.Not.Null);    
         }
         
         public static string GetFakeBackgroundProcessorConfigJson()
