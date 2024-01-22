@@ -9,8 +9,8 @@ namespace Tests.Odin.RemoteFiles;
 
 public class RemoteFileSessionsTests
 {
+    [Ignore("uses local sftp server...")]
     [Test(Description = "GetFiles should work with wildcards, no wildcards, and null in searchPattern string")]
-    //[Ignore("Testcases are specific to local sftp server")]
     [TestCase("Sandulela_Daily_Electricity_Transaction_Recon_Flash_client_2023-08-13.csv", 1)]
     [TestCase("Sandulela_Daily_Electricity_Transaction_Recon_Flash_??????_2023-08-13.csv",1)]
     [TestCase("Sandulela_Daily_Electricity_Transaction_*_2023-08-13.csv",1)]
@@ -22,7 +22,7 @@ public class RemoteFileSessionsTests
         {
             ConnectionStrings = new Dictionary<string, string>
             {
-                { "local", $"Protocol=sftp;Host=mattbook.local;Port=22;UserName=user;Password="}
+                { "local", $"Protocol=sftp;Host=mattbook.local;Port=22;UserName=Matthew Derman;Password=CHANGE"}
             }
         };
         RemoteFileSessionFactory factory = new RemoteFileSessionFactory(remoteFileConfig);

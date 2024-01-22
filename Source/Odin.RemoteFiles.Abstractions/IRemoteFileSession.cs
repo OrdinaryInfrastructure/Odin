@@ -71,5 +71,5 @@ public interface IRemoteFileSession
     /// </summary>
     /// <param name="path"></param>
     /// <returns></returns>
-    bool Exists(string path);
+    bool Exists(string path, int? timeoutInSeconds = null);
 }

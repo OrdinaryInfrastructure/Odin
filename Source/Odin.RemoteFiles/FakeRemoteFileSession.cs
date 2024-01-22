@@ -134,7 +134,7 @@ namespace Odin.RemoteFiles
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        public bool Exists(string path)
+        public bool Exists(string path, int? timeoutInSeconds = null)
         {
             switch (Behaviour)
             {
