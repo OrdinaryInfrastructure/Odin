@@ -1,4 +1,4 @@
-set TargetFramework=net8.0
+set TargetFramework=net7.0
 set ApiKey=%1
 
 @echo off
