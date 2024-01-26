@@ -37,7 +37,7 @@ namespace Odin.RemoteFiles
             EnsureConnected();
         }
 
-        private void EnsureConnected()
+        private void EnsureConnected(int? timeoutInSeconds = null)
         {
             if (_client == null)
             {
@@ -70,10 +70,10 @@ namespace Odin.RemoteFiles
                     throw new ApplicationException(
                         "Either Username and Password must be specified, or UserName, PrivateKey and PrivateKeyPhrase, or both.");
                 }
-
                 ConnectionInfo connInfo = new ConnectionInfo(_connectionInfo.Host,
                     _connectionInfo.Port,
                     _connectionInfo.UserName, authMethods.ToArray());
+                if (timeoutInSeconds != null) connInfo.Timeout = new TimeSpan(0, 0, timeoutInSeconds.Value); //
                 _client = new SftpClient(connInfo);
                 _client.Connect();
             }
@@ -211,10 +211,10 @@ namespace Odin.RemoteFiles
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        public bool Exists(string path)
+        public bool Exists(string path, int? timeoutInSeconds = null)
         {
             PreCondition.Requires<ArgumentNullException>(!string.IsNullOrWhiteSpace(path), nameof(path));
-            EnsureConnected();
+            EnsureConnected(timeoutInSeconds);
             return _client.Exists(path);
         }
 
