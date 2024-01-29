@@ -34,7 +34,7 @@ public class RemoteFileSessionFactoryTests
         
         Outcome<IRemoteFileSession> result = sut.CreateRemoteFileSession("test.connection.co.za");
         
-        Assert.That(result.Success);
+        Assert.That(result.Success, Is.False);
         Assert.That(result.MessagesToString(), Contains.Substring("Connection name not supported or configured: test.connection.co.za"));
     }
     
@@ -110,6 +110,6 @@ public class RemoteFileSessionFactoryTests
         Outcome<IRemoteFileSession> result = sut.CreateRemoteFileSession("test.connection.co.za");
         
         Assert.That(result.Success, Is.True);
-        Assert.That(resultType, Is.InstanceOf(result.Value.GetType()));
+        Assert.That(result.Value.GetType(), Is.EqualTo(resultType));
     }
 }
