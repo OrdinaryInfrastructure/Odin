@@ -13,7 +13,7 @@ namespace Tests.Odin.System
         {
             Outcome2 sut = Outcome2.Succeed();
             
-            Assert.True(sut.Success);
+            Assert.That(sut.Success, Is.True);       
             Assert.That(sut.Error, Is.Null);
             Assert.That(sut.MessagesToString(), Is.Empty);
         }
@@ -23,7 +23,7 @@ namespace Tests.Odin.System
         {
             Outcome2 sut = Outcome2.Fail("error message");
             
-            Assert.False(sut.Success);
+            Assert.That(sut.Success, Is.False);
             Assert.That(sut.MessagesToString(), Is.EqualTo("error message"));
             Assert.That(sut.Error, Is.Null);
         }
@@ -33,7 +33,7 @@ namespace Tests.Odin.System
         {
             Outcome2 sut = Outcome2.Fail(new Exception("error"));
             
-            Assert.False(sut.Success);
+            Assert.That(sut.Success, Is.False);
             Assert.That(sut.Error, Is.Not.Null);
             Assert.That(sut.Error.Message, Is.EqualTo("error"));
             Assert.That(sut.MessagesToString(), Is.EqualTo("error"));
@@ -56,8 +56,8 @@ namespace Tests.Odin.System
             
             Outcome2 result = JsonSerializer.Deserialize<Outcome2>(serialised);
             
-            Assert.NotNull(result);
-            Assert.True(result.Success);
+            Assert.That(result, Is.Not.Null);    
+            Assert.That(result.Success, Is.True);     
             Assert.That(result.Messages[0], Is.EqualTo("cool man"));
             
         }

@@ -15,7 +15,7 @@ namespace Tests.Odin.Email
             
             for (int i = 0; i < expectedAddresses.GetLength(0); i++)
             {
-                Assert.AreEqual(expectedAddresses[i], sut[i].Address);
+                Assert.That(expectedAddresses[i], Is.EqualTo(sut[i].Address));      
             }
         }
         
@@ -41,8 +41,8 @@ namespace Tests.Odin.Email
             sut.AddAddress(testAddress, testDisplayName);
            
             Assert.That(sut.Count, Is.EqualTo(1));
-            Assert.AreEqual(expectedName, sut[0].DisplayName);
-            Assert.AreEqual(expectedAddress, sut[0].Address);
+            Assert.That(expectedName, Is.EqualTo(sut[0].DisplayName));        
+            Assert.That(expectedAddress, Is.EqualTo(sut[0].Address));         
         }
     }
 }

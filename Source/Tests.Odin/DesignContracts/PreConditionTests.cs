@@ -1,4 +1,5 @@
-﻿using System;
+﻿#nullable enable
+using System;
 using Odin.DesignContracts;
 using NUnit.Framework;
 
@@ -14,8 +15,9 @@ namespace Tests.Odin.DesignContracts
         [TestCase("    ", "Precondition failure")]
         public void Requires_throws_exception_with_correct_message_on_precondition_failure(string errorMessage, string exceptionMessage)
         {
-            Exception ex = Assert.Throws<Exception>(() => PreCondition.Requires(false, errorMessage));
-            Assert.AreEqual(ex.Message, exceptionMessage, "Exception message is incorrect");
+            Exception? ex = Assert.Throws<Exception>(() => PreCondition.Requires(false, errorMessage));
+            Assert.That(ex, Is.Not.Null);
+            Assert.That(ex!.Message, Is.EqualTo(exceptionMessage), "Exception message is incorrect");
         }
         
         [Test]
@@ -31,13 +33,13 @@ namespace Tests.Odin.DesignContracts
         [TestCase("    ", "Precondition failure")]
         public void Requires_throws_specific_exception_on_precondition_failure(string errorMessage, string exceptionMessage)
         {
-            Exception argEx = Assert.Throws<ArgumentNullException>(() => PreCondition.Requires<ArgumentNullException>(false, errorMessage));
-            Exception argEx2 = Assert.Throws<ArgumentException>(() => PreCondition.Requires<ArgumentException>(false, errorMessage));
-            Exception divEx = Assert.Throws<DivideByZeroException>(() => PreCondition.Requires<DivideByZeroException>(false, errorMessage));
+            Exception? argEx = Assert.Throws<ArgumentNullException>(() => PreCondition.Requires<ArgumentNullException>(false, errorMessage));
+            Exception? argEx2 = Assert.Throws<ArgumentException>(() => PreCondition.Requires<ArgumentException>(false, errorMessage));
+            Exception? divEx = Assert.Throws<DivideByZeroException>(() => PreCondition.Requires<DivideByZeroException>(false, errorMessage));
             
-            Assert.IsInstanceOf<ArgumentNullException>(argEx, "argEx is not  ArgumentNullException");
-            Assert.IsInstanceOf<ArgumentException>(argEx2, "argEx is not  ArgumentException");
-            Assert.IsInstanceOf<DivideByZeroException>(divEx, "argEx is not  DivideByZeroException");
+            Assert.That(argEx, Is.InstanceOf<ArgumentNullException>(), "argEx is not  ArgumentNullException");
+            Assert.That(argEx2, Is.InstanceOf<ArgumentException>(), "argEx is not  ArgumentException");
+            Assert.That(divEx, Is.InstanceOf<DivideByZeroException>(), "argEx is not  DivideByZeroException");
         }
         
     }

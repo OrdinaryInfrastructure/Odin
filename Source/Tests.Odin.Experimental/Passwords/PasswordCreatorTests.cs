@@ -1,4 +1,5 @@
-﻿using System;
+﻿#nullable enable
+using System;
 using Odin.Passwords;
 using NUnit.Framework;
 
@@ -34,8 +35,8 @@ namespace Tests.Odin.Passwords
             }
             else
             {
-                string password = PasswordCreator.CreateSimpleWordAndNumberPassword(numNumerics);
-                Assert.NotNull(password);
+                string? password = PasswordCreator.CreateSimpleWordAndNumberPassword(numNumerics);
+                Assert.That(password, Is.Not.Null.Or.Empty);
             }
         }
         

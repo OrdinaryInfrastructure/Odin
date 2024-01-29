@@ -34,8 +34,8 @@ public class RemoteFileSessionFactoryTests
         
         Outcome<IRemoteFileSession> result = sut.CreateRemoteFileSession("test.connection.co.za");
         
-        Assert.IsFalse(result.Success);
-        StringAssert.Contains("Connection name not supported or configured: test.connection.co.za", result.MessagesToString());
+        Assert.That(result.Success, Is.False);
+        Assert.That(result.MessagesToString(), Contains.Substring("Connection name not supported or configured: test.connection.co.za"));
     }
     
     [Test]
@@ -52,7 +52,7 @@ public class RemoteFileSessionFactoryTests
         
         Outcome<IRemoteFileSession> result = sut.CreateRemoteFileSession("test.connection.co.za");
         
-        Assert.IsFalse(result.Success);
+        Assert.That(result.Success, Is.False);    
         Assert.That(result.MessagesToString(), Is.EqualTo("Unable to determine protocol from connection string. Connection: test.connection.co.za"));
     }
     
@@ -72,7 +72,7 @@ public class RemoteFileSessionFactoryTests
         
         Outcome<IRemoteFileSession> result = sut.CreateRemoteFileSession("test.connection.co.za");
         
-        Assert.IsFalse(result.Success);
+        Assert.That(result.Success, Is.False);   
         Assert.That(result.MessagesToString(), Is.EqualTo("Unable to determine protocol from connection string. Connection: test.connection.co.za"));
     }
     
@@ -90,7 +90,7 @@ public class RemoteFileSessionFactoryTests
         
         Outcome<IRemoteFileSession> result = sut.CreateRemoteFileSession("test.connection.co.za");
         
-        Assert.IsFalse(result.Success);
+        Assert.That( result.Success, Is.False);          
         Assert.That(result.MessagesToString(), Is.EqualTo($"Protocol is not supported: {ConnectionProtocol.Https}"));
     }
     
@@ -109,7 +109,7 @@ public class RemoteFileSessionFactoryTests
         
         Outcome<IRemoteFileSession> result = sut.CreateRemoteFileSession("test.connection.co.za");
         
-        Assert.IsTrue(result.Success);
-        Assert.IsInstanceOf(resultType, result.Value);
+        Assert.That(result.Success, Is.True);
+        Assert.That(result.Value.GetType(), Is.EqualTo(resultType));
     }
 }

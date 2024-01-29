@@ -39,8 +39,8 @@ namespace Tests.Odin.Notifications
 
             Outcome result = await sut.SendNotification("Integration Testing - INotifier");
 
-            Assert.NotNull(result);
-            Assert.True(result.Success);
+            Assert.That(result, Is.Not.Null);     
+            Assert.That(result.Success, Is.True);      
         }
 
         [Test]
@@ -70,9 +70,9 @@ namespace Tests.Odin.Notifications
             Outcome outcome2 = await sut.SendNotification("Subject", new object[0]);
             Outcome outcome3 = await sut.SendNotification("Subject", new object[1] { null });
 
-            Assert.True(outcome1.Success);
-            Assert.True(outcome2.Success);
-            Assert.True(outcome3.Success);
+            Assert.That(outcome1.Success, Is.True);     
+            Assert.That(outcome2.Success, Is.True);        
+            Assert.That(outcome3.Success, Is.True);       
         }
     }
 }

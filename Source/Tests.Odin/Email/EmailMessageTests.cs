@@ -11,12 +11,12 @@ namespace Tests.Odin.Email
         {
             EmailMessage sut = new EmailMessage("to@d.com", "from@d.com", "subj", "bod", isHtml);
          
-            Assert.AreEqual("to@d.com", sut.To[0].Address);
-            Assert.AreEqual("from@d.com", sut.From.Address);
-            Assert.AreEqual("subj", sut.Subject);
-            Assert.AreEqual("bod", sut.Body);
-            Assert.AreEqual(isHtml, sut.IsHtml);
-            Assert.AreEqual(Priority.Normal, sut.Priority);
+            Assert.That("to@d.com", Is.EqualTo(sut.To[0].Address));        
+            Assert.That("from@d.com", Is.EqualTo(sut.From.Address));         
+            Assert.That("subj", Is.EqualTo(sut.Subject));       
+            Assert.That("bod", Is.EqualTo(sut.Body));         
+            Assert.That(isHtml, Is.EqualTo(sut.IsHtml));        
+            Assert.That(Priority.Normal, Is.EqualTo(sut.Priority));       
         }
         
         [Test]
@@ -25,8 +25,8 @@ namespace Tests.Odin.Email
             EmailMessage sut = new EmailMessage("to@d.com", "from@d.com", "subj", body, false);
             EmailMessage sut2 = new EmailMessage();
             
-            Assert.AreEqual("", sut.Body);
-            Assert.AreEqual("", sut2.Body);
+            Assert.That("", Is.EqualTo(sut.Body));        
+            Assert.That("", Is.EqualTo(sut2.Body));       
         }
         
         [Test]
@@ -35,8 +35,8 @@ namespace Tests.Odin.Email
             EmailMessage sut = new EmailMessage("to@d.com", "from@d.com", subject, "body", false);
             EmailMessage sut2 = new EmailMessage();
             
-            Assert.AreEqual("", sut.Subject);
-            Assert.AreEqual("", sut2.Subject);
+            Assert.That("", Is.EqualTo(sut.Subject));        
+            Assert.That("", Is.EqualTo(sut2.Subject));    
         }
         
     }

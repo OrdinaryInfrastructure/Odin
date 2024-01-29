@@ -15,8 +15,8 @@ namespace Tests.Odin.BackgroundProcessing
             
             JobDetails sut = new JobDetails(id,when);
          
-            Assert.AreEqual(id, sut.JobId);
-            Assert.AreEqual(when, sut.ScheduledFor);
+            Assert.That(id, Is.EqualTo(sut.JobId)); 
+            Assert.That(when , Is.EqualTo(sut.ScheduledFor));   
         }
     }
 }
