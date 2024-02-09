@@ -1,7 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices.JavaScript;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Odin.DesignContracts;
 using Odin.Logging;
 using Odin.System;
@@ -55,98 +57,138 @@ namespace Odin.Email
                 return Outcome.Fail<string?>("Domain missing in MailgunOptions");
             }
             
-            RestClient client = new RestClient();
-            string endPoint =
-                _mailgunSettings.Region.Equals(MailgunOptions.RegionEU,
-                    StringComparison.OrdinalIgnoreCase)
-                    ? "https://api.eu.mailgun.net/v3"
-                    : "https://api.mailgun.net/v3";
-            client.BaseUrl = new Uri(endPoint);
-            client.Authenticator =
-                new HttpBasicAuthenticator("api", _mailgunSettings.ApiKey);
             RestRequest request = new RestRequest();
-
-            request.AddParameter("domain", _mailgunSettings.Domain, ParameterType.UrlSegment);
-            request.Resource = "{domain}/messages";
-
-            // From address
-            if (emailToSend.From != null)
-            {
-                request.AddParameter("from", emailToSend.From.ToString());
-            }
-            else if (!string.IsNullOrWhiteSpace(_emailSettings.DefaultFromAddress))
-            {
-                request.AddParameter("from",
-                    GetEmailAsString(_emailSettings.DefaultFromAddress, _emailSettings.DefaultFromName));
-            }
-
-            // Reply to
-            if (emailToSend.ReplyTo != null)
-            {
-                request.AddParameter("h:Reply-To", emailToSend.ReplyTo.ToString());
-            }
-
-            // Subject
-            request.AddParameter("subject", emailToSend.Subject);
-
-            // Body
-            if (emailToSend.IsHtml)
-            {
-                request.AddParameter("html", emailToSend.Body);
-                if (!string.IsNullOrWhiteSpace(emailToSend.PlaintextAlternativeBody))
-                {
-                    request.AddParameter("text", emailToSend.PlaintextAlternativeBody);
-                }
-            }
-            else
-            {
-                request.AddParameter("text", emailToSend.Body);
-            }
-
-            // To
-            if (emailToSend.To != null && emailToSend.To.Any())
-            {
-                request.AddParameter("to", string.Join(",", emailToSend.To.Select(c => c.ToString())));
-            }
-
-            // CC
-            if (emailToSend.CC != null && emailToSend.CC.Any())
-            {
-                request.AddParameter("cc", string.Join(",", emailToSend.CC.Select(c => c.ToString())));
-            }
-
-            // BCC
-            if (emailToSend.BCC != null && emailToSend.BCC.Any())
-            {
-                request.AddParameter("bcc", string.Join(",", emailToSend.BCC.Select(c => c.ToString())));
-            }
-
-            if (emailToSend.Attachments != null && emailToSend.Attachments.Any())
-            {
-                foreach (Attachment attachment in emailToSend.Attachments)
-                {
-                    MemoryStream temp = new MemoryStream();
-                    attachment.Data.CopyTo(temp);
-                    request.AddFileBytes("attachment", temp.ToArray(), attachment.FileName, attachment.ContentType);
-                }
-            }
-
-            request.Method = Method.POST;
-
-            IRestResponse<MailgunSendResponse> result = null!;
-
+            RestClient client = new RestClient();
             try
             {
-                result = await client.ExecuteAsync<MailgunSendResponse>(request);
-                if (result.IsSuccessful)
+                string endPoint =
+                    _mailgunSettings.Region.Equals(MailgunOptions.RegionEU,
+                        StringComparison.OrdinalIgnoreCase)
+                        ? "https://api.eu.mailgun.net/v3"
+                        : "https://api.mailgun.net/v3";
+                client.BaseUrl = new Uri(endPoint);
+                client.Authenticator =
+                    new HttpBasicAuthenticator("api", _mailgunSettings.ApiKey);
+
+                request.AddParameter("domain", _mailgunSettings.Domain, ParameterType.UrlSegment);
+                request.Resource = "{domain}/messages";
+
+                // From address
+                if (emailToSend.From != null)
                 {
-                    return Outcome.Succeed<string?>(result.Data.Id);
+                    request.AddParameter("from", emailToSend.From.ToString());
                 }
-                return Outcome.Fail<string?>(null, $"StatusCode: {Convert.ToInt32(result.StatusCode)} - {result.StatusCode.ToString()}");
+                else if (!string.IsNullOrWhiteSpace(_emailSettings.DefaultFromAddress))
+                {
+                    request.AddParameter("from",
+                        GetEmailAsString(_emailSettings.DefaultFromAddress, _emailSettings.DefaultFromName));
+                }
+
+                // Reply to
+                if (emailToSend.ReplyTo != null)
+                {
+                    request.AddParameter("h:Reply-To", emailToSend.ReplyTo.ToString());
+                }
+
+                // Subject
+                request.AddParameter("subject", emailToSend.Subject);
+
+                // Body
+                if (emailToSend.IsHtml)
+                {
+                    request.AddParameter("html", emailToSend.Body);
+                    if (!string.IsNullOrWhiteSpace(emailToSend.PlaintextAlternativeBody))
+                    {
+                        request.AddParameter("text", emailToSend.PlaintextAlternativeBody);
+                    }
+                }
+                else
+                {
+                    request.AddParameter("text", emailToSend.Body);
+                }
+
+                // To
+                if (emailToSend.To != null && emailToSend.To.Any())
+                {
+                    request.AddParameter("to", string.Join(",", emailToSend.To.Select(c => c.ToString())));
+                }
+
+                // CC
+                if (emailToSend.CC != null && emailToSend.CC.Any())
+                {
+                    request.AddParameter("cc", string.Join(",", emailToSend.CC.Select(c => c.ToString())));
+                }
+
+                // BCC
+                if (emailToSend.BCC != null && emailToSend.BCC.Any())
+                {
+                    request.AddParameter("bcc", string.Join(",", emailToSend.BCC.Select(c => c.ToString())));
+                }
+
+                if (emailToSend.Attachments != null && emailToSend.Attachments.Any())
+                {
+                    foreach (Attachment attachment in emailToSend.Attachments)
+                    {
+                        MemoryStream temp = new MemoryStream();
+                        attachment.Data.CopyTo(temp);
+                        request.AddFileBytes("attachment", temp.ToArray(), attachment.FileName, attachment.ContentType);
+                    }
+                }
+
+                request.Method = Method.POST;
+
             }
             catch (Exception err)
             {
+                string error = $"Mailgun RestRequest preparation error: {err.Message}";
+                LogSendEmailResult(emailToSend,false,LogLevel.Error, error, err);
+                return Outcome.Fail<string?>(null, error);
+            } 
+
+            try
+            {
+                IRestResponse<MailgunSendResponse> result = await client.ExecuteAsync<MailgunSendResponse>(request);
+                if (result.IsSuccessful)
+                {
+                    LogSendEmailResult(emailToSend,true,LogLevel.Information, $"Sent with Mailgun reference {result.Data.Id}.");
+                    return Outcome.Succeed<string?>(result.Data.Id);
+                }
+
+                string error =
+                    $"Mailgun API unsuccessful. StatusCode: {Convert.ToInt32(result.StatusCode)} - {result.StatusCode.ToString()}";
+                LogSendEmailResult(emailToSend, false,LogLevel.Error,error);
+                return Outcome.Fail<string?>(null,error);
+            }
+            catch (Exception err)
+            {
+                LogSendEmailResult(emailToSend, false,LogLevel.Error, $"Mailgun API exception : {err.Message}", err);
                 return Outcome.Fail<string?>(null, err.Message);
+            }
+        }
+
+        private void LogSendEmailResult(IEmailMessage email, bool isSuccess, LogLevel level, string message, Exception? exception = null)
+        {
+            string to = "";
+            try
+            {
+                if (email.To != null!)
+                {
+                    to = string.Join(',', email.To.Select(c => c.Address).ToList());
+                }
+            }
+            catch 
+            {
+            }
+
+            if (isSuccess)
+            {
+                _logger.Log(level, $"{nameof(SendEmail)} to {to} succeeded. Subject - '{email.Subject}'. {message}",
+                    exception);
+            }
+            else
+            {
+                _logger.Log(level, $"{nameof(SendEmail)} to {to} failed. Subject - '{email.Subject}'. Error - {message}",
+                    exception);
             }
         }
 

@@ -13,14 +13,13 @@ using Tests.Odin.Email.Mailgun;
 namespace Tests.Odin.Notifications
 {
     [TestFixture]
-    public sealed class EmailNotifierIntegrationTests : IntegrationTest
+    public sealed class EmailNotifierTests : IntegrationTest
     {
         [Test]
-        [Ignore("Ignoring for GitHub actions")]
         public async Task EmailNotifier_sends_real_email_notification()
         {
             IConfiguration config = AppFactory.GetConfiguration();
-            MailgunOptions mailgunOptions = MailgunTestConfiguration.GetMailgunOptionsFromConfig(config);
+            MailgunOptions mailgunOptions = MailgunEmailSenderTestBuilder.GetMailgunOptionsFromConfig(config);
             string testEmail = EmailTestConfiguration.GetTestEmailAddressFromConfig(config);
             EmailSendingOptions emailConfig = new EmailSendingOptions()
             {
