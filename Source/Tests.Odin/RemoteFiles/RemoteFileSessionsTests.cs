@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
@@ -27,7 +26,7 @@ public class RemoteFileSessionsTests
         };
         RemoteFileSessionFactory factory = new RemoteFileSessionFactory(remoteFileConfig);
         Outcome<IRemoteFileSession> sut = factory.CreateRemoteFileSession("local");
-        var results = sut.Value.GetFiles(baseDirectory ,filePath);
+        IEnumerable<IRemoteFileInfo> results = sut.Value.GetFiles(baseDirectory ,filePath);
         if (expectedCount != -1)
         {
             Assert.That(results.Count(), Is.EqualTo(expectedCount));

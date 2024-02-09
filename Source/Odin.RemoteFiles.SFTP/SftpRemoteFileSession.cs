@@ -191,7 +191,7 @@ namespace Odin.RemoteFiles
             PreCondition.Requires(!(path!.Contains('*') || path.Contains('?')));
             EnsureConnected();
             //return results
-            var files = _client.ListDirectory(path);
+            IEnumerable<ISftpFile> files = _client.ListDirectory(path);
             if (!string.IsNullOrWhiteSpace(searchPattern))
             {
                 if (searchPattern.Contains('?') || searchPattern.Contains('*'))
