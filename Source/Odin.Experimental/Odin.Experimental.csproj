@@ -27,5 +27,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Odin.Common\Odin.Common.csproj" />
+    <ProjectReference Include="..\Odin.Email\Odin.Email.csproj" />
   </ItemGroup>
 </Project>

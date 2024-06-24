@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
@@ -7,7 +6,6 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
 using Odin.Email;
-using Odin.Logging;
 using Odin.System;
 
 namespace Tests.Odin.Email.Mailgun
@@ -78,11 +76,12 @@ namespace Tests.Odin.Email.Mailgun
             message.IsHtml = false;
             message.Body = "Bad api key test";
             string expectedLogMessage =
-                $"SendEmail to {testerEmailAddress} failed. Subject - '{message.Subject}'. Error - Mailgun API unsuccessful. StatusCode: 401 - Unauthorized";
+                $"SendEmail to {testerEmailAddress} failed. Subject - '{message.Subject}'. Error - Failed to send email with Mailgun. Status code: 401 Unauthorized. Response content: Forbidden";
 
             Outcome<string> result = await mailgunSender.SendEmail(message);
 
-            scenario.LoggerMock!.Verify(c => c.Log(LogLevel.Error,expectedLogMessage, null), Times.Once);
+            // 3 retries
+            scenario.LoggerMock!.Verify(c => c.Log(LogLevel.Error,expectedLogMessage, null), Times.Exactly(4));
             Assert.That(result, Is.Not.Null);
             Assert.That(result.Success, Is.False);
             Assert.That(result.Messages[0].Contains("401"), Is.True, result.Messages[0]);
