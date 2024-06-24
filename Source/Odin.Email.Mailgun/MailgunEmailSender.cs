@@ -172,7 +172,7 @@ namespace Odin.Email
                 foreach (var attachment in email.Attachments)
                 {
                     var fileContent = ToByteArrayContent(attachment.Data);
-                    fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse("multipart/form-data");
+                    fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse(attachment.ContentType);
                     content.Add(fileContent, "attachment", attachment.FileName);
                 }
 
