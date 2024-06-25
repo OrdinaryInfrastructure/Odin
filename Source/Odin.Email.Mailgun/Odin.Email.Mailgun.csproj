@@ -28,6 +28,6 @@
     <ProjectReference Include="..\Odin.Email\Odin.Email.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="RestSharp" Version="106.15.0" />
+    <PackageReference Include="Polly.Core" Version="8.4.0" />
   </ItemGroup>
 </Project>

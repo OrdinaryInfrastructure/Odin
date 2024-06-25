@@ -63,7 +63,7 @@ namespace Odin.DesignContracts
         /// </summary>
         /// <param name="argument"></param>
         /// <param name="failureMessage"></param>
-        public static void RequiresNotNullOrWhitespace(string argument, string? failureMessage = null)
+        public static void RequiresNotNullOrWhitespace(string? argument, string? failureMessage = null)
         {
             if (!string.IsNullOrWhiteSpace(argument)) return;
             if (string.IsNullOrWhiteSpace(failureMessage))
