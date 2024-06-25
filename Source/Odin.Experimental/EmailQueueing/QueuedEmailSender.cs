@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Odin.Email;
 using Odin.Logging;
+using Odin.System;
 
 namespace Odin.EmailQueueing;
 
@@ -29,7 +30,7 @@ public class QueuedEmailSender(IEmailSender emailSender, ILoggerAdapter<QueuedEm
 
     public async Task<IQueuedEmailSender.SendOutcome> Send(IEmailMessage email)
     {
-        var source = new TaskCompletionSource<IQueuedEmailSender.SendOutcome>();
+        TaskCompletionSource<IQueuedEmailSender.SendOutcome> source = new TaskCompletionSource<IQueuedEmailSender.SendOutcome>();
         _pendingSends.Enqueue((source, email));
         _ = ProcessQueue();
         return await source.Task;
@@ -40,12 +41,12 @@ public class QueuedEmailSender(IEmailSender emailSender, ILoggerAdapter<QueuedEm
         while (true)
         {
             await _sendSemaphore.WaitAsync();
-            if (!_pendingSends.TryDequeue(out var tuple))
+            if (!_pendingSends.TryDequeue(out (TaskCompletionSource<IQueuedEmailSender.SendOutcome> Source, IEmailMessage Email) tuple))
             {
                 _sendSemaphore.Release();
                 break;
             }
-            var outcome = await SendEmail(tuple.Email);
+            IQueuedEmailSender.SendOutcome outcome = await SendEmail(tuple.Email);
             tuple.Source.SetResult(outcome);
             _sendSemaphore.Release();
         }
@@ -55,7 +56,7 @@ public class QueuedEmailSender(IEmailSender emailSender, ILoggerAdapter<QueuedEm
     {
         try
         {
-            var outcome = await emailSender.SendEmail(email);
+            Outcome<string?> outcome = await emailSender.SendEmail(email);
             if (!outcome.Success)
             {
                 throw new Exception(outcome.MessagesToString());

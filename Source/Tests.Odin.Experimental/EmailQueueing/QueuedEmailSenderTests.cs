@@ -34,7 +34,7 @@ public class QueuedEmailSenderTests
     [Test]
     public async Task Sends_emails_in_order()
     {
-        var sentEmails = new List<IEmailMessage>();
+        List<IEmailMessage> sentEmails = new List<IEmailMessage>();
         
         _mockEmailSender.Setup(m => m.SendEmail(It.IsAny<IEmailMessage>()))
             .Callback((IEmailMessage e) =>
@@ -47,14 +47,14 @@ public class QueuedEmailSenderTests
                 return Outcome.Succeed("", "");
             });
         
-        var taskList = new List<Task<IQueuedEmailSender.SendOutcome>>();
+        List<Task<IQueuedEmailSender.SendOutcome>> taskList = new List<Task<IQueuedEmailSender.SendOutcome>>();
         for (int i = 0; i < _messages.Count; i++)
         {
             taskList.Add(_sut.Send(_messages[i]));
         }
         await Task.WhenAll(taskList);
 
-        var outcomes = taskList.Select(t => t.Result).ToList();
+        List<IQueuedEmailSender.SendOutcome> outcomes = taskList.Select(t => t.Result).ToList();
         
         Assert.That(outcomes, Has.All.Matches<IQueuedEmailSender.SendOutcome>(o => o.Succeeded));
         Assert.That(
@@ -67,7 +67,7 @@ public class QueuedEmailSenderTests
     [Test]
     public async Task Sends_emails_one_at_a_time()
     {
-        var sentEmails = new List<IEmailMessage>();
+        List<IEmailMessage> sentEmails = new List<IEmailMessage>();
         DateTimeOffset? lastEmailSentAt = null;
         TimeSpan delay = TimeSpan.FromMilliseconds(50);
         
@@ -78,7 +78,7 @@ public class QueuedEmailSenderTests
                 sentEmails.Add(e);
             }).Returns(async () =>
             {
-                var now = DateTimeOffset.Now;
+                DateTimeOffset now = DateTimeOffset.Now;
                 if (lastEmailSentAt.HasValue)
                 {
                     TimeSpan difference = now - lastEmailSentAt.Value;
@@ -90,7 +90,7 @@ public class QueuedEmailSenderTests
                 return Outcome.Succeed("", "");
             });
         
-        var taskList = new List<Task<IQueuedEmailSender.SendOutcome>>();
+        List<Task<IQueuedEmailSender.SendOutcome>> taskList = new List<Task<IQueuedEmailSender.SendOutcome>>();
         for (int i = 0; i < _messages.Count; i++)
         {
             taskList.Add(_sut.Send(_messages[i]));
@@ -102,7 +102,7 @@ public class QueuedEmailSenderTests
     [Test]
     public async Task Handles_email_send_failure()
     {
-        var sentEmails = new ConcurrentBag<IEmailMessage>();
+        ConcurrentBag<IEmailMessage> sentEmails = new ConcurrentBag<IEmailMessage>();
         _mockEmailSender.Setup(m => m.SendEmail(It.Is<IEmailMessage>(e => !e.Subject.Contains("7"))))
             .Callback<IEmailMessage>(e =>
             {
@@ -123,14 +123,14 @@ public class QueuedEmailSenderTests
             })
             .ThrowsAsync(new Exception("7 is a bad number"));
         
-        var taskList = new List<Task<IQueuedEmailSender.SendOutcome>>();
+        List<Task<IQueuedEmailSender.SendOutcome>> taskList = new List<Task<IQueuedEmailSender.SendOutcome>>();
         for (int i = 0; i < _messages.Count; i++)
         {
             taskList.Add(_sut.Send(_messages[i]));
         }
         await Task.WhenAll(taskList);
 
-        var outcomes = taskList.Select(t => t.Result).ToList();
+        List<IQueuedEmailSender.SendOutcome> outcomes = taskList.Select(t => t.Result).ToList();
         Assert.That(outcomes[7].Succeeded, Is.False);
         Assert.That(
             outcomes.Where(o => !o.EmailSubject.Contains("7")), 
@@ -140,8 +140,8 @@ public class QueuedEmailSenderTests
     [Test]
     public async Task Can_send_emails_in_parallel()
     {
-        var sentEmails = new ConcurrentBag<IEmailMessage>();
-        var delay = TimeSpan.FromMilliseconds(10);
+        ConcurrentBag<IEmailMessage> sentEmails = new ConcurrentBag<IEmailMessage>();
+        TimeSpan delay = TimeSpan.FromMilliseconds(10);
         _mockEmailSender.Setup(s => s.SendEmail(It.IsAny<IEmailMessage>()))
             .Callback<IEmailMessage>(m =>
             {
@@ -152,10 +152,10 @@ public class QueuedEmailSenderTests
                 return Outcome.Succeed("", "");
             });
 
-        var parallelSut = new QueuedEmailSender(_mockEmailSender.Object, new Mock<ILoggerAdapter<QueuedEmailSender>>().Object, 10);
+        QueuedEmailSender parallelSut = new QueuedEmailSender(_mockEmailSender.Object, new Mock<ILoggerAdapter<QueuedEmailSender>>().Object, 10);
         
-        var stopwatch = new Stopwatch();
-        var taskList = new List<Task<IQueuedEmailSender.SendOutcome>>();
+        Stopwatch stopwatch = new Stopwatch();
+        List<Task<IQueuedEmailSender.SendOutcome>> taskList = new List<Task<IQueuedEmailSender.SendOutcome>>();
 
         for (int i = 0; i < 6; i++)
         {
@@ -173,7 +173,7 @@ public class QueuedEmailSenderTests
         await Task.WhenAll(taskList);
         stopwatch.Stop();
         
-        var outcomes = taskList.Select(t => t.Result).ToList();
+        List<IQueuedEmailSender.SendOutcome> outcomes = taskList.Select(t => t.Result).ToList();
         
         Assert.That(outcomes, Has.All.Matches<IQueuedEmailSender.SendOutcome>(o => o.Succeeded));
         

@@ -74,7 +74,7 @@ namespace Odin.Email
             
             PreCondition.RequiresNotNullOrWhitespace(_mailgunSettings.ApiKey, "ApiKey missing in MailgunOptions");
             
-            var byteArray = Encoding.ASCII.GetBytes($"api:{_mailgunSettings.ApiKey}");
+            byte[] byteArray = Encoding.ASCII.GetBytes($"api:{_mailgunSettings.ApiKey}");
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
                 "Basic", 
                 Convert.ToBase64String(byteArray));
@@ -82,7 +82,7 @@ namespace Odin.Email
 
         private static string EncodeAsHtml(string input)
         {
-            var encoded = WebUtility.HtmlEncode(input);
+            string encoded = WebUtility.HtmlEncode(input);
             encoded = encoded.Replace("\n", "<br/>");
             return encoded;
         }
@@ -96,9 +96,9 @@ namespace Odin.Email
             try
             {
                 stream.Position = 0;
-                using var memoryStream = new MemoryStream((int)stream.Length);
+                using MemoryStream memoryStream = new MemoryStream((int)stream.Length);
                 stream.CopyTo(memoryStream);
-                var byteArray = memoryStream.ToArray();
+                byte[] byteArray = memoryStream.ToArray();
                 return new ByteArrayContent(byteArray);
             }
             catch (Exception e)
@@ -123,7 +123,7 @@ namespace Odin.Email
 
             try
             {
-                var content = new MultipartFormDataContent();
+                MultipartFormDataContent content = new MultipartFormDataContent();
 
                 if (email.From is null)
                 {
@@ -169,20 +169,20 @@ namespace Odin.Email
                     content.Add(new StringContent(string.Join(",", email.BCC.Select(a => a.ToString()))), "bcc");
                 }
 
-                foreach (var attachment in email.Attachments)
+                foreach (Attachment attachment in email.Attachments)
                 {
-                    var fileContent = ToByteArrayContent(attachment.Data);
+                    ByteArrayContent fileContent = ToByteArrayContent(attachment.Data);
                     fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse(attachment.ContentType);
                     content.Add(fileContent, "attachment", attachment.FileName);
                 }
 
-                var responseMessage = await _resiliencePipeline.ExecuteAsync(async token =>
+                HttpResponseMessage responseMessage = await _resiliencePipeline.ExecuteAsync(async token =>
                 {
-                    var message = await _httpClient.PostAsync("", content, token);
+                    HttpResponseMessage message = await _httpClient.PostAsync("", content, token);
                     if (!message.IsSuccessStatusCode)
                     {
-                        var responseBody = await message.Content.ReadAsStringAsync(token);
-                        var errorMessage = $"Failed to send email with Mailgun. Status code: {(int)message.StatusCode} {message.StatusCode}. Response content: " + responseBody;
+                        string responseBody = await message.Content.ReadAsStringAsync(token);
+                        string errorMessage = $"Failed to send email with Mailgun. Status code: {(int)message.StatusCode} {message.StatusCode}. Response content: " + responseBody;
                         LogSendEmailResult(email, false, LogLevel.Error, errorMessage);
                         throw new HttpRequestException(errorMessage, null, message.StatusCode);
                     }
@@ -190,7 +190,7 @@ namespace Odin.Email
                 });
 
 
-                var response = await responseMessage.Content.ReadFromJsonAsync<MailgunSendResponse>();
+                MailgunSendResponse? response = await responseMessage.Content.ReadFromJsonAsync<MailgunSendResponse>();
                 LogSendEmailResult(email, true, LogLevel.Information, $"Sent with Mailgun reference {response?.Id}.");
                 return Outcome.Succeed<string?>(response?.Id);
             }
