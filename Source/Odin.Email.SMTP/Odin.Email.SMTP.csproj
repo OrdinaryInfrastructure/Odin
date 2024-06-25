@@ -15,19 +15,16 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
     <NoWarn></NoWarn>
-    <DocumentationFile>bin\Debug\Odin.Email.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\Odin.Email.Smtp.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <WarningLevel>3</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <NoWarn>1701;1702;1591;1573</NoWarn>
-    <DocumentationFile>bin\Release\Odin.Email.Mailgun.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\Odin.Email.Smtp.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Odin.Common\Odin.Common.csproj" />
     <ProjectReference Include="..\Odin.Email\Odin.Email.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="System.Net.Mail.Abstractions" Version="1.1.21" />
   </ItemGroup>
 </Project>

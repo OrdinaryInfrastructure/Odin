@@ -15,7 +15,7 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
     <NoWarn></NoWarn>
-    <DocumentationFile>bin\Debug\Odin.Email.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\Odin.Email.Mailgun.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <WarningLevel>3</WarningLevel>
