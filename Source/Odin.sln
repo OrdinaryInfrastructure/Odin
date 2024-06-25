@@ -28,6 +28,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{CE6784
 	ProjectSection(SolutionItems) = preProject
 		global.json = global.json
 		nuget.config = nuget.config
+		..\.github\workflows\publish.yml = ..\.github\workflows\publish.yml
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odin.RemoteFiles.SFTP", "Odin.RemoteFiles.SFTP\Odin.RemoteFiles.SFTP.csproj", "{2A9A2948-3678-4A6E-A4B0-D0DFFC450F20}"
