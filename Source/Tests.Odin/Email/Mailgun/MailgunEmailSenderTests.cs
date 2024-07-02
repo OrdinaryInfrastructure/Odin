@@ -55,6 +55,37 @@ namespace Tests.Odin.Email.Mailgun
             scenario.LoggerMock!.Verify(c => c.Log(LogLevel.Information,expectedLogMessage,null), Times.Once);
             Assert.That(string.IsNullOrWhiteSpace(result.Value), Is.False, "Message Id expected from Mailgun");
         }
+        
+        [Test]
+        public async Task Send_email_uses_default_sending_options()
+        {
+            IConfiguration config = AppFactory.GetConfiguration();
+            MailgunEmailSenderTestBuilder scenario = new MailgunEmailSenderTestBuilder()
+                .WithMailgunOptionsFromTestConfiguration(config)
+                .WithEmailSendingOptionsFromTestConfiguration(config);
+            EmailMessage message = new EmailMessage();
+            string testerEmail = GetTestEmailAddressFromConfig();
+            message.To.Add(new EmailAddress(testerEmail));
+            message.Subject = "Test Mail";
+            message.IsHtml = true;
+            message.Body = "<p>Body text</p>";
+            MailgunEmailSender mailgunSender = scenario.Build();
+            
+            Outcome<string> result = await mailgunSender.SendEmail(message);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Success, Is.True, result.MessagesToString());
+            Assert.That(result.Value, Is.Not.Null);
+            // Should be no errors
+            scenario.LoggerMock!.Verify(c => c.LogWarning(It.IsAny<string>()), Times.Never);
+            scenario.LoggerMock!.Verify(c => c.LogError(It.IsAny<string>(),null), Times.Never);
+            // Should log a message to Information
+            string expectedLogMessage =
+                $"SendEmail to {testerEmail} succeeded. Subject - '{message.Subject}'. Sent with Mailgun reference {result.Value}.";
+
+            scenario.LoggerMock!.Verify(c => c.Log(LogLevel.Information,expectedLogMessage,null), Times.Once);
+            Assert.That(string.IsNullOrWhiteSpace(result.Value), Is.False, "Message Id expected from Mailgun");
+        }
 
         /// <summary>
         /// Ensure send does not succeed, and that appropriate logging is called.

@@ -48,9 +48,11 @@ namespace Tests.Odin.Email.Mailgun
         {
             PreCondition.RequiresNotNull(configuration);
             string testerEmail = EmailTestConfiguration.GetTestEmailAddressFromConfig(configuration);
+            string testerName = EmailTestConfiguration.GetTestFromNameFromConfig(configuration);
             EmailSendingOptions = new EmailSendingOptions()
             {
                 DefaultFromAddress = testerEmail,
+                DefaultFromName = testerName,
                 Provider = EmailSendingProviders.Mailgun
             };
             EmailSendingOptionsMock = null;

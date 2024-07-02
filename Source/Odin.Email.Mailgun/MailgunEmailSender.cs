@@ -128,7 +128,9 @@ namespace Odin.Email
                 if (email.From is null)
                 {
                     PreCondition.RequiresNotNullOrWhitespace(_emailSettings.DefaultFromAddress, "Cannot fall back to the default from address, since it is missing.");
-                    content.Add(new StringContent(_emailSettings.DefaultFromAddress!), "from");
+                    content.Add(
+                        new StringContent(GetEmailAsString(_emailSettings.DefaultFromAddress!,
+                            _emailSettings.DefaultFromName!)), "from");
                 }
                 else
                 {
@@ -225,6 +227,13 @@ namespace Odin.Email
                 _logger.Log(level, $"{nameof(SendEmail)} to {to} failed. Subject - '{email.Subject}'. Error - {message}",
                     exception);
             }
+        }
+        
+        private static string GetEmailAsString(string email, string? name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                return email;
+            return $"{name} <{email}>";
         }
     }
 }

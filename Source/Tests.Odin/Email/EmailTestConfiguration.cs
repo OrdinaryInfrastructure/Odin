@@ -10,4 +10,10 @@ public static class EmailTestConfiguration
         PreCondition.RequiresNotNull(config);
         return config["Email-TestAddress"];
     }
+
+    public static string GetTestFromNameFromConfig(IConfiguration config)
+    {
+        PreCondition.RequiresNotNull(config);
+        return config["Email-TestFromName"];
+    }
 }
