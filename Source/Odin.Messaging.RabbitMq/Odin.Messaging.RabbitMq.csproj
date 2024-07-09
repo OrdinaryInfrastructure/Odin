@@ -1,8 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <RootNamespace>Odin.Messaging</RootNamespace>
-    <PackageId>Odin.Messaging</PackageId>
+    <PackageId>Odin.Messaging.RabbitMq</PackageId>
     <Authors>Mark Derman</Authors>
     <Company>Soulv Software (Pty) Ltd</Company>
     <Description></Description>
@@ -10,6 +9,7 @@
     <PackageProjectUrl>https://soulv.co.za</PackageProjectUrl>
     <RepositoryUrl>https://dev.azure.com/soulvsoftware/Home/_git/Odin</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <WarningLevel>3</WarningLevel>

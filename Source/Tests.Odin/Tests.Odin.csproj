@@ -28,8 +28,9 @@
     <PackageReference Include="System.Text.Json" Version="8.0.1" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Odin.Common\Odin.Common.csproj" />
+    <ProjectReference Include="..\Odin.Messaging.RabbitMq\Odin.Messaging.RabbitMq.csproj" />
     <ProjectReference Include="..\Odin.Email\Odin.Email.csproj" />
+    <ProjectReference Include="..\Odin.Common\Odin.Common.csproj" />
     <ProjectReference Include="..\Odin.Email.Mailgun\Odin.Email.Mailgun.csproj" />
     <ProjectReference Include="..\Odin.BackgroundProcessing\Odin.BackgroundProcessing.csproj" />
     <ProjectReference Include="..\Odin.BackgroundProcessing.Hangfire\Odin.BackgroundProcessing.Hangfire.csproj" />

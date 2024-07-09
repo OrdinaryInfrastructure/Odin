@@ -14,7 +14,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.Odin.Experimental", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odin.RemoteFiles", "Odin.RemoteFiles\Odin.RemoteFiles.csproj", "{900AE2DB-2C93-4D77-981A-4ACBD8302FB0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odin.Messaging", "Odin.Messaging\Odin.Messaging.csproj", "{73F200C7-76F9-46E0-853F-B72F972ABCA1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odin.Messaging.RabbitMq", "Odin.Messaging.RabbitMq\Odin.Messaging.RabbitMq.csproj", "{73F200C7-76F9-46E0-853F-B72F972ABCA1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odin.Email", "Odin.Email\Odin.Email.csproj", "{9D2AFC5C-3AF0-477F-B897-00CFDFBAF8A1}"
 EndProject
