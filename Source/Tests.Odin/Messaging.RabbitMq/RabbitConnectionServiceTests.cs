@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -32,7 +33,7 @@ public class RabbitConnectionServiceTests: IntegrationTest
             Port = 5672,
             ConnectionName = "RabbitBoxIntegTests",
             MaxChannels = 10,
-            SendTimeoutMillis = 4000,
+            SendTimeoutMillis = 1000,
         });
 
         // foreach (var i in new[] { 1, 2 })
@@ -167,130 +168,146 @@ public class RabbitConnectionServiceTests: IntegrationTest
 
         var queueName = "max-length-test-01";
 
-        Func<Task> cancelSubscription = () => {Console.WriteLine("No-op action invoked");
-            return Task.CompletedTask;
-        };
+        IRabbitConnectionService.Subscription? subscription = null;
         try
         {
-            cancelSubscription = await box.SubscribeToConsume(queueName,
-                ex =>
-                {
-                    Console.WriteLine("OnFailure callback called. Exception: " + ex);
-                    return Task.CompletedTask;
-                },
-                async message =>
-                {
-                    string str = "no body";
-                    try
-                    {
-                        str = Encoding.UTF8.GetString(message.Body);
-                        var body = JsonSerializer.Deserialize<TestMessage>(str);
-                        // var body = JsonSerializer.Deserialize<TestMessage>(message.Body);
-                        body.Redelivered = message.IsRedelivered;
-                        // Console.WriteLine("OnConsume callback called. Waiting 4 seconds to ack. Message body: " + body);
-                        await Task.Delay(1);
-                        bool nackMessage = Random.Shared.NextDouble() > 0.5;
-                        // bool nackMessage = false;
-                        if (message.Ack != null && !nackMessage)
-                        {
-                            message.Ack();
-                        }
-                        else if (message.Nack != null)
-                        {
-                            message.Nack(true);
-                        }
+            TestMessage? consumedMessage = null;
+            
+            subscription = await box.SubscribeToConsume(queueName, false, 200, TimeSpan.FromSeconds(5));
 
-                        // Console.WriteLine($"{(nackMessage ? "Nacked" : "Acked")} message " + body);
-                    }
-                    catch (Exception e)
+            subscription.OnConsumed += async message =>
+            {
+                string str = "no body";
+                try
+                {
+                    str = Encoding.UTF8.GetString(message.Body);
+                    var body = JsonSerializer.Deserialize<TestMessage>(str)!;
+                    consumedMessage = body;
+                    // var body = JsonSerializer.Deserialize<TestMessage>(message.Body);
+                    body.Redelivered = message.IsRedelivered;
+                    // Console.WriteLine("OnConsume callback called. Waiting 4 seconds to ack. Message body: " + body);
+                    await Task.Delay(1);
+                    // bool nackMessage = Random.Shared.NextDouble() > 0.5;
+                    bool nackMessage = false;
+                    if (message.Ack != null && !nackMessage)
                     {
-                        Console.WriteLine("Failed to handle consumed message. Body: " + str + "\nException: " + e);
-                        if (message.Nack != null)
-                        {
-                            message.Nack(false);
-                        }
+                        message.Ack();
                     }
-                },
-                false,
-                200,
-                TimeSpan.FromSeconds(5));
+                    else if (message.Nack != null)
+                    {
+                        message.Nack(true);
+                    }
+
+                    Console.WriteLine($"{(nackMessage ? "Nacked" : "Acked")} message " + body);
+
+                    // if (body.MessageNumber % 10 == 0)
+                    // {
+                    //     throw new Exception("Sneed 10");
+                    // }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Failed to handle consumed message. Body: " + str + "\nException: " + e);
+                    if (message.Nack != null)
+                    {
+                        message.Nack(false);
+                    }
+                }
+            };
+
+            subscription.OnFailure += ex =>
+            {
+                Console.WriteLine("OnFailure callback called. Exception: " + ex);
+                return Task.CompletedTask;
+            };
 
             Console.WriteLine($"Subscribed to queue {queueName}.");
+
+            // _ = Task.Run(async () =>
+            // {
+            //     while (true)
+            //     {
+            //         await Task.Delay(5000);
+            //         Console.WriteLine("Most recently consumed message: " + consumedMessage);
+            //     }
+            // });
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Failed to subscribe to queue {queueName}. Exception: " + ex);
         }
         
-        var queueName2 = "my-queue.q";
+        // var queueName2 = "my-queue.q";
+        //
+        // Func<Task> cancelSubscription2 = () => {Console.WriteLine("No-op action invoked");
+        //     return Task.CompletedTask;
+        // };
+        // try
+        // {
+        //     cancelSubscription2 = await box.SubscribeToConsume(queueName2,
+        //         ex =>
+        //         {
+        //             Console.WriteLine("OnFailure callback called. Exception: " + ex);
+        //             return Task.CompletedTask;
+        //         },
+        //         async message =>
+        //         {
+        //             string str = "no body";
+        //             try
+        //             {
+        //                 str = Encoding.UTF8.GetString(message.Body);
+        //                 var body = JsonSerializer.Deserialize<TestMessage>(str);
+        //                 // var body = JsonSerializer.Deserialize<TestMessage>(message.Body);
+        //                 body.Redelivered = message.IsRedelivered;
+        //                 // Console.WriteLine("OnConsume callback called. Waiting 4 seconds to ack. Message body: " + body);
+        //                 await Task.Delay(1);
+        //                 bool nackMessage = Random.Shared.NextDouble() > 0.5;
+        //                 // bool nackMessage = false;
+        //                 if (message.Ack != null && !nackMessage)
+        //                 {
+        //                     message.Ack();
+        //                 }
+        //                 else if (message.Nack != null)
+        //                 {
+        //                     message.Nack(true);
+        //                 }
+        //
+        //                 // Console.WriteLine($"{(nackMessage ? "Nacked" : "Acked")} message " + body);
+        //             }
+        //             catch (Exception e)
+        //             {
+        //                 Console.WriteLine("Failed to handle consumed message. Body: " + str + "\nException: " + e);
+        //                 if (message.Nack != null)
+        //                 {
+        //                     message.Nack(false);
+        //                 }
+        //             }
+        //         },
+        //         false,
+        //         200,
+        //         TimeSpan.FromSeconds(5));
+        //
+        //     Console.WriteLine($"Subscribed to queue {queueName2}.");
+        // }
+        // catch (Exception ex)
+        // {
+        //     Console.WriteLine($"Failed to subscribe to queue {queueName2}. Exception: " + ex);
+        // }
 
-        Func<Task> cancelSubscription2 = () => {Console.WriteLine("No-op action invoked");
-            return Task.CompletedTask;
-        };
+
+        await Task.Delay(TimeSpan.FromHours(12));
+
         try
         {
-            cancelSubscription2 = await box.SubscribeToConsume(queueName2,
-                ex =>
-                {
-                    Console.WriteLine("OnFailure callback called. Exception: " + ex);
-                    return Task.CompletedTask;
-                },
-                async message =>
-                {
-                    string str = "no body";
-                    try
-                    {
-                        str = Encoding.UTF8.GetString(message.Body);
-                        var body = JsonSerializer.Deserialize<TestMessage>(str);
-                        // var body = JsonSerializer.Deserialize<TestMessage>(message.Body);
-                        body.Redelivered = message.IsRedelivered;
-                        // Console.WriteLine("OnConsume callback called. Waiting 4 seconds to ack. Message body: " + body);
-                        await Task.Delay(1);
-                        bool nackMessage = Random.Shared.NextDouble() > 0.5;
-                        // bool nackMessage = false;
-                        if (message.Ack != null && !nackMessage)
-                        {
-                            message.Ack();
-                        }
-                        else if (message.Nack != null)
-                        {
-                            message.Nack(true);
-                        }
-
-                        // Console.WriteLine($"{(nackMessage ? "Nacked" : "Acked")} message " + body);
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine("Failed to handle consumed message. Body: " + str + "\nException: " + e);
-                        if (message.Nack != null)
-                        {
-                            message.Nack(false);
-                        }
-                    }
-                },
-                false,
-                200,
-                TimeSpan.FromSeconds(5));
-
-            Console.WriteLine($"Subscribed to queue {queueName2}.");
+            if (subscription is not null)
+            {
+                await subscription.Unsubscribe();
+                Console.WriteLine($"Unsubscribed from queue {queueName}");
+            }
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Failed to subscribe to queue {queueName2}. Exception: " + ex);
-        }
-
-
-        await Task.Delay(TimeSpan.FromSeconds(3600));
-
-        try
-        {
-            await cancelSubscription();
-            await cancelSubscription2();
-            Console.WriteLine($"Unsubscribed from queue {queueName2}");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Failed to unsubscribe from queue {queueName2}. Exception: " + ex);
+            Console.WriteLine($"Failed to unsubscribe from queue {queueName}. Exception: " + ex);
         }
 
     }

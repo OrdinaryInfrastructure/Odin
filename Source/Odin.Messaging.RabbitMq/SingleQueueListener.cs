@@ -8,7 +8,7 @@ using RabbitMQ.Client.Events;
 
 namespace Odin.Messaging.RabbitMq;
 
-public class SingleQueueListener: IDisposable
+internal class SingleQueueListener: IDisposable
 {
 
     private readonly string _queueName;
@@ -22,9 +22,6 @@ public class SingleQueueListener: IDisposable
     private readonly bool _autoAck;
     
     public event Func<Exception, Task>? OnFailure;
-
-    public event Func<Task>? OnDisposed;
-
     public event Func<IRabbitConnectionService.ConsumedMessage, Task>? OnConsume;
 
     private readonly CancellationTokenSource _cancellationTokenSource = new();
@@ -133,7 +130,6 @@ public class SingleQueueListener: IDisposable
         }
     }
 
-
     private EventHandler<ConsumerEventArgs> GetConsumerCancelledHandler()
     {
         return (sender, args) =>
@@ -159,10 +155,22 @@ public class SingleQueueListener: IDisposable
         _cancellationTokenSource.Cancel();
         foreach (var tag in _consumer.ConsumerTags)
         {
-            _channel.BasicCancel(tag);
+            try
+            {
+                _channel.BasicCancel(tag);
+            }
+            catch
+            {
+            }
         }
-        _channel.Close();
-        OnDisposed?.Invoke();
+
+        try
+        {
+            _channel.Close();
+        }
+        catch
+        {
+        }
     }
     
 }

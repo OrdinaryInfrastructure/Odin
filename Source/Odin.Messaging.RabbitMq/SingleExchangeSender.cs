@@ -10,7 +10,11 @@ using RabbitMQ.Client.Events;
 
 namespace Odin.Messaging.RabbitMq;
 
-public class SingleExchangeSender: IDisposable
+/// <summary>
+/// Encapsulates a single RabbitMQ channel for publishing only, which corresponds to a distinct Exchange name.
+/// Automatically re-opens the Channel if it closed.
+/// </summary>
+internal class SingleExchangeSender: IDisposable
 {
     public const byte TransientDeliveryMode = 1;
     public const byte PersistentDeliveryMode = 2;

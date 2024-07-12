@@ -13,7 +13,7 @@ public record RabbitConnectionServiceSettings
     /// <summary>
     /// VHost. Default is '/'
     /// </summary>
-    public required string VirtualHost { get; init; } = "/";
+    public string VirtualHost { get; init; } = "/";
         
     /// <summary>
     /// Connection UserName
@@ -28,7 +28,7 @@ public record RabbitConnectionServiceSettings
     /// <summary>
     /// Connection port. Default is 5672
     /// </summary>
-    public required int Port { get; init; } = 5672;
+    public int Port { get; init; } = 5672;
     
     /// <summary>
     /// The client name to be used for the connection.
