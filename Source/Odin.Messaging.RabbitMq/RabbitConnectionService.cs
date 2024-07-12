@@ -154,7 +154,7 @@ public class RabbitConnectionService: IRabbitConnectionService, IDisposable
         }
     }
 
-    public async Task<Func<Task>> SubscribeToConsume(string queueName, Func<Exception, Task> onFailure, Func<IRabbitConnectionService.ConsumedMessage, Task> onConsume, bool autoAck, ushort prefetchCount = 200,
+    public async Task<IRabbitConnectionService.Subscription> SubscribeToConsume(string queueName, bool autoAck, ushort prefetchCount = 200,
         TimeSpan? channelCheckPeriod = null)
     {
         channelCheckPeriod ??= TimeSpan.FromSeconds(60);
@@ -170,15 +170,24 @@ public class RabbitConnectionService: IRabbitConnectionService, IDisposable
             throw;
         }
 
+        var subscription = new IRabbitConnectionService.Subscription
+        {
+            Unsubscribe = async () =>
+            {
+                listener.Dispose();
+                await RemoveSingleQueueListener(queueName);
+            }
+        };
+
         listener.OnConsume += message =>
         {
-            _ = onConsume(message);
+            subscription.RaiseOnConsumed(message);
             return Task.CompletedTask;
         };
 
         listener.OnFailure += ex =>
         {
-            _ = onFailure(ex);
+            subscription.RaiseOnFailure(ex);
             return Task.CompletedTask;
         };
 
@@ -188,12 +197,7 @@ public class RabbitConnectionService: IRabbitConnectionService, IDisposable
             return Task.CompletedTask;
         };
 
-        return async () =>
-        {
-            listener.Dispose();
-            await RemoveSingleQueueListener(queueName);
-        };
-
+        return subscription;
     }
 
 

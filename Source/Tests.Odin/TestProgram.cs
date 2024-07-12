@@ -24,15 +24,19 @@ namespace Tests.Odin
             
             
             WebApplication app = builder.Build();
-            app.RunAsync();
+            // app.RunAsync();
 
             // For manual testing of RabbitBox
             
-            // var tests = new RabbitBoxTests();
-            // // _ = tests.Single_Message_Works();
+            var tests = new RabbitConnectionServiceTests();
+            // = tests.Single_Message_Works();
             // _ = tests.QueueSubscription_Works();
-            //
-            // Thread.Sleep(TimeSpan.FromSeconds(3600));
+
+            var resubscriberTests = new ResubscribingRabbitSubscriptionTests();
+
+            _ = resubscriberTests.ResubscribingSubscription_Works();
+            
+            Thread.Sleep(TimeSpan.FromHours(13));
             
         }
     }

@@ -8,7 +8,7 @@ using RabbitMQ.Client.Events;
 
 namespace Odin.Messaging.RabbitMq;
 
-public class SingleQueueListener: IDisposable
+internal class SingleQueueListener: IDisposable
 {
 
     private readonly string _queueName;
@@ -159,10 +159,24 @@ public class SingleQueueListener: IDisposable
         _cancellationTokenSource.Cancel();
         foreach (var tag in _consumer.ConsumerTags)
         {
-            _channel.BasicCancel(tag);
+            try
+            {
+                _channel.BasicCancel(tag);
+            }
+            catch
+            {
+            }
         }
-        _channel.Close();
-        OnDisposed?.Invoke();
+
+        try
+        {
+            _channel.Close();
+        }
+        catch
+        {
+        }
+
+        _ = OnDisposed?.Invoke();
     }
     
 }

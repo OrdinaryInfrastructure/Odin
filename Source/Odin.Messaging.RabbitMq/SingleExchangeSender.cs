@@ -10,7 +10,7 @@ using RabbitMQ.Client.Events;
 
 namespace Odin.Messaging.RabbitMq;
 
-public class SingleExchangeSender: IDisposable
+internal class SingleExchangeSender: IDisposable
 {
     public const byte TransientDeliveryMode = 1;
     public const byte PersistentDeliveryMode = 2;
