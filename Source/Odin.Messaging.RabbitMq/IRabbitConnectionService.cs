@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Odin.Messaging.RabbitMq;
 
-public interface IRabbitConnectionService
+public interface IRabbitConnectionService: IAsyncDisposable
 {
     /// <summary>
     /// Throws if message cannot be published (guaranteed publishing)

@@ -9,7 +9,7 @@ namespace Odin.Messaging.RabbitMq;
 /// <summary>
 /// Helper client for a single RabbitMQ Connection (which corresponds to a single TCP connection). Each RabbitMQ Connection must correspond to a singleton RabbitConnectionService.
 /// </summary>
-public class RabbitConnectionService: IRabbitConnectionService, IDisposable
+public class RabbitConnectionService: IRabbitConnectionService
 {
     
     private ConnectionFactory _connectionFactory;
@@ -76,9 +76,11 @@ public class RabbitConnectionService: IRabbitConnectionService, IDisposable
     {
         
         await _sendersSemaphore.WaitAsync();
-
+        
         try
         {
+            ObjectDisposedException.ThrowIf(_isDisposing, typeof(RabbitConnectionService));
+            
             if (_senders.TryGetValue(exchangeName, out var c))
             {
                 return c;
@@ -116,6 +118,8 @@ public class RabbitConnectionService: IRabbitConnectionService, IDisposable
 
         try
         {
+            ObjectDisposedException.ThrowIf(_isDisposing, typeof(RabbitConnectionService));
+            
             if (_listeners.TryGetValue(queueName, out _))
             {
                 throw new Exception($"Listener for queue {queueName} is already active.");
@@ -146,7 +150,10 @@ public class RabbitConnectionService: IRabbitConnectionService, IDisposable
         await _listenersSemaphore.WaitAsync();
         try
         {
-            _listeners.Remove(queueName);
+            if (_listeners.Remove(queueName, out var l))
+            {
+                l.Dispose();
+            }
         }
         finally
         {
@@ -190,13 +197,7 @@ public class RabbitConnectionService: IRabbitConnectionService, IDisposable
             subscription.RaiseOnFailure(ex);
             return Task.CompletedTask;
         };
-
-        listener.OnDisposed += () =>
-        {
-            _ = RemoveSingleQueueListener(queueName);
-            return Task.CompletedTask;
-        };
-
+        
         return subscription;
     }
 
@@ -207,16 +208,30 @@ public class RabbitConnectionService: IRabbitConnectionService, IDisposable
         var task = sender.EnqueueMessage(routingKey, headers, contentType, body, persistentDelivery, mandatoryRouting);
         await task;
     }
+
+    private bool _isDisposing = false;
     
-    
-    
-    public void Dispose()
+    public async ValueTask DisposeAsync()
     {
+        await _sendersSemaphore.WaitAsync();
+        await _listenersSemaphore.WaitAsync();
+        _isDisposing = true;
+        
         foreach (var sender in _senders.Values)
         {
             sender.Dispose();
         }
+
+        foreach (var listener in _listeners.Values)
+        {
+            listener.Dispose();
+        }
+        
+        _sendersSemaphore.Release();
+        _listenersSemaphore.Release();
+        
         _connection?.Close();
+
     }
 
 

@@ -23,4 +23,9 @@ public class FakeRabbitConnectionService: IRabbitConnectionService
             Unsubscribe = () => Task.CompletedTask,
         };
     }
+
+    public ValueTask DisposeAsync()
+    {
+        return ValueTask.CompletedTask;
+    }
 }

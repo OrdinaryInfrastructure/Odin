@@ -22,9 +22,6 @@ internal class SingleQueueListener: IDisposable
     private readonly bool _autoAck;
     
     public event Func<Exception, Task>? OnFailure;
-
-    public event Func<Task>? OnDisposed;
-
     public event Func<IRabbitConnectionService.ConsumedMessage, Task>? OnConsume;
 
     private readonly CancellationTokenSource _cancellationTokenSource = new();
@@ -133,7 +130,6 @@ internal class SingleQueueListener: IDisposable
         }
     }
 
-
     private EventHandler<ConsumerEventArgs> GetConsumerCancelledHandler()
     {
         return (sender, args) =>
@@ -175,8 +171,6 @@ internal class SingleQueueListener: IDisposable
         catch
         {
         }
-
-        _ = OnDisposed?.Invoke();
     }
     
 }
