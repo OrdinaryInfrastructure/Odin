@@ -11,8 +11,14 @@ public class ResubscribingRabbitSubscription: IAsyncDisposable
     
     private ConcurrentDictionary<long, IRabbitConnectionService.Subscription> _subscriptions = new();
     
+    /// <summary>
+    /// Raised for messages consumed, as per Subscription.
+    /// </summary>
     public event Func<IRabbitConnectionService.ConsumedMessage, Task>? OnConsumed;
 
+    /// <summary>
+    /// OnFailure is triggered when the Channel is closed, and few other failure scenarios.
+    /// </summary>
     public event Func<Exception, Task>? OnFailure;
 
     private CancellationTokenSource _cancellationTokenSource = new();
