@@ -29,12 +29,16 @@ namespace Tests.Odin
             // For manual testing of RabbitBox
             
             var tests = new RabbitConnectionServiceTests();
-            // = tests.Single_Message_Works();
+            // _ = tests.Single_Message_Works();
             // _ = tests.QueueSubscription_Works();
 
             var resubscriberTests = new ResubscribingRabbitSubscriptionTests();
 
-            _ = resubscriberTests.ResubscribingSubscription_Works();
+            // _ = resubscriberTests.ResubscribingSubscription_Works();
+
+            var clientInvestigations = new RabbitClientInvestigations();
+
+            // _ = clientInvestigations.CreateChannel_Is_ThreadSafe();
             
             Thread.Sleep(TimeSpan.FromHours(13));
             

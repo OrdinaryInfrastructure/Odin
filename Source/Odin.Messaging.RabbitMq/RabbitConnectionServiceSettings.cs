@@ -67,4 +67,16 @@ public record RabbitConnectionServiceSettings
         }
     }
 
-};
+    public string GetConnectionString()
+    {
+        var vhost = VirtualHost;
+        if (!vhost.StartsWith('/'))
+        {
+            vhost = "/" + vhost;
+        }
+
+        return $"amqp://{Username}:{UserPassword}@{Host}:{Port.ToString()}{vhost}";
+
+    }
+
+}

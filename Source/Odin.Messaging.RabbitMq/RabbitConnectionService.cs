@@ -43,19 +43,29 @@ public class RabbitConnectionService: IRabbitConnectionService
     }
     
     private IConnection? _connection;
+
+    private readonly SemaphoreSlim _createConnectionSemaphore = new(1);
     
     private async Task<IConnection> GetConnection()
     {
-        if (_connection is not null)
-        {
+        await _createConnectionSemaphore.WaitAsync();
+        try
+        {        
+            ObjectDisposedException.ThrowIf(_isDisposing, typeof(RabbitConnectionService));
+            
+            if (_connection is not null)
+            {
+                return _connection;
+            }
+            
+            _connection = _connectionFactory.CreateConnection();
+
             return _connection;
         }
-        
-        await Task.Delay(1);
-        
-        _connection = _connectionFactory.CreateConnection();
-        
-        return _connection;
+        finally
+        {
+            _createConnectionSemaphore.Release();
+        }
     }
 
     private readonly Dictionary<string, SingleExchangeSender> _senders = new();
@@ -215,6 +225,8 @@ public class RabbitConnectionService: IRabbitConnectionService
     {
         await _sendersSemaphore.WaitAsync();
         await _listenersSemaphore.WaitAsync();
+        await _createConnectionSemaphore.WaitAsync();
+        
         _isDisposing = true;
         
         foreach (var sender in _senders.Values)
@@ -227,10 +239,12 @@ public class RabbitConnectionService: IRabbitConnectionService
             listener.Dispose();
         }
         
+        _connection?.Close();
+        
         _sendersSemaphore.Release();
         _listenersSemaphore.Release();
-        
-        _connection?.Close();
+        _createConnectionSemaphore.Release();
+
 
     }
 
