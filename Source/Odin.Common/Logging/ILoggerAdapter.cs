@@ -16,6 +16,20 @@ namespace Odin.Logging
         /// <param name="message"></param>
         /// <param name="error"></param>
         void Log(LogLevel level, string? message = null, Exception? error = null);
+
+        /// <summary>
+        /// Structured Log Message. args object array contains a list of values to populate
+        /// the logging keys e.g. {ExampleKey} that are included in the log.
+        /// </summary>
+        /// <param name="logLevel"></param>
+        /// <param name="exception"></param>
+        /// <param name="message"></param>
+        /// <param name="args"></param>
+        public void StructuredLog(
+            LogLevel logLevel,
+            Exception? exception,
+            string? message,
+            params object?[] args);
         
         /// <summary>
         /// Log
