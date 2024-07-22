@@ -58,7 +58,7 @@ using Microsoft.Extensions.Logging;
         /// <param name="exception"></param>
         /// <param name="message"></param>
         /// <param name="args"></param>
-        public void StructuredLog(
+        public void LogStructured(
             LogLevel logLevel,
             Exception? exception,
             string? message,
