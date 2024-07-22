@@ -51,6 +51,23 @@ using Microsoft.Extensions.Logging;
         }
         
         /// <summary>
+        /// Structured Log Message. Object array contains a list of values to populate
+        /// the logging keys e.g. {ExampleKey} that are included in the log.
+        /// </summary>
+        /// <param name="logLevel"></param>
+        /// <param name="exception"></param>
+        /// <param name="message"></param>
+        /// <param name="args"></param>
+        public void LogStructured(
+            LogLevel logLevel,
+            Exception? exception,
+            string? message,
+            params object?[] args)
+        {
+            _logger.Log(logLevel, exception, message, args);
+        }
+        
+        /// <summary>
         /// Log
         /// </summary>
         /// <param name="level"></param>
