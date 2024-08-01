@@ -21,13 +21,13 @@
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <NoWarn>1701;1702;1591;1573;NU5104;5104</NoWarn>
+    <NoWarn>1701;1702;1591;1573;NU5104;5104</NoWarn>gs
     <DocumentationFile>bin\Release\Odin.BackgroundProcessing.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Hangfire.Core" Version="1.8.9" />
-    <PackageReference Include="Hangfire.AspNetCore" Version="1.8.9" />
-    <PackageReference Include="Hangfire.SqlServer" Version="1.8.9" />
+    <PackageReference Include="Hangfire.Core" Version="1.8.14"/>
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.8.14" />
+    <PackageReference Include="Hangfire.SqlServer" Version="1.8.14" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
   </ItemGroup>
   <ItemGroup>
