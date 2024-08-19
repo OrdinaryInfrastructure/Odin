@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
     public sealed class LoggerAdapter<T> : ILoggerAdapter<T>
     {
         private readonly ILogger<T> _logger;
-        private readonly string _messagePrefix;
+        private readonly string _categoryName;
         
         /// <summary>
         /// Default constructor requires ILogger of T
@@ -23,19 +23,19 @@ using Microsoft.Extensions.Logging;
             try
             {
                 Type typeParameterType = typeof(T);
-                if (typeParameterType != null)
+                if (typeParameterType != null!)
                 {
-                    _messagePrefix = typeParameterType.Name + ": ";
+                    _categoryName = typeParameterType.Name + ": ";
                 }
                 else
                 {
-                    _messagePrefix = "";
+                    _categoryName = "";
                 }
             }
             catch (Exception err)
             {
                 _logger.Log(LogLevel.Error, err, "LoggerAdapter: Unable to ascertain generic type");
-                _messagePrefix = "";
+                _categoryName = "";
             }
         }
 
@@ -47,7 +47,7 @@ using Microsoft.Extensions.Logging;
         /// <param name="message"></param>
         public void Log(LogLevel level, string? message, Exception? err = null)
         {
-            _logger.Log(level, err, _messagePrefix + message);
+            _logger.Log(level, err, _categoryName + message);
         }
         
         /// <summary>
