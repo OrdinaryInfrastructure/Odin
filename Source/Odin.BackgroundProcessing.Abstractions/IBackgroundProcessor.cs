@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using LanguageExt.Common;
 using Odin.System;
 
 namespace Odin.BackgroundProcessing
@@ -55,7 +56,7 @@ namespace Odin.BackgroundProcessing
         /// <param name="timeZoneInfo"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        Outcome AddOrUpdateRecurringJob<T>(Expression<Action<T>> methodCall, string recurringJobName, string cronExpression, TimeZoneInfo timeZoneInfo, string queueName = "default");
+        Result<bool> AddOrUpdateRecurringJob<T>(Expression<Action<T>> methodCall, string recurringJobName, string cronExpression, TimeZoneInfo timeZoneInfo, string queueName = "default");
         
         /// <summary>
         /// Ensures a recurring job is deleted, if it exists...
