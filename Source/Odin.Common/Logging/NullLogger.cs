@@ -32,7 +32,7 @@ namespace Odin.Logging
         
         /// <summary>
         /// Structured Log Message. Object array contains a list of values to populate
-        /// the logging keys e.g. {ExampleKey} that are included in the log.
+        /// the logging keys e.g. {ExampleKey} that are included in the log. 
         /// </summary>
         /// <param name="logLevel"></param>
         /// <param name="exception"></param>
