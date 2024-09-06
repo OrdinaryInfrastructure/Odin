@@ -52,12 +52,7 @@ namespace Odin.Email
         /// Email body
         /// </summary>
         string Body { get; set; }
-
-        /// <summary>
-        /// Plain text alternative body
-        /// </summary>
-        string? PlaintextAlternativeBody { get; set; }
-
+        
         /// <summary>
         /// Email priority
         /// </summary>

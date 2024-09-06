@@ -19,6 +19,11 @@ namespace Odin.Email
         public const string Mailgun = "Mailgun";
 
         /// <summary>
+        /// Office365
+        /// </summary>
+        public const string Office365 = "Office365";
+
+        /// <summary>
         /// Returns the supported provider names
         /// </summary>
         /// <returns></returns>

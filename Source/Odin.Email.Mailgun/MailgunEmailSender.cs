@@ -144,10 +144,6 @@ namespace Odin.Email
                 if (email.IsHtml)
                 {
                     content.Add(new StringContent(email.Body), "html");
-                    if (!string.IsNullOrWhiteSpace(email.PlaintextAlternativeBody))
-                    {
-                        content.Add(new StringContent(email.PlaintextAlternativeBody), "text");
-                    }
                 }
                 else
                 {
