@@ -51,7 +51,7 @@ public class ResubscribingRabbitSubscription: IAsyncDisposable
         _checkChannelPeriod = checkChannelPeriod ?? TimeSpan.FromSeconds(5);
         _attemptReconnectPeriod = attemptReconnectPeriod ?? TimeSpan.FromSeconds(30);
         
-        _ = Task.Run(TryCreateSubscription, _cancellationTokenSource.Token);
+        _ = TryCreateSubscription(_cancellationTokenSource.Token);
 
         _createSubscriptionSemaphore.Release();
     }
@@ -59,6 +59,8 @@ public class ResubscribingRabbitSubscription: IAsyncDisposable
     private SemaphoreSlim _failureHandlingSemaphore = new SemaphoreSlim(1);
     
     private long _currentSubscriptionNumber = 0;
+
+    private bool _consumerExplicitlyCancelled = false;
     
     private async Task HandleFailure(long subscriptionNumber, Exception exception)
     {
@@ -67,6 +69,11 @@ public class ResubscribingRabbitSubscription: IAsyncDisposable
             return;
         }
 
+        if (_consumerExplicitlyCancelled && exception is IRabbitConnectionService.ConsumerCancelledException consumerCancelledException)
+        {
+            return;
+        }
+        
         _ = OnFailure?.Invoke(exception);
         
         await _failureHandlingSemaphore.WaitAsync();
@@ -89,7 +96,7 @@ public class ResubscribingRabbitSubscription: IAsyncDisposable
             }
 
             subscription.OnConsumed -= RaiseConsumed;
-            await subscription.Unsubscribe();
+            await subscription.CloseChannel();
 
             _currentSubscriptionNumber++;
             
@@ -102,15 +109,28 @@ public class ResubscribingRabbitSubscription: IAsyncDisposable
         }
 
     }
-    
-    private async Task TryCreateSubscription()
+
+    /// <summary>
+    /// Stops consuming new messages, but messages already consumed can still be acked or nacked.
+    /// Shutdown procedure is to first call this, then ack (or nack) all outstanding messages, then await DisposeAsync().
+    /// </summary>
+    public void StopConsuming()
     {
-        while (!_cancellationTokenSource.Token.IsCancellationRequested)
+        _consumerExplicitlyCancelled = true;
+        foreach (var subscription in _subscriptions.Values)
+        {
+            subscription.StopConsuming();
+        }
+    }
+    
+    private async Task TryCreateSubscription(CancellationToken token)
+    {
+        while (!token.IsCancellationRequested)
         {
             await _createSubscriptionSemaphore.WaitAsync();
             
 
-            while (!_cancellationTokenSource.Token.IsCancellationRequested)
+            while (!token.IsCancellationRequested)
             {
 
                 try
@@ -136,13 +156,14 @@ public class ResubscribingRabbitSubscription: IAsyncDisposable
                 catch (Exception ex)
                 {
                     _logger.LogError($"Failed to subscribe to queue {_queueName}.", ex);
+                    OnFailure?.Invoke(ex);
                 }
                 finally
                 {
                     _failureHandlingSemaphore.Release();
                 }
 
-                await Task.Delay(_attemptReconnectPeriod, _cancellationTokenSource.Token);
+                await Task.Delay(_attemptReconnectPeriod, token);
             }
         }
         
@@ -161,7 +182,14 @@ public class ResubscribingRabbitSubscription: IAsyncDisposable
         _cancellationTokenSource.Cancel();
         foreach (var s in _subscriptions.Values)
         {
-            await s.Unsubscribe();
+            try
+            {
+                await s.CloseChannel();
+            }
+            catch
+            {
+                
+            }
         }
     }
 }

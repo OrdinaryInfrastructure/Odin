@@ -15,13 +15,13 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
     <NoWarn>1701;1702;1591;1573</NoWarn>
-    <DocumentationFile>bin\Debug\Odin.RemoteFiles.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\net8.0\Odin.RemoteFiles.SFTP.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <WarningLevel>2</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <NoWarn></NoWarn>
-    <DocumentationFile>bin\Release\Odin.RemoteFiles.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\net8.0\Odin.RemoteFiles.SFTP.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="SSH.NET" Version="2023.0.1" />

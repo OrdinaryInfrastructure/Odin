@@ -132,12 +132,12 @@ public class RabbitConnectionService: IRabbitConnectionService
             
             if (_listeners.TryGetValue(queueName, out _))
             {
-                throw new Exception($"Listener for queue {queueName} is already active.");
+                throw new ApplicationException($"Listener for queue {queueName} already exists.");
             }
 
             if (GetChannelsCount() >= _maxChannels)
             {
-                throw new Exception($"Will not create new SingleQueueListener for queue {queueName} as the MaxChannels limit, {_maxChannels}, has been reached.");
+                throw new ApplicationException($"Will not create new SingleQueueListener for queue {queueName} as the MaxChannels limit, {_maxChannels}, has been reached.");
             }
 
             var connection = await GetConnection();
@@ -189,10 +189,14 @@ public class RabbitConnectionService: IRabbitConnectionService
 
         var subscription = new IRabbitConnectionService.Subscription
         {
-            Unsubscribe = async () =>
+            CloseChannel = async () =>
             {
                 listener.Dispose();
                 await RemoveSingleQueueListener(queueName);
+            },
+            StopConsuming = () =>
+            {
+                listener.CancelConsumer();
             }
         };
 
@@ -231,21 +235,37 @@ public class RabbitConnectionService: IRabbitConnectionService
         
         foreach (var sender in _senders.Values)
         {
-            sender.Dispose();
+            try
+            {
+                sender.Dispose();
+            }
+            catch
+            {
+            }
         }
 
         foreach (var listener in _listeners.Values)
         {
-            listener.Dispose();
+            try
+            {
+                listener.Dispose();
+            }
+            catch
+            {
+            }
         }
-        
-        _connection?.Close();
+
+        try
+        {
+            _connection?.Close();
+        }
+        catch
+        {
+        }
         
         _sendersSemaphore.Release();
         _listenersSemaphore.Release();
         _createConnectionSemaphore.Release();
-
-
     }
 
 

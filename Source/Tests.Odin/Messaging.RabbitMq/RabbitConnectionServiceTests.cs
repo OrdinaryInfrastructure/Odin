@@ -189,15 +189,19 @@ public class RabbitConnectionServiceTests: IntegrationTest
                     await Task.Delay(1);
                     // bool nackMessage = Random.Shared.NextDouble() > 0.5;
                     bool nackMessage = false;
-                    if (message.Ack != null && !nackMessage)
-                    {
-                        message.Ack();
-                    }
-                    else if (message.Nack != null)
-                    {
-                        message.Nack(true);
-                    }
 
+                    if (message.AckNackCallbacks is not null)
+                    {
+                        if (nackMessage)
+                        {
+                            message.AckNackCallbacks.Nack(true);
+                        }
+                        else
+                        {
+                            message.AckNackCallbacks.Ack();
+                        }
+                    }
+                    
                     Console.WriteLine($"{(nackMessage ? "Nacked" : "Acked")} message " + body);
 
                     // if (body.MessageNumber % 10 == 0)
@@ -208,9 +212,9 @@ public class RabbitConnectionServiceTests: IntegrationTest
                 catch (Exception e)
                 {
                     Console.WriteLine("Failed to handle consumed message. Body: " + str + "\nException: " + e);
-                    if (message.Nack != null)
+                    if (message.AckNackCallbacks != null)
                     {
-                        message.Nack(false);
+                        message.AckNackCallbacks.Nack(false);
                     }
                 }
             };
@@ -301,7 +305,7 @@ public class RabbitConnectionServiceTests: IntegrationTest
         {
             if (subscription is not null)
             {
-                await subscription.Unsubscribe();
+                await subscription.CloseChannel();
                 Console.WriteLine($"Unsubscribed from queue {queueName}");
             }
         }
