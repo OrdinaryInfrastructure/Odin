@@ -16,7 +16,7 @@ namespace Tests.Odin
                 Args = args
             };
             WebApplicationBuilder builder = WebApplication.CreateBuilder(appOptions);
-            builder.Configuration.AddJsonFile("appSettings.json", false);
+            // builder.Configuration.AddJsonFile("appSettings.json", false);
             builder.Configuration.AddUserSecrets<TestProgram>();
             
             builder.Services.AddLoggerAdapter();
@@ -34,7 +34,7 @@ namespace Tests.Odin
 
             var resubscriberTests = new ResubscribingRabbitSubscriptionTests();
 
-            // _ = resubscriberTests.ResubscribingSubscription_Works();
+            _ = resubscriberTests.ResubscribingSubscription_Works();
 
             var clientInvestigations = new RabbitClientInvestigations();
 

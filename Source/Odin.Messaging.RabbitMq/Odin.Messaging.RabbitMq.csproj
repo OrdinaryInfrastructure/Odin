@@ -15,14 +15,18 @@
     <WarningLevel>3</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
-    <NoWarn></NoWarn>
-    <DocumentationFile>bin\Debug\Odin.Messaging.xml</DocumentationFile>
+    <NoWarn>1591</NoWarn>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <DocumentationFile>bin\Debug\net8.0\Odin.Messaging.RabbitMq.xml</DocumentationFile>
+    <IncludeXmlDocumentation>true</IncludeXmlDocumentation>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <WarningLevel>3</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <NoWarn></NoWarn>
-    <DocumentationFile>bin\Release\Odin.Messaging.xml</DocumentationFile>
+    <NoWarn>1591</NoWarn>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <DocumentationFile>bin\Release\net8.0\Odin.Messaging.RabbitMq.xml</DocumentationFile>
+    <IncludeXmlDocumentation>true</IncludeXmlDocumentation>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />

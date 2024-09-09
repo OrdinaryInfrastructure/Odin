@@ -23,7 +23,7 @@ public interface IRabbitConnectionService: IAsyncDisposable
     /// <returns></returns>
     public Task SendAsync(string exchangeName, string routingKey, Dictionary<string, object> headers, string contentType, byte[] body, bool persistentDelivery = true, bool mandatoryRouting = false);
 
-    public record ConsumedMessage
+    public class ConsumedMessage
     {
         public required byte[] Body { get; init; }
         public required DateTimeOffset ConsumedAt { get; init; }
@@ -76,18 +76,25 @@ public interface IRabbitConnectionService: IAsyncDisposable
         /// Optional property that might have been set by the publisher of the message
         /// </summary>
         public DateTimeOffset? Timestamp { get; init; }
+
+        public class AcknowledgementCallbacks
+        {
+            /// <summary>
+            /// Ack - Acknowledge. If the subscription is AutoAck = false, these callbacks are non-null and calling code MUST call either Ack or Nack after receiving the message.
+            /// If the subscription is AutoAck = true, these callbacks are null.
+            /// </summary>
+            public required Action Ack { get; init; }
+            
+            /// <summary>
+            /// Nack - Not acknowledge. The bool argument of this callback is whether the nacked message should be re-queued.
+            /// </summary>
+            public required Action<bool> Nack { get; init; }
+        }
         
-        /// <summary>
-        /// Ack - Acknowledge. If the subscription is AutoAck = false, these callbacks are non-null and calling code MUST call either Ack or Nack after receiving the message.
-        /// If the subscription is AutoAck = true, these callbacks are null.
-        /// </summary>
-        public Action? Ack { get; init; }
-        
-        /// <summary>
-        /// Nack - Not acknowledge. The bool argument of this callback is whether the nacked message should be re-queued.
-        /// </summary>
-        public Action<bool>? Nack { get; init; }
+        public AcknowledgementCallbacks? AckNackCallbacks { get; init; }
     }
+    
+    public class ConsumerCancelledException(string message) : ApplicationException(message);
 
     /// <summary>
     /// Represents a RabbitMQ Consumer that has a channel to itself.
@@ -115,9 +122,17 @@ public interface IRabbitConnectionService: IAsyncDisposable
         }
         
         /// <summary>
-        /// An async callback that, when invoked, cancels the subscription. When this is done, the OnFailure event is fired twice, which should be ignored.
+        /// Stops consuming new messages, but leaves the channel open so that any remaining messages that have been consumed but not acked can be acked.
+        /// Shutdown procedure is to first call StopConsuming, then, ack (or nack) all remaining messages, then call CloseChannel.
+        /// After consumer is cancelled, periodic checks may fire OnFailure events with exceptions of type IRabbitConnectionService.ConsumerCancelledException. 
         /// </summary>
-        public required Func<Task> Unsubscribe { get; init; }
+        public required Action StopConsuming { get; init; }
+        
+        /// <summary>
+        /// An async callback that, when invoked, cancels the consumer and closes the channel, regardless of any consumed but un-acked messages.
+        /// When this is done, the OnFailure event is fired twice, which should be ignored.
+        /// </summary>
+        public required Func<Task> CloseChannel { get; init; }
     }
 
     /// <summary>

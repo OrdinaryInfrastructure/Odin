@@ -24,7 +24,7 @@ internal class SingleQueueListener: IDisposable
     public event Func<Exception, Task>? OnFailure;
     public event Func<IRabbitConnectionService.ConsumedMessage, Task>? OnConsume;
 
-    private readonly CancellationTokenSource _cancellationTokenSource = new();
+    private readonly CancellationTokenSource _channelCheckCancellationTokenSource = new();
     
     public SingleQueueListener(string queueName, IConnection connection, TimeSpan checkChannelPeriod, bool autoAck, ushort prefetchCount, string clientName)
     {
@@ -40,24 +40,24 @@ internal class SingleQueueListener: IDisposable
 
         if (!_channel.IsOpen)
         {
-            throw new Exception($"Failed to open channel. Reason: " + _channel.CloseReason?.ReplyText);
+            throw new ApplicationException("Failed to open channel. Reason: " + _channel.CloseReason?.ReplyText);
         }
 
         _consumer = new EventingBasicConsumer(_channel);
+        
+        _consumer.ConsumerCancelled += GetConsumerCancelledHandler();
+        _consumer.Received += GetDeliverEventHandler();
+        _channel.ModelShutdown += GetChannelShutdownHandler();
 
-        var consumerTag = $"RabbitConnectionService-SingleQueueListener-{clientName}-{_queueName}-{Guid.NewGuid().ToString().Substring(0,4)}";
+        var consumerTag = $"{clientName}-{_queueName}-{Guid.NewGuid().ToString().Substring(0,4)}";
 
         _channel.BasicConsume(
             consumer: _consumer,
             queue: queueName,
             autoAck: _autoAck,
             consumerTag: consumerTag);
-
-        _consumer.ConsumerCancelled += GetConsumerCancelledHandler();
-        _consumer.Received += GetDeliverEventHandler();
-        _channel.ModelShutdown += GetChannelShutdownHandler();
-
-        _ = CheckChannelPeriodically(_cancellationTokenSource.Token);
+        
+        _ = CheckChannelPeriodically(_channelCheckCancellationTokenSource.Token);
     }
 
 
@@ -79,8 +79,11 @@ internal class SingleQueueListener: IDisposable
                 ReplyTo = args.BasicProperties?.ReplyTo,
                 Type = args.BasicProperties?.Type,
                 Timestamp = args.BasicProperties?.Timestamp.UnixTime is null ? null : DateTimeOffset.FromUnixTimeSeconds(args.BasicProperties.Timestamp.UnixTime),
-                Ack = _autoAck ? null : GetManualAckHandler(args.DeliveryTag),
-                Nack = _autoAck ? null : GetManualNackHandler(args.DeliveryTag),
+                AckNackCallbacks = _autoAck ? null : new IRabbitConnectionService.ConsumedMessage.AcknowledgementCallbacks
+                {
+                    Ack = GetManualAckHandler(args.DeliveryTag),
+                    Nack = GetManualNackHandler(args.DeliveryTag),
+                },
             };
             
             OnConsume?.Invoke(message);
@@ -114,18 +117,14 @@ internal class SingleQueueListener: IDisposable
                 break;
             }
             
-            Console.WriteLine("Periodically checking channel...");
-            
             if (!_channel.IsOpen)
             {
-                OnFailure?.Invoke(new Exception($"A periodic check found the channel closed. Reason: " + _channel.CloseReason.ReplyText));
-                Dispose();
+                OnFailure?.Invoke(new ApplicationException($"A periodic check found the channel closed. Reason: " + _channel.CloseReason.ReplyText));
             }
 
             if (!_consumer.IsRunning)
             {
-                OnFailure?.Invoke(new Exception($"A periodic check found the consumer not running. ShutdownReason: " + _consumer.ShutdownReason.ReplyText));
-                Dispose();
+                OnFailure?.Invoke(new IRabbitConnectionService.ConsumerCancelledException($"A periodic check found the consumer not running. ShutdownReason: " + _consumer.ShutdownReason.ReplyText));
             }
         }
     }
@@ -134,9 +133,8 @@ internal class SingleQueueListener: IDisposable
     {
         return (sender, args) =>
         {
-            var exception = new Exception($"Consumer was cancelled. Cancelled tags: {string.Join(", ", args.ConsumerTags)}. ShutdownReason: " + _consumer.ShutdownReason);
+            var exception = new IRabbitConnectionService.ConsumerCancelledException($"Consumer was cancelled. Cancelled tags: {string.Join(", ", args.ConsumerTags)}. ShutdownReason: " + _consumer.ShutdownReason);
             OnFailure?.Invoke(exception);
-            Dispose();
         };
     }
 
@@ -144,15 +142,13 @@ internal class SingleQueueListener: IDisposable
     {
         return (sender, args) =>
         {
-            var exception = new Exception($"Channel shut down. Shutdown reason: {args.ReplyText} CloseReason: " + _channel.CloseReason?.ReplyText);
+            var exception = new ApplicationException($"Channel shut down. Shutdown reason: {args.ReplyText} CloseReason: " + _channel.CloseReason?.ReplyText);
             OnFailure?.Invoke(exception);
-            Dispose();
         };
     }
 
-    public void Dispose()
+    public void CancelConsumer()
     {
-        _cancellationTokenSource.Cancel();
         foreach (var tag in _consumer.ConsumerTags)
         {
             try
@@ -163,7 +159,12 @@ internal class SingleQueueListener: IDisposable
             {
             }
         }
+    }
 
+    public void Dispose()
+    {
+        _channelCheckCancellationTokenSource.Cancel();
+        CancelConsumer();
         try
         {
             _channel.Close();

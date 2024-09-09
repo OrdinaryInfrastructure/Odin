@@ -20,7 +20,8 @@ public class FakeRabbitConnectionService: IRabbitConnectionService
 
         return new IRabbitConnectionService.Subscription
         {
-            Unsubscribe = () => Task.CompletedTask,
+            StopConsuming = () => { },
+            CloseChannel = () => Task.CompletedTask,
         };
     }
 
