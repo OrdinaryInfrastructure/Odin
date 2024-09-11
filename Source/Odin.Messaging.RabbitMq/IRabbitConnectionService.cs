@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Odin.Messaging.RabbitMq;
@@ -57,9 +59,25 @@ public interface IRabbitConnectionService: IAsyncDisposable
         public string? CorrelationId { get; init; }
         
         /// <summary>
-        /// Optional property that might have been set by the publisher of the message
+        /// The values of this dictionary are usually byte[] containing UTF8 encoded strings.
         /// </summary>
         public Dictionary<string, object> Headers { get; init; } = new();
+
+        public Dictionary<string, string?> GetDecodedHeaders()
+        {
+            return Headers.ToDictionary(p => p.Key, p =>
+            {
+                try
+                {
+                    return Encoding.UTF8.GetString((byte[])p.Value);
+                }
+                catch
+                {
+                    return null;
+                }
+            });
+        }
+        
         /// <summary>
         /// Optional property that might have been set by the publisher of the message
         /// </summary>
@@ -122,15 +140,19 @@ public interface IRabbitConnectionService: IAsyncDisposable
         }
         
         /// <summary>
+        /// Starts consuming messages. Subscribe to events (such as OnConsumed and OnFailure) before calling this to ensure you handle all messages.
+        /// </summary>
+        public required Func<Task> StartConsuming { get; init; }
+        
+        /// <summary>
         /// Stops consuming new messages, but leaves the channel open so that any remaining messages that have been consumed but not acked can be acked.
         /// Shutdown procedure is to first call StopConsuming, then, ack (or nack) all remaining messages, then call CloseChannel.
         /// After consumer is cancelled, periodic checks may fire OnFailure events with exceptions of type IRabbitConnectionService.ConsumerCancelledException. 
         /// </summary>
-        public required Action StopConsuming { get; init; }
+        public required Func<Task> StopConsuming { get; init; }
         
         /// <summary>
         /// An async callback that, when invoked, cancels the consumer and closes the channel, regardless of any consumed but un-acked messages.
-        /// When this is done, the OnFailure event is fired twice, which should be ignored.
         /// </summary>
         public required Func<Task> CloseChannel { get; init; }
     }
@@ -144,7 +166,9 @@ public interface IRabbitConnectionService: IAsyncDisposable
     /// <param name="queueName"></param>
     /// <param name="autoAck">Whether the channel and consumer are in automatic acknowledgement mode. If false, the channel and consumer are in manual acknowledgement mode
     /// and the subscribing code MUST call either Ack() or Nack() on the ConsumedMessage after receiving it.</param>
+    /// <param name="exclusive">When true, consumer is forced to be the only consumer of the queue. This is enforced by the broker.</param>
     /// <param name="prefetchCount">When AutoAck = false, the maximum number of messages that RabbitMQ will allow to be in-flight to the consumer (i.e. not yet acknowledged).</param>
     /// <param name="channelCheckPeriod">The period with which to periodically check that the channel is still open. Default 60 seconds. If the channel is closed, calls onFailure.</param>
-    public Task<Subscription> SubscribeToConsume(string queueName, bool autoAck, ushort prefetchCount = 200, TimeSpan? channelCheckPeriod = null);
-}
+    /// <param name="channelOperationsTimeout">Timeout for operations such as StartAsync and StopAsync. Default 10 seconds.</param>
+    public Task<Subscription> SubscribeToConsume(string queueName, bool autoAck, bool exclusive = false, ushort prefetchCount = 200, TimeSpan? channelCheckPeriod = null, TimeSpan? channelOperationsTimeout = null);
+} 

@@ -1,14 +1,12 @@
 #nullable enable
 using System;
 using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
-using Odin.Logging;
 using Odin.Messaging.RabbitMq;
 
 namespace Tests.Odin.Messaging.RabbitMq;
 
-public class ResubscribingRabbitSubscriptionTests
+public class ResubscribingRabbitSubscriptionTests()
 {
 
 
@@ -30,15 +28,17 @@ public class ResubscribingRabbitSubscriptionTests
 
             var queueName = "max-length-test-01";
 
-            var subscription = new ResubscribingRabbitSubscription(
+            var factory = new ResubscribingRabbitSubscriptionFactory(
                 connectionService,
-                new NullLogger<ResubscribingRabbitSubscription>(),
                 queueName,
                 false,
-                200,
+                true,
+                260,
                 checkChannelPeriod: TimeSpan.FromSeconds(2),
-                TimeSpan.FromSeconds(4));
+                TimeSpan.FromSeconds(4)
+            );
 
+            var subscription = factory.Create();
             // RabbitConnectionServiceTests.TestMessage? mostRecent = null;
 
             subscription.OnFailure += ex =>
@@ -53,14 +53,19 @@ public class ResubscribingRabbitSubscriptionTests
 
                 var body = Encoding.UTF8.GetString(message.Body);
 
-                Console.WriteLine("Received message " + body);
+                // Console.WriteLine("Received message " + body);
 
                 // await Task.Delay(TimeSpan.FromSeconds(20));
                 //
                 // Console.WriteLine("StopConsuming");
                 // subscription.StopConsuming();
 
-                await Task.Delay(TimeSpan.FromSeconds(3));
+                // await Task.Delay(TimeSpan.FromSeconds(3));
+                //
+                // Console.WriteLine("Closing channel");
+                // await subscription.DisposeAsync();
+
+                await Task.Delay(TimeSpan.FromMilliseconds(20));
 
                 try
                 {
@@ -79,10 +84,16 @@ public class ResubscribingRabbitSubscriptionTests
 
             };
 
+            await Task.Delay(TimeSpan.FromSeconds(2));
+
+            await subscription.StartConsuming();
+            
+            Console.WriteLine("Started consuming");
+
             await Task.Delay(TimeSpan.FromSeconds(120));
 
             Console.WriteLine("StopConsuming....");
-            subscription.StopConsuming();
+            await subscription.StopConsuming();
 
             await Task.Delay(TimeSpan.FromSeconds(10));
 
