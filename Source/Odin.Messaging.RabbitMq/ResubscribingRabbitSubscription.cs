@@ -103,6 +103,10 @@ public class ResubscribingRabbitSubscription: IResubscribingRabbitSubscription
                 await _subscription.StartConsuming();
             }
         }
+        catch (Exception ex)
+        {
+            OnFailure?.Invoke(ex);
+        }
         finally
         {
             _subscriptionOperationsSemaphore.Release();
@@ -123,6 +127,10 @@ public class ResubscribingRabbitSubscription: IResubscribingRabbitSubscription
             {
                 await _subscription.StopConsuming();
             }
+        }
+        catch (Exception ex)
+        {
+            OnFailure?.Invoke(ex);
         }
         finally
         {
