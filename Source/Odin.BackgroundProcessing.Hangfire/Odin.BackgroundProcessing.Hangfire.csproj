@@ -16,13 +16,13 @@
     <WarningLevel>3</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <NoWarn>NU5104;5104</NoWarn>
-    <DocumentationFile>bin\Debug\Odin.BackgroundProcessing.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\net8.0\Odin.BackgroundProcessing.Hangfire.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <NoWarn>1701;1702;1591;1573;NU5104;5104</NoWarn>
-    <DocumentationFile>bin\Release\Odin.BackgroundProcessing.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\net8.0\Odin.BackgroundProcessing.Hangfire.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Hangfire.Core" Version="1.8.14"/>

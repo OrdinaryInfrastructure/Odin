@@ -13,14 +13,16 @@ public class FakeRabbitConnectionService: IRabbitConnectionService
         await Task.Delay(5);
     }
 
-    public async Task<IRabbitConnectionService.Subscription> SubscribeToConsume(string queueName, bool autoAck, ushort prefetchCount = 200,
-        TimeSpan? channelCheckPeriod = null)
+    public async Task<IRabbitConnectionService.Subscription> SubscribeToConsume(string queueName, bool autoAck, bool exclusive = false, ushort prefetchCount = 200,
+        TimeSpan? channelCheckPeriod = null, TimeSpan? channelOperationsTimeout = null)
     {
         await Task.Delay(5);
 
         return new IRabbitConnectionService.Subscription
         {
-            Unsubscribe = () => Task.CompletedTask,
+            StartConsuming = () => Task.CompletedTask,
+            StopConsuming = () => Task.CompletedTask,
+            CloseChannel = () => Task.CompletedTask,
         };
     }
 

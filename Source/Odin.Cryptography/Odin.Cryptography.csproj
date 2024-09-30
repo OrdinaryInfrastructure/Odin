@@ -11,13 +11,13 @@
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <DocumentationFile>bin\Debug\Odin.Cryptography.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\net8.0\Odin.Cryptography.xml</DocumentationFile>
     <WarningLevel>3</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <NoWarn />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <DocumentationFile>bin\Release\Odin.Cryptography.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\net8.0\Odin.Cryptography.xml</DocumentationFile>
     <WarningLevel>3</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
