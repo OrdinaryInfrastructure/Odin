@@ -1,9 +1,9 @@
 using Azure.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Graph;
 using Odin.DesignContracts;
+using Odin.Logging;
 
 namespace Odin.Email.Office365;
 
@@ -13,31 +13,47 @@ public class Office365ServiceInjector: IEmailSenderServiceInjector
     {
         PreCondition.RequiresNotNull(emailConfigurationSection);
 
-        var options = new Office365Options();
-        emailConfigurationSection.Bind(EmailSendingProviders.Office365, options);
+        var emailOptions = new EmailSendingOptions();
+        emailConfigurationSection.Bind(emailOptions);
 
-        if (options.MicrosoftGraphClientSecretCredentials is null)
-        {
-            throw new ApplicationException($"Missing {nameof(options.MicrosoftGraphClientSecretCredentials)}");
-        }
-
+        var office365Options = new Office365Options();
+        emailConfigurationSection.Bind(EmailSendingProviders.Office365, office365Options);
+        
+        office365Options.Validate();
+        
         var credentialOptions = new ClientSecretCredentialOptions
         {
             AuthorityHost = AzureAuthorityHosts.AzurePublicCloud,
         };
 
         var clientSecretCredential = new ClientSecretCredential(
-            options.MicrosoftGraphClientSecretCredentials.TenantId, 
-            options.MicrosoftGraphClientSecretCredentials.ClientId,
-            options.MicrosoftGraphClientSecretCredentials.ClientSecret, 
+            office365Options.MicrosoftGraphClientSecretCredentials!.TenantId, 
+            office365Options.MicrosoftGraphClientSecretCredentials.ClientId,
+            office365Options.MicrosoftGraphClientSecretCredentials.ClientSecret, 
             credentialOptions);
-        
-        serviceCollection.TryAddSingleton(new GraphServiceClient(clientSecretCredential));
-        
-        serviceCollection.AddLoggerAdapter();
-        serviceCollection.TryAddSingleton(options);
-        serviceCollection.TryAddSingleton<IEmailSender, Office365EmailSender>();
-    }
 
-    
+        var graphClient = new GraphServiceClient(clientSecretCredential);
+
+        serviceCollection.AddLoggerAdapter();
+        
+        if (!string.IsNullOrWhiteSpace(emailOptions.DefaultFromAddress))
+        {
+            serviceCollection.AddSingleton<IEmailSender>(provider => new Office365EmailSender(
+                graphClient,
+                provider.GetRequiredService<ILoggerAdapter<Office365EmailSender>>(),
+                emailOptions.DefaultFromAddress,
+                emailOptions.DefaultTags ?? []
+            ));
+        }
+        
+        foreach (var pair in office365Options.KeyedSenders)
+        {
+            serviceCollection.AddKeyedSingleton<IEmailSender>(pair.Key, (provider, o) => new Office365EmailSender(
+                graphClient,
+                provider.GetRequiredService<ILoggerAdapter<Office365EmailSender>>(),
+                pair.Value.SenderUserId,
+                pair.Value.DefaultCategories ?? []
+            ));
+        }
+    }
 }

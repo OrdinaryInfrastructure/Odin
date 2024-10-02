@@ -1,18 +1,27 @@
-﻿using Microsoft.Graph;
-using Microsoft.Graph.Me.SendMail;
+﻿using Microsoft.Extensions.Logging;
+using Microsoft.Graph;
 using Microsoft.Graph.Models;
+using Microsoft.Graph.Users.Item.SendMail;
+using Odin.Logging;
 using Odin.System;
 
 namespace Odin.Email.Office365;
 
-public class Office365EmailSender(GraphServiceClient graphClient) : IEmailSender
+/// <summary>
+/// 
+/// </summary>
+/// <param name="graphClient"></param>
+/// <param name="defaultSenderUserId">Microsoft UserId</param>
+/// /// <param name="defaultCategories">Office365 Categories which will be added to each email sent by this Office365EmailSender.</param>
+public class Office365EmailSender(GraphServiceClient graphClient, ILoggerAdapter<Office365EmailSender> logger, string defaultSenderUserId, List<string> defaultCategories) : IEmailSender
 {
     const string MicrosoftGraphFileAttachmentOdataType = "#microsoft.graph.fileAttachment";
     public async Task<Outcome<string?>> SendEmail(IEmailMessage emailToSend)
     {
+        var userId = emailToSend.From?.Address ?? defaultSenderUserId;
         try
         {
-            var requestBody = new SendMailPostRequestBody
+            var requestBody = new SendMailPostRequestBody()
             {
                 Message = new Message
                 {
@@ -54,7 +63,7 @@ public class Office365EmailSender(GraphServiceClient graphClient) : IEmailSender
                             }
                         },
                     ReplyTo = emailToSend.ReplyTo is null
-                        ? null
+                        ? []
                         :
                         [
                             new Recipient
@@ -72,15 +81,17 @@ public class Office365EmailSender(GraphServiceClient graphClient) : IEmailSender
                         ContentType = a.ContentType,
                         ContentBytes = ToByteArray(a.Data),
                     } as Microsoft.Graph.Models.Attachment).ToList(),
+                    Categories = defaultCategories.Concat(emailToSend.Tags).ToList(),
                 }
-
             };
 
-            await graphClient.Me.SendMail.PostAsync(requestBody);
+            await graphClient.Users[userId].SendMail.PostAsync(requestBody);
+            LogSendEmailResult(emailToSend, true, LogLevel.Information, $"Sent with Office365 via user {userId}");
             return Outcome.Succeed<string?>(null);
         }
         catch (Exception ex)
         {
+            LogSendEmailResult(emailToSend, false, LogLevel.Error, $"Failed to send with Office365 via user {userId}", ex);
             return Outcome.Fail<string?>(ex.ToString());
         }
     }
@@ -97,5 +108,31 @@ public class Office365EmailSender(GraphServiceClient graphClient) : IEmailSender
         using var memoryStream = new MemoryStream();
         inputStream.CopyTo(memoryStream);
         return memoryStream.ToArray();
+    }
+    
+    private void LogSendEmailResult(IEmailMessage email, bool isSuccess, LogLevel level, string message, Exception? exception = null)
+    {
+        string to = "";
+        try
+        {
+            if (email.To != null!)
+            {
+                to = string.Join(',', email.To.Select(c => c.Address).ToList());
+            }
+        }
+        catch 
+        {
+        }
+
+        if (isSuccess)
+        {
+            logger.Log(level, $"{nameof(SendEmail)} to {to} succeeded. Subject - '{email.Subject}'. {message}",
+                exception);
+        }
+        else
+        {
+            logger.Log(level, $"{nameof(SendEmail)} to {to} failed. Subject - '{email.Subject}'. Error - {message}",
+                exception);
+        }
     }
 }

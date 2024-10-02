@@ -29,7 +29,7 @@ namespace Odin.Email
         /// <returns></returns>
         public static string[] GetAllProviders()
         {
-            return new[] {Mailgun, Fake};
+            return new[] {Mailgun, Office365, Fake};
         }
         
         /// <summary>
