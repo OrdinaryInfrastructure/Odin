@@ -24,6 +24,8 @@ public class ResubscribingRabbitSubscription: IResubscribingRabbitSubscription
 
     /// <summary>
     /// OnFailure is triggered when the Channel is closed, and few other failure scenarios.
+    /// This event is only to notify the using code that an error has occurred. The ResubscribingRabbitSubscription will continue
+    /// to attempt to create a new Subscription after this is fired.
     /// </summary>
     public event Func<Exception, Task>? OnFailure;
 
@@ -101,6 +103,10 @@ public class ResubscribingRabbitSubscription: IResubscribingRabbitSubscription
                 await _subscription.StartConsuming();
             }
         }
+        catch (Exception ex)
+        {
+            OnFailure?.Invoke(ex);
+        }
         finally
         {
             _subscriptionOperationsSemaphore.Release();
@@ -121,6 +127,10 @@ public class ResubscribingRabbitSubscription: IResubscribingRabbitSubscription
             {
                 await _subscription.StopConsuming();
             }
+        }
+        catch (Exception ex)
+        {
+            OnFailure?.Invoke(ex);
         }
         finally
         {

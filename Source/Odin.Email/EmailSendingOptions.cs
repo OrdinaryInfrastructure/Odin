@@ -20,17 +20,23 @@ namespace Odin.Email
         public const string DefaultConfigurationSectionName = "EmailSending";
         
         /// <summary>
-        /// Default from emailAddress
+        /// Default from emailAddress for the generic IEmailSender in DI
         /// </summary>
         public string? DefaultFromAddress { get; set; }
 
         /// <summary>
-        /// Default from name
+        /// Default from name for the generic IEmailSender in DI
         /// </summary>
         public string? DefaultFromName { get; set; }
+        
+        /// <summary>
+        /// Default tags (i.e. Office365 Categories) for the generic IEmailSender in DI
+        /// Does nothing when using the Mailgun sender.
+        /// </summary>
+        public List<string>? DefaultTags { get; set; }
 
         /// <summary>
-        /// Email sending provider - Mailgun and Fake are only ones at this stage.
+        /// Email sending provider - Mailgun, Office365 and Fake are only ones at this stage.
         /// </summary>
         public string Provider
         {

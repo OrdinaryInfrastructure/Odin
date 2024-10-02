@@ -35,7 +35,7 @@ namespace Tests.Odin.Email
             EmailMessage sut = new EmailMessage("to@d.com", "from@d.com", subject, "body", false);
             EmailMessage sut2 = new EmailMessage();
             
-            Assert.That("", Is.EqualTo(sut.Subject));        
+            Assert.That("", Is.EqualTo(sut.Subject));
             Assert.That("", Is.EqualTo(sut2.Subject));    
         }
         

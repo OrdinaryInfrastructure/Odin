@@ -51,6 +51,7 @@ jobs:
         dotnet pack ./Source/Odin.Cryptography/Odin.Cryptography.csproj --configuration $CONFIGURATION --output $PACKAGE_DIR
         dotnet pack ./Source/Odin.Data.SqlScriptsRunner/Odin.Data.SqlScriptsRunner.csproj --configuration $CONFIGURATION --output $PACKAGE_DIR
         dotnet pack ./Source/Odin.Email.Mailgun/Odin.Email.Mailgun.csproj --configuration $CONFIGURATION --output $PACKAGE_DIR
+        dotnet pack ./Source/Odin.Email.Office365/Odin.Email.Office365.csproj --configuration $CONFIGURATION --output $PACKAGE_DIR
         dotnet pack ./Source/Odin.Email/Odin.Email.csproj --configuration $CONFIGURATION --output $PACKAGE_DIR
         dotnet pack ./Source/Odin.Messaging.RabbitMq/Odin.Messaging.RabbitMq.csproj --configuration $CONFIGURATION --output $PACKAGE_DIR
         dotnet pack ./Source/Odin.Notifications/Odin.Notifications.csproj --configuration $CONFIGURATION --output $PACKAGE_DIR
