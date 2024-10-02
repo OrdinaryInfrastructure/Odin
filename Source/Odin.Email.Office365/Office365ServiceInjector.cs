@@ -3,9 +3,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Graph;
 using Odin.DesignContracts;
+using Odin.Email.Office365;
 using Odin.Logging;
 
-namespace Odin.Email.Office365;
+namespace Odin.Email;
 
 public class Office365ServiceInjector: IEmailSenderServiceInjector
 {
