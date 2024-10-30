@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Odin.DesignContracts;
+﻿using Odin.DesignContracts;
 
 namespace Odin.Email
 {

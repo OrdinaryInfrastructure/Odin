@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Odin.DateAndTime
+﻿namespace Odin.DateAndTime
 {
     /// <summary>
     /// Extensions to NodaTime.DateOnly

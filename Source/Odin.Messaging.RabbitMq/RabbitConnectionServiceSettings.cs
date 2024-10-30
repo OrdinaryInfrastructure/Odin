@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-
 namespace Odin.Messaging.RabbitMq;
 
 public record RabbitConnectionServiceSettings

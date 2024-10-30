@@ -1,9 +1,7 @@
 #nullable enable
 using System;
 using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
-using NUnit.Framework;
 using Odin.Messaging.RabbitMq;
 using RabbitMQ.Client;
 

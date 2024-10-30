@@ -1,5 +1,4 @@
-﻿using System;
-using Odin.Notifications;
+﻿using Odin.Notifications;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Odin.Email;

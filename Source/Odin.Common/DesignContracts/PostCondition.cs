@@ -1,6 +1,4 @@
-﻿using System;
-
- namespace Odin.DesignContracts
+﻿namespace Odin.DesignContracts
 {
     /// <summary>
     /// Represents a contract against a method return value.

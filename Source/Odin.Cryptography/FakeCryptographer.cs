@@ -13,24 +13,20 @@ namespace Odin.Cryptography
         /// Does nothing and returns decrypted as the same as protectedString
         /// </summary>
         /// <param name="protectedString"></param>
-        /// <param name="decrypted"></param>
         /// <returns></returns>
-        public Outcome2 TryDecrypt(string protectedString, out string decrypted)
+        public Outcome<string> TryDecrypt(string protectedString)
         {
-            decrypted = protectedString;
-            return Outcome2.Succeed();
+            return Outcome.Succeed<string>(protectedString);
         }
         
         /// <summary>
         /// Does nothing and returns encrypted as the same as unProtectedString
         /// </summary>
         /// <param name="unProtectedString"></param>
-        /// <param name="encrypted"></param>
         /// <returns></returns>
-        public Outcome2 TryEncrypt(string unProtectedString, out string encrypted)
+        public Outcome<string> TryEncrypt(string unProtectedString)
         {
-            encrypted = unProtectedString;
-            return Outcome2.Succeed();
+            return Outcome.Succeed<string>(unProtectedString);
         }
     }
 }

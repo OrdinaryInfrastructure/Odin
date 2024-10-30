@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-
-namespace Odin.Email
+﻿namespace Odin.Email
 {
     /// <summary>
     /// The IEmailSender providers supported

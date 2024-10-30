@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Odin.System
+﻿namespace Odin.System
 {
     /// <summary>
     /// Extensions to DateTimeOffset

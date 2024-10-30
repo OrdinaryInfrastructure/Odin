@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Odin.Cryptography
+﻿namespace Odin.Cryptography
 {
     /// <summary>
     /// The available Cryptography providers supported

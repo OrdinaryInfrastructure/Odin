@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Odin.System
+﻿namespace Odin.System
 {
     /// <summary>
     /// Common DateTime extension utilities

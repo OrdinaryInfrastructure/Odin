@@ -1,32 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <PackageId>Odin.Messaging.RabbitMq</PackageId>
-    <Authors>Mark Derman</Authors>
-    <Company>Soulv Software (Pty) Ltd</Company>
-    <Description></Description>
-    <Copyright>Copyright (c) Soulv Software 2022</Copyright>
-    <PackageProjectUrl>https://soulv.co.za</PackageProjectUrl>
-    <RepositoryUrl>https://dev.azure.com/soulvsoftware/Home/_git/Odin</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <WarningLevel>3</WarningLevel>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsAsErrors />
-    <NoWarn></NoWarn>
-    <DocumentationFile>bin\Debug\Odin.Messaging.xml</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <WarningLevel>3</WarningLevel>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <NoWarn></NoWarn>
-    <DocumentationFile>bin\Release\Odin.Messaging.xml</DocumentationFile>
-  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.2" />
     <PackageReference Include="RabbitMQ.Client" Version="6.8.1" />
   </ItemGroup>
   <ItemGroup>

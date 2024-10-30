@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Odin.Notifications
+﻿namespace Odin.Notifications
 {
     /// <summary>
     /// The available notification sending providers supported

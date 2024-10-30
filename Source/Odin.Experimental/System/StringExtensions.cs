@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace Odin.System
+﻿namespace Odin.System
 {
     /// <summary>
     /// Various string utilities not worth including in Odin.System.StringExtensions

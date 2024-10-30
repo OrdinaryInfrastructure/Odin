@@ -1,28 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <PackageId>Odin.RemoteFiles</PackageId>
-    <Authors>Mark Derman</Authors>
-    <Company>Soulv Software (Pty) Ltd</Company>
-    <Description></Description>
-    <Copyright>Copyright (c) Soulv Software 2022</Copyright>
-    <PackageProjectUrl>https://soulv.co.za</PackageProjectUrl>
-    <RepositoryUrl>https://dev.azure.com/soulvsoftware/Home/_git/Odin</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <WarningLevel>2</WarningLevel>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsAsErrors />
-    <NoWarn>1701;1702;1591;1573</NoWarn>
-    <DocumentationFile>bin\Debug\Odin.RemoteFiles.xml</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <WarningLevel>2</WarningLevel>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <NoWarn></NoWarn>
-    <DocumentationFile>bin\Release\Odin.RemoteFiles.xml</DocumentationFile>
-  </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Odin.Common\Odin.Common.csproj" />
     <ProjectReference Include="..\Odin.RemoteFiles.Abstractions\Odin.RemoteFiles.Abstractions.csproj" />
@@ -30,6 +6,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.2" />
   </ItemGroup>
 </Project>

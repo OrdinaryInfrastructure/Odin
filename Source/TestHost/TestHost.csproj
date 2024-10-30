@@ -3,20 +3,9 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>TestHost</RootNamespace>
     <UserSecretsId>TestHost</UserSecretsId>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <WarningsAsErrors />
-    <NoWarn>1701;1702;1591;1573</NoWarn>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <NoWarn>1701;1702;1591;1573</NoWarn>
-  </PropertyGroup>
+
   <ItemGroup>
     <Content Update="appSettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
