@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Odin.Collections
+﻿namespace Odin.Collections
 {
     /// <summary>
     /// For System.Collections.Generic.List

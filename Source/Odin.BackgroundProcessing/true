@@ -1,0 +1,153 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Odin.BackgroundProcessing</name>
+    </assembly>
+    <members>
+        <member name="T:Odin.BackgroundProcessing.BackgroundProcessingOptions">
+            <summary>
+            BackgroundProcessing for loading from configuration 
+            </summary>
+        </member>
+        <member name="P:Odin.BackgroundProcessing.BackgroundProcessingOptions.Provider">
+            <summary>
+            Fake or Hangfire
+            </summary>
+        </member>
+        <member name="M:Odin.BackgroundProcessing.BackgroundProcessingOptions.Validate">
+            <summary>
+            Validates the settings instance
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Odin.BackgroundProcessing.FakeBackgroundProcessor">
+            <summary>
+            Fake provider for testing purposes. Use as an alternative to tedious mocking of Expressions...
+            </summary>
+        </member>
+        <member name="M:Odin.BackgroundProcessing.FakeBackgroundProcessor.#ctor(Odin.BackgroundProcessing.FakeBackgroundJobProviderBehaviour)">
+            <summary>
+            Default contructor
+            </summary>
+            <param name="behaviour"></param>
+        </member>
+        <member name="P:Odin.BackgroundProcessing.FakeBackgroundProcessor.Behaviour">
+            <summary>
+            Behaviour of fake provider
+            </summary>
+        </member>
+        <member name="M:Odin.BackgroundProcessing.FakeBackgroundProcessor.ScheduleJob``1(System.Linq.Expressions.Expression{System.Func{``0,System.Threading.Tasks.Task}},System.DateTimeOffset)">
+            <summary>
+            Does nothing and returns a successful outcome
+            </summary>
+            <param name="methodCall"></param>
+            <param name="enqueueAt"></param>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:Odin.BackgroundProcessing.FakeBackgroundProcessor.ScheduleJob``1(System.Linq.Expressions.Expression{System.Func{``0,System.Threading.Tasks.Task}},System.TimeSpan)">
+            <summary>
+            Does nothing and returns a successful outcome
+            </summary>
+            <param name="methodCall"></param>
+            <param name="enqueueIn"></param>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:Odin.BackgroundProcessing.FakeBackgroundProcessor.AddOrUpdateRecurringJob``1(System.Linq.Expressions.Expression{System.Action{``0}},System.String,System.String,System.TimeZoneInfo,System.String)">
+            <summary>
+            Acts according to how the Behaviour property has been set.
+            </summary>
+            <param name="methodCall"></param>
+            <param name="jobName"></param>
+            <param name="cronExpression"></param>
+            <param name="timeZoneInfo"></param>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+            <exception cref="T:System.ApplicationException"></exception>
+            <exception cref="T:System.Exception"></exception>
+        </member>
+        <member name="M:Odin.BackgroundProcessing.FakeBackgroundProcessor.RemoveRecurringJob(System.String)">
+            <summary>
+            RemoveIfExists
+            </summary>
+            <param name="jobName"></param>
+            <exception cref="T:System.ApplicationException"></exception>
+            <exception cref="T:System.Exception"></exception>
+        </member>
+        <member name="T:Odin.BackgroundProcessing.FakeBackgroundJobProviderBehaviour">
+            <summary>
+            Fake behaviour enum
+            </summary>
+        </member>
+        <member name="F:Odin.BackgroundProcessing.FakeBackgroundJobProviderBehaviour.ReturnSuccessfulOutcome">
+            <summary>
+            Succeed
+            </summary>
+        </member>
+        <member name="F:Odin.BackgroundProcessing.FakeBackgroundJobProviderBehaviour.ReturnFailedOutcome">
+            <summary>
+            Fail
+            </summary>
+        </member>
+        <member name="F:Odin.BackgroundProcessing.FakeBackgroundJobProviderBehaviour.ReturnNull">
+            <summary>
+            Return null
+            </summary>
+        </member>
+        <member name="F:Odin.BackgroundProcessing.FakeBackgroundJobProviderBehaviour.ThrowException">
+            <summary>
+            Throw an Exception
+            </summary>
+        </member>
+        <member name="T:Odin.BackgroundProcessing.IBackgroundProcessorServiceInjector">
+            <summary>
+            Sends an email
+            </summary>
+        </member>
+        <member name="M:Odin.BackgroundProcessing.IBackgroundProcessorServiceInjector.TryAddBackgroundProcessor(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration,Microsoft.Extensions.Configuration.IConfigurationSection)">
+            <summary>
+            Supports injection of specific EmailSender
+            </summary>
+            <param name="serviceCollection"></param>
+            <param name="configSection"></param>
+        </member>
+        <member name="M:Odin.BackgroundProcessing.IBackgroundProcessorServiceInjector.UseBackgroundProcessing(Microsoft.AspNetCore.Builder.IApplicationBuilder,System.IServiceProvider)">
+            <summary>
+            Inserts background processing middleware using IApplicationBuilder
+            </summary>
+            <param name="appBuilder"></param>
+            <param name="appServices"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Odin.BackgroundProcessing.ServiceInjector">
+            <summary>
+            Dependency injection methods to support Background Processing services setup by adding an IBackgroundProcessor
+            from configuration
+            </summary>
+        </member>
+        <member name="M:Odin.BackgroundProcessing.ServiceInjector.AddBackgroundProcessing(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration,System.String)">
+            <summary>
+            Sets up IBackgroundProcessor in DI from configuration
+            </summary>
+            <param name="serviceCollection"></param>
+            <param name="configuration"></param>
+            <param name="sectionName">Cryptography by default</param>
+        </member>
+        <member name="M:Odin.BackgroundProcessing.ServiceInjector.AddBackgroundProcessing(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration,Microsoft.Extensions.Configuration.IConfigurationSection)">
+            <summary>
+            Sets up EmailSending from the provided ConfigurationSection
+            </summary>
+            <param name="serviceCollection"></param>
+            <param name="configurationSection"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Odin.BackgroundProcessing.ServiceInjector.UseBackgroundProcessing(Microsoft.AspNetCore.Builder.IApplicationBuilder,System.IServiceProvider)">
+            <summary>
+            Sets up Background Processing
+            </summary>
+            <param name="appServices"></param>
+            <param name="appBuilder"></param>
+        </member>
+    </members>
+</doc>

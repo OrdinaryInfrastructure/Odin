@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
 namespace Odin.Messaging.RabbitMq;
 
 public class FakeRabbitConnectionService: IRabbitConnectionService

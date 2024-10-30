@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Odin.DesignContracts
+﻿namespace Odin.DesignContracts
 {
     /// <summary>
     /// Represents a contract needing to be met by the caller of a public sealed class method on entry to said method.

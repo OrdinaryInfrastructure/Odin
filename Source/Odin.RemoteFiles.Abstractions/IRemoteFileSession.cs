@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using System.IO;
-
 namespace Odin.RemoteFiles;
 
 /// <summary>
@@ -64,7 +61,7 @@ public interface IRemoteFileSession
     /// <param name="path">The path to the directory to search under</param>
     /// <param name="searchPattern">Optional search pattern for the file name under the specified path. Supports wildcards (*) and (?).</param>
     /// <returns></returns>
-    IEnumerable<IRemoteFileInfo> GetFiles(string path, string searchPattern = null);
+    IEnumerable<IRemoteFileInfo> GetFiles(string path, string? searchPattern = null);
 
     /// <summary>
     /// Checks for file or directory existence. 

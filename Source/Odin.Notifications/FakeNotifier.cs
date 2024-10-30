@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Odin.System;
+﻿using Odin.System;
 
 namespace Odin.Notifications
 {

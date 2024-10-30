@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using Odin.Cryptography;
+﻿using Odin.Cryptography;
 
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Extensions.Configuration;
@@ -49,7 +47,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
                 if (!string.IsNullOrWhiteSpace(settings.PersistKeysToDirectory))
                 {
-                    builder = builder.PersistKeysToFileSystem(
+                    builder.PersistKeysToFileSystem(
                         new DirectoryInfo(settings.PersistKeysToDirectory));
                 }
 

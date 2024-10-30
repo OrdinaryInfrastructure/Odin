@@ -1,7 +1,4 @@
-﻿using System;
- using System.Threading.Tasks;
-
- namespace Odin.EntityFramework
+﻿namespace Odin.EntityFramework
 {
     /// <summary>
     /// Abstraction of BeginTransaction, Commit and Rollback to assist with testability.

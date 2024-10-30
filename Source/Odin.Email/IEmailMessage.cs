@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Odin.Email
+﻿namespace Odin.Email
 {
     /// <summary>
     /// Default IEmailMessage for .NET

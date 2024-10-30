@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Odin.Email
+﻿namespace Odin.Email
 {
     /// <summary>
     /// Used for To, CC and BCC in EmailAddress

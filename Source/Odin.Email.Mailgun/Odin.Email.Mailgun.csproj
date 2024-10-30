@@ -1,33 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <Authors>Mark Derman</Authors>
-    <Company>Soulv Software (Pty) Ltd</Company>
-    <Description></Description>
-    <Copyright>Copyright (c) Soulv Software 2022</Copyright>
-    <PackageProjectUrl>https://soulv.co.za</PackageProjectUrl>
-    <RepositoryUrl>https://dev.azure.com/soulvsoftware/Home/_git/Odin</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <WarningLevel>3</WarningLevel>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsAsErrors />
-    <NoWarn></NoWarn>
-    <DocumentationFile>bin\Debug\net8.0\Odin.Email.Mailgun.xml</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <WarningLevel>3</WarningLevel>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <NoWarn>1701;1702;1591;1573</NoWarn>
-    <DocumentationFile>bin\Release\net8.0\Odin.Email.Mailgun.xml</DocumentationFile>
-  </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Odin.Common\Odin.Common.csproj" />
     <ProjectReference Include="..\Odin.Email\Odin.Email.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Polly.Core" Version="8.4.0" />
+    <PackageReference Include="Polly.Core" Version="8.4.2" />
   </ItemGroup>
 </Project>

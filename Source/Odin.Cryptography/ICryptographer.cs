@@ -10,20 +10,18 @@ namespace Odin.Cryptography
     public interface ICryptographer
     {
         /// <summary>
-        /// Attempts decryption of a string
+        /// Attempts decryption of a string, returning the decrypted string if successful in the Outcome.Value
         /// </summary>
         /// <param name="protectedString"></param>
-        /// <param name="decrypted"></param>
         /// <returns></returns>
-        Outcome2 TryDecrypt(string protectedString, out string decrypted);
+        Outcome<string> TryDecrypt(string protectedString);
 
         /// <summary>
-        /// Attempts encryption of a string
+        /// Attempts encryption of a string, returning the encrypted string if successful in the Outcome.Value
         /// </summary>
         /// <param name="unProtectedString"></param>
-        /// <param name="encrypted"></param>
         /// <returns></returns>
-        Outcome2 TryEncrypt(string unProtectedString, out string encrypted);
+        Outcome<string> TryEncrypt(string unProtectedString);
 
     }
 }
