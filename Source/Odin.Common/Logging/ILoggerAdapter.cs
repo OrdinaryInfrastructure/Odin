@@ -3,10 +3,18 @@
 namespace Odin.Logging
 {
     /// <summary>
+    /// Logging adapter interface to wrap ILogger mainly to ease mocking in tests...
+    /// </summary>
+    /// <typeparam name="TCategoryName"></typeparam>
+    public interface ILoggerAdapter<out TCategoryName> : ILoggerAdapter
+    {
+
+    }
+
+    /// <summary>
     /// Logging adapter interface to wrap ILogger mainly to ease mocking in tests
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    public interface ILoggerAdapter<T> : ILogger
+    public interface ILoggerAdapter : ILogger
     {
         /// <summary>
         /// Log

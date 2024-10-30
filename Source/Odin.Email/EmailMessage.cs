@@ -143,12 +143,7 @@ namespace Odin.Email
         /// Email body
         /// </summary>
         public string Body { get; set; }
-
-        /// <summary>
-        /// Plain text alternative body
-        /// </summary>
-        public string? PlaintextAlternativeBody { get; set; }
-
+        
         /// <summary>
         /// Email priority
         /// </summary>

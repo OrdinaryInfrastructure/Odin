@@ -14,11 +14,13 @@
     <WarningLevel>3</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <NoWarn />
+    <DocumentationFile>bin\Debug\net8.0\Odin.Data.SqlScriptsRunner.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <WarningLevel>3</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <NoWarn />
+    <DocumentationFile>bin\Release\net8.0\Odin.Data.SqlScriptsRunner.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="dbup" Version="5.0.41" />

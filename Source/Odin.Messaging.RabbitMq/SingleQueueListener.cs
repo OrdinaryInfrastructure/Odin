@@ -3,30 +3,39 @@ using RabbitMQ.Client.Events;
 
 namespace Odin.Messaging.RabbitMq;
 
-internal class SingleQueueListener: IDisposable
+internal class SingleQueueListener: IAsyncDisposable
 {
-
     private readonly string _queueName;
 
+    private readonly string _consumerTag;
+
     private readonly TimeSpan _checkChannelPeriod;
+
+    private readonly TimeSpan _channelOperationsTimeout;
     
     private readonly IModel _channel;
 
     private readonly EventingBasicConsumer _consumer;
 
     private readonly bool _autoAck;
+    private readonly bool _exclusive;
     
     public event Func<Exception, Task>? OnFailure;
     public event Func<IRabbitConnectionService.ConsumedMessage, Task>? OnConsume;
 
-    private readonly CancellationTokenSource _cancellationTokenSource = new();
+    private CancellationTokenSource _checkChannelCts;
+    private CancellationTokenSource _checkConsumerCts;
     
-    public SingleQueueListener(string queueName, IConnection connection, TimeSpan checkChannelPeriod, bool autoAck, ushort prefetchCount, string clientName)
+    public SingleQueueListener(string queueName, IConnection connection, TimeSpan checkChannelPeriod, bool autoAck, bool exclusive, ushort prefetchCount, string clientName, TimeSpan? channelOperationsTimeout = null)
     {
         _queueName = queueName;
         _checkChannelPeriod = checkChannelPeriod;
         _autoAck = autoAck;
-
+        _exclusive = exclusive;
+        _channelOperationsTimeout = channelOperationsTimeout ?? TimeSpan.FromSeconds(5);
+        _checkChannelCts = new CancellationTokenSource();
+        _checkConsumerCts = new CancellationTokenSource();
+        
         _channel = connection.CreateModel();
         // PrefetchSize 0 means no limit on the number of octets of data the broker will send.
         _channel.BasicQos(prefetchSize: 0, prefetchCount: prefetchCount, global: true );
@@ -35,51 +44,99 @@ internal class SingleQueueListener: IDisposable
 
         if (!_channel.IsOpen)
         {
-            throw new Exception($"Failed to open channel. Reason: " + _channel.CloseReason?.ReplyText);
+            throw new ApplicationException("Failed to open channel. Reason: " + _channel.CloseReason?.ReplyText);
         }
 
         _consumer = new EventingBasicConsumer(_channel);
+        
+        _consumer.ConsumerCancelled += HandleConsumerCancelled;
+        _consumer.Received += HandleMessageReceived;
+        _channel.ModelShutdown += HandleChannelShutdown;
 
-        var consumerTag = $"RabbitConnectionService-SingleQueueListener-{clientName}-{_queueName}-{Guid.NewGuid().ToString().Substring(0,4)}";
+        _consumerTag = $"{clientName}-{_queueName}-{Guid.NewGuid().ToString().Substring(0,4)}";
 
-        _channel.BasicConsume(
-            consumer: _consumer,
-            queue: queueName,
-            autoAck: _autoAck,
-            consumerTag: consumerTag);
-
-        _consumer.ConsumerCancelled += GetConsumerCancelledHandler();
-        _consumer.Received += GetDeliverEventHandler();
-        _channel.ModelShutdown += GetChannelShutdownHandler();
-
-        _ = CheckChannelPeriodically(_cancellationTokenSource.Token);
+        _ = CheckChannelPeriodically();
     }
 
-
-    private EventHandler<BasicDeliverEventArgs> GetDeliverEventHandler()
+    public async Task StartConsuming()
     {
-        return (sender, args) =>
+        if (!_channel.IsOpen)
         {
-            var message = new IRabbitConnectionService.ConsumedMessage
+            throw new ApplicationException("Cannot start consuming since channel is not open.");
+        }
+
+        if (_consumer.IsRunning)
+        {
+            return;
+        }
+
+        var tcs = new TaskCompletionSource();
+
+        var timeoutTask = Task.Delay(_channelOperationsTimeout);
+
+        _consumer.Registered += (obj, args) =>
+        {
+            if (args.ConsumerTags.Length == 1 && args.ConsumerTags[0] == _consumerTag)
             {
-                Body = args.Body.ToArray(),
-                ConsumedAt = DateTimeOffset.Now,
-                IsRedelivered = args.Redelivered,
-                Exchange = args.Exchange,
-                RoutingKey = args.RoutingKey,
-                ConsumerTag = args.ConsumerTag,
-                CorrelationId = args.BasicProperties?.CorrelationId,
-                Headers = args.BasicProperties?.Headers?.ToDictionary() ?? new Dictionary<string, object>(),
-                MessageId = args.BasicProperties?.MessageId,
-                ReplyTo = args.BasicProperties?.ReplyTo,
-                Type = args.BasicProperties?.Type,
-                Timestamp = args.BasicProperties?.Timestamp.UnixTime is null ? null : DateTimeOffset.FromUnixTimeSeconds(args.BasicProperties.Timestamp.UnixTime),
-                Ack = _autoAck ? null : GetManualAckHandler(args.DeliveryTag),
-                Nack = _autoAck ? null : GetManualNackHandler(args.DeliveryTag),
-            };
-            
-            OnConsume?.Invoke(message);
+                tcs.TrySetResult();
+                return;
+            }
+
+            tcs.TrySetException(new ApplicationException($"Consume-ok fired with unexpected ConsumerTags (expected [{_consumerTag}]): [{string.Join(", ", args.ConsumerTags)}]"));
         };
+        
+        _channel.BasicConsume(
+            consumer: _consumer, 
+            queue: _queueName, 
+            autoAck: _autoAck, 
+            consumerTag: _consumerTag,
+            exclusive: _exclusive);
+
+        var completedTask = await Task.WhenAny(tcs.Task, timeoutTask);
+
+        if (completedTask == timeoutTask)
+        {
+            throw new TimeoutException($"StartConsuming reached timeout of {_channelOperationsTimeout}");
+        }
+
+        _ = CheckConsumerPeriodically();
+    }
+    
+
+    void HandleConsumerRegistered(object? sender, ConsumerEventArgs args)
+    {
+        Console.WriteLine("HandleConsumerRegistered fired. Tags: " + string.Join(", ", args.ConsumerTags));
+    }
+    
+    void HandleConsumerUnRegistered(object? sender, ConsumerEventArgs args)
+    {
+        Console.WriteLine("HandleConsumerUnregistered fired. Tags: " + string.Join(", ", args.ConsumerTags));
+    }
+    
+    private void HandleMessageReceived(object? sender, BasicDeliverEventArgs args)
+    {
+        var message = new IRabbitConnectionService.ConsumedMessage
+        {
+            Body = args.Body.ToArray(),
+            ConsumedAt = DateTimeOffset.Now,
+            IsRedelivered = args.Redelivered,
+            Exchange = args.Exchange,
+            RoutingKey = args.RoutingKey,
+            ConsumerTag = args.ConsumerTag,
+            CorrelationId = args.BasicProperties?.CorrelationId,
+            Headers = args.BasicProperties?.Headers?.ToDictionary() ?? new Dictionary<string, object>(),
+            MessageId = args.BasicProperties?.MessageId,
+            ReplyTo = args.BasicProperties?.ReplyTo,
+            Type = args.BasicProperties?.Type,
+            Timestamp = args.BasicProperties?.Timestamp.UnixTime is null ? null : DateTimeOffset.FromUnixTimeSeconds(args.BasicProperties.Timestamp.UnixTime),
+            AckNackCallbacks = _autoAck ? null : new IRabbitConnectionService.ConsumedMessage.AcknowledgementCallbacks
+            {
+                Ack = GetManualAckHandler(args.DeliveryTag),
+                Nack = GetManualNackHandler(args.DeliveryTag),
+            },
+        };
+            
+        OnConsume?.Invoke(message);
     }
 
     private Action GetManualAckHandler(ulong deliveryTag)
@@ -98,67 +155,90 @@ internal class SingleQueueListener: IDisposable
         };
     }
 
-    private async Task CheckChannelPeriodically(CancellationToken token)
+    private async Task CheckChannelPeriodically()
     {
-        while (!token.IsCancellationRequested)
+        while (!_checkChannelCts.Token.IsCancellationRequested)
         {
-            await Task.Delay(_checkChannelPeriod, token);
-            
-            if (token.IsCancellationRequested)
-            {
-                break;
-            }
-            
-            Console.WriteLine("Periodically checking channel...");
-            
+            await Task.Delay(_checkChannelPeriod, _checkChannelCts.Token);
             if (!_channel.IsOpen)
             {
-                OnFailure?.Invoke(new Exception($"A periodic check found the channel closed. Reason: " + _channel.CloseReason.ReplyText));
-                Dispose();
+                OnFailure?.Invoke(new ApplicationException($"A periodic check found the channel closed. Reason: " + _channel.CloseReason.ReplyText));
             }
+        }
+    }
 
+    private async Task CheckConsumerPeriodically()
+    {
+        while (!_checkConsumerCts.Token.IsCancellationRequested)
+        {
+            await Task.Delay(_checkChannelPeriod, _checkConsumerCts.Token);
             if (!_consumer.IsRunning)
             {
-                OnFailure?.Invoke(new Exception($"A periodic check found the consumer not running. ShutdownReason: " + _consumer.ShutdownReason.ReplyText));
-                Dispose();
+                OnFailure?.Invoke(new IRabbitConnectionService.ConsumerCancelledException($"A periodic check found the consumer not running. ShutdownReason: " + _consumer.ShutdownReason.ReplyText));
             }
         }
     }
-
-    private EventHandler<ConsumerEventArgs> GetConsumerCancelledHandler()
+    
+    private void HandleConsumerCancelled(object? sender, ConsumerEventArgs args)
     {
-        return (sender, args) =>
-        {
-            var exception = new Exception($"Consumer was cancelled. Cancelled tags: {string.Join(", ", args.ConsumerTags)}. ShutdownReason: " + _consumer.ShutdownReason);
-            OnFailure?.Invoke(exception);
-            Dispose();
-        };
+        var exception = new IRabbitConnectionService.ConsumerCancelledException($"Consumer was cancelled. Cancelled tags: {string.Join(", ", args.ConsumerTags)}. ShutdownReason: " + _consumer.ShutdownReason);
+        OnFailure?.Invoke(exception);
     }
-
-    private EventHandler<ShutdownEventArgs> GetChannelShutdownHandler()
+    
+    private void HandleChannelShutdown(object? sender, ShutdownEventArgs args)
     {
-        return (sender, args) =>
-        {
-            var exception = new Exception($"Channel shut down. Shutdown reason: {args.ReplyText} CloseReason: " + _channel.CloseReason?.ReplyText);
-            OnFailure?.Invoke(exception);
-            Dispose();
-        };
+        var exception = new ApplicationException($"Channel shut down. Shutdown reason: {args.ReplyText} CloseReason: " + _channel.CloseReason?.ReplyText);
+        OnFailure?.Invoke(exception);
     }
-
-    public void Dispose()
+    
+    public async Task StopConsuming()
     {
-        _cancellationTokenSource.Cancel();
-        foreach (var tag in _consumer.ConsumerTags)
+        await _checkConsumerCts.CancelAsync();
+
+        _consumer.ConsumerCancelled -= HandleConsumerCancelled;
+
+        if (!_channel.IsOpen)
         {
-            try
-            {
-                _channel.BasicCancel(tag);
-            }
-            catch
-            {
-            }
+            throw new ApplicationException("Cannot cancel consuming since channel is not open.");
         }
 
+        var tcs = new TaskCompletionSource();
+
+        var timeoutTask = Task.Delay(_channelOperationsTimeout);
+
+        _consumer.Unregistered += (obj, args) =>
+        {
+            if (args.ConsumerTags.Length == 1 && args.ConsumerTags[0] == _consumerTag)
+            {
+                tcs.TrySetResult();
+                return;
+            }
+
+            tcs.TrySetException(new ApplicationException($"Consume-cancel-ok fired with unexpected ConsumerTags (expected [{_consumerTag}]): [{string.Join(", ", args.ConsumerTags)}]"));
+        };
+
+        _channel.BasicCancel(_consumerTag);
+
+        var completedTask = await Task.WhenAny(tcs.Task, timeoutTask);
+
+        if (completedTask == timeoutTask)
+        {
+            throw new TimeoutException($"StopConsuming reached timeout of {_channelOperationsTimeout}");
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        try
+        {
+            await StopConsuming();
+        }
+        catch
+        {
+        }
+
+        await _checkChannelCts.CancelAsync();
+        _channel.ModelShutdown -= HandleChannelShutdown;
         try
         {
             _channel.Close();
@@ -166,6 +246,6 @@ internal class SingleQueueListener: IDisposable
         catch
         {
         }
+        _channel.Dispose();
     }
-    
 }

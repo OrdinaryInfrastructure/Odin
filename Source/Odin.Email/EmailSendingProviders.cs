@@ -16,12 +16,17 @@
         public const string Mailgun = "Mailgun";
 
         /// <summary>
+        /// Office365
+        /// </summary>
+        public const string Office365 = "Office365";
+
+        /// <summary>
         /// Returns the supported provider names
         /// </summary>
         /// <returns></returns>
         public static string[] GetAllProviders()
         {
-            return new[] {Mailgun, Fake};
+            return new[] {Mailgun, Office365, Fake};
         }
         
         /// <summary>

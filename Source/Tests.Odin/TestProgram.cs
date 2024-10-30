@@ -16,7 +16,7 @@ namespace Tests.Odin
                 Args = args
             };
             WebApplicationBuilder builder = WebApplication.CreateBuilder(appOptions);
-            builder.Configuration.AddJsonFile("appSettings.json", false);
+            // builder.Configuration.AddJsonFile("appSettings.json", false);
             builder.Configuration.AddUserSecrets<TestProgram>();
             
             builder.Services.AddLoggerAdapter();
@@ -27,14 +27,14 @@ namespace Tests.Odin
             // For manual testing of RabbitBox
             
             var tests = new RabbitConnectionServiceTests();
-            // _ = tests.Single_Message_Works();
+            // _ = tests.Single_Message_Works(); 
             // _ = tests.QueueSubscription_Works();
 
             var resubscriberTests = new ResubscribingRabbitSubscriptionTests();
+            
+            _ = resubscriberTests.ResubscribingSubscription_Works();
 
-            // _ = resubscriberTests.ResubscribingSubscription_Works();
-
-            var clientInvestigations = new RabbitClientInvestigations();
+            // var clientInvestigations = new RabbitClientInvestigations();
 
             // _ = clientInvestigations.CreateChannel_Is_ThreadSafe();
             

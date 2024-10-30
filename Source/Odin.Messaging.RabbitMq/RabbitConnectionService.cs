@@ -117,7 +117,7 @@ public class RabbitConnectionService: IRabbitConnectionService
 
     }
 
-    private async Task<SingleQueueListener> AddSingleQueueListener(string queueName, TimeSpan checkChannelPeriod, bool autoAck, ushort prefetchCount)
+    private async Task<SingleQueueListener> AddSingleQueueListener(string queueName, TimeSpan checkChannelPeriod, bool autoAck, bool exclusive, ushort prefetchCount, TimeSpan? channelOperationsTimeout = null)
     {
         // Yes, we are locking this dictionary for the duration of the SingleQueueListener constructor, which involves several network round trips. Subscribing should not be done very often.
         await _listenersSemaphore.WaitAsync();
@@ -128,17 +128,17 @@ public class RabbitConnectionService: IRabbitConnectionService
             
             if (_listeners.TryGetValue(queueName, out _))
             {
-                throw new Exception($"Listener for queue {queueName} is already active.");
+                throw new ApplicationException($"Listener for queue {queueName} already exists.");
             }
 
             if (GetChannelsCount() >= _maxChannels)
             {
-                throw new Exception($"Will not create new SingleQueueListener for queue {queueName} as the MaxChannels limit, {_maxChannels}, has been reached.");
+                throw new ApplicationException($"Will not create new SingleQueueListener for queue {queueName} as the MaxChannels limit, {_maxChannels}, has been reached.");
             }
 
             var connection = await GetConnection();
 
-            var listener = new SingleQueueListener(queueName, connection, checkChannelPeriod, autoAck, prefetchCount, _clientProvidedName);
+            var listener = new SingleQueueListener(queueName, connection, checkChannelPeriod, autoAck, exclusive, prefetchCount, _clientProvidedName, channelOperationsTimeout);
 
             _listeners.Add(queueName, listener);
 
@@ -158,7 +158,14 @@ public class RabbitConnectionService: IRabbitConnectionService
         {
             if (_listeners.Remove(queueName, out var l))
             {
-                l.Dispose();
+                try
+                {
+                    await l.DisposeAsync();
+                }
+                catch
+                {
+                    
+                }
             }
         }
         finally
@@ -167,29 +174,30 @@ public class RabbitConnectionService: IRabbitConnectionService
         }
     }
 
-    public async Task<IRabbitConnectionService.Subscription> SubscribeToConsume(string queueName, bool autoAck, ushort prefetchCount = 200,
-        TimeSpan? channelCheckPeriod = null)
+    public async Task<IRabbitConnectionService.Subscription> SubscribeToConsume(string queueName, bool autoAck, bool exclusive = false, ushort prefetchCount = 200,
+        TimeSpan? channelCheckPeriod = null, TimeSpan? channelOperationsTimeout = null)
     {
         channelCheckPeriod ??= TimeSpan.FromSeconds(60);
         SingleQueueListener? listener = null;
         try
         {
-            listener = await AddSingleQueueListener(queueName, channelCheckPeriod.Value, autoAck, prefetchCount);
+            listener = await AddSingleQueueListener(queueName, channelCheckPeriod.Value, autoAck, exclusive, prefetchCount, channelOperationsTimeout);
         }
         catch (Exception)
         {
-            listener?.Dispose();
+            if (listener is not null)
+            {
+                await listener.DisposeAsync();
+            }
             await RemoveSingleQueueListener(queueName);
             throw;
         }
 
         var subscription = new IRabbitConnectionService.Subscription
         {
-            Unsubscribe = async () =>
-            {
-                listener.Dispose();
-                await RemoveSingleQueueListener(queueName);
-            }
+            CloseChannel = () => RemoveSingleQueueListener(queueName),
+            StartConsuming = () => listener.StartConsuming(),
+            StopConsuming = () => listener.StopConsuming(),
         };
 
         listener.OnConsume += message =>
@@ -227,21 +235,37 @@ public class RabbitConnectionService: IRabbitConnectionService
         
         foreach (var sender in _senders.Values)
         {
-            sender.Dispose();
+            try
+            {
+                sender.Dispose();
+            }
+            catch
+            {
+            }
         }
 
         foreach (var listener in _listeners.Values)
         {
-            listener.Dispose();
+            try
+            {
+                await listener.DisposeAsync();
+            }
+            catch
+            {
+            }
         }
-        
-        _connection?.Close();
+
+        try
+        {
+            _connection?.Close();
+        }
+        catch
+        {
+        }
         
         _sendersSemaphore.Release();
         _listenersSemaphore.Release();
         _createConnectionSemaphore.Release();
-
-
     }
 
 

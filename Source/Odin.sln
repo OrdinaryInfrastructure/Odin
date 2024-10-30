@@ -42,6 +42,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odin.BackgroundProcessing.H
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestHost", "TestHost\TestHost.csproj", "{46440E03-83D0-4B7F-8295-8B78B373412E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odin.Email.Office365", "Odin.Email.Office365\Odin.Email.Office365.csproj", "{CA31FCDD-07D9-4C62-93E2-33235DE703EE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -116,5 +118,9 @@ Global
 		{46440E03-83D0-4B7F-8295-8B78B373412E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{46440E03-83D0-4B7F-8295-8B78B373412E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{46440E03-83D0-4B7F-8295-8B78B373412E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA31FCDD-07D9-4C62-93E2-33235DE703EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA31FCDD-07D9-4C62-93E2-33235DE703EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA31FCDD-07D9-4C62-93E2-33235DE703EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA31FCDD-07D9-4C62-93E2-33235DE703EE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

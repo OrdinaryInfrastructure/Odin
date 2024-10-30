@@ -23,6 +23,7 @@
     <ProjectReference Include="..\Odin.Email\Odin.Email.csproj" />
     <ProjectReference Include="..\Odin.Common\Odin.Common.csproj" />
     <ProjectReference Include="..\Odin.Email.Mailgun\Odin.Email.Mailgun.csproj" />
+    <ProjectReference Include="..\Odin.Email.Office365\Odin.Email.Office365.csproj" />
     <ProjectReference Include="..\Odin.BackgroundProcessing\Odin.BackgroundProcessing.csproj" />
     <ProjectReference Include="..\Odin.BackgroundProcessing.Hangfire\Odin.BackgroundProcessing.Hangfire.csproj" />
     <ProjectReference Include="..\Odin.Notifications\Odin.Notifications.csproj" />
