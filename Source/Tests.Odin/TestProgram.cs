@@ -20,8 +20,6 @@ namespace Tests.Odin
             builder.Configuration.AddUserSecrets<TestProgram>();
             
             builder.Services.AddLoggerAdapter();
-
-            
             
             WebApplication app = builder.Build();
             // app.RunAsync();
