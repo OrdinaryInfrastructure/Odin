@@ -15,6 +15,13 @@ namespace Odin.Cryptography
         /// <param name="protectedString"></param>
         /// <returns></returns>
         Outcome<string> TryDecrypt(string protectedString);
+        
+        /// <summary>
+        /// Attempts decryption of a string, returning the decrypted string if successful else throws an Exception.
+        /// </summary>
+        /// <param name="protectedString"></param>
+        /// <returns></returns>
+        string Decrypt(string protectedString);
 
         /// <summary>
         /// Attempts encryption of a string, returning the encrypted string if successful in the Outcome.Value
@@ -22,6 +29,14 @@ namespace Odin.Cryptography
         /// <param name="unProtectedString"></param>
         /// <returns></returns>
         Outcome<string> TryEncrypt(string unProtectedString);
+        
+        
+        /// <summary>
+        /// Attempts encryption of a string, returning the decrypted string if successful else throws an Exception.
+        /// </summary>
+        /// <param name="unProtectedString"></param>
+        /// <returns></returns>
+        string Encrypt(string unProtectedString);
 
     }
 }

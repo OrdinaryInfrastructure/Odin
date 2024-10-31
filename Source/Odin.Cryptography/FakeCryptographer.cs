@@ -18,7 +18,12 @@ namespace Odin.Cryptography
         {
             return Outcome.Succeed<string>(protectedString);
         }
-        
+
+        public string Decrypt(string protectedString)
+        {
+            return protectedString;
+        }
+
         /// <summary>
         /// Does nothing and returns encrypted as the same as unProtectedString
         /// </summary>
@@ -27,6 +32,11 @@ namespace Odin.Cryptography
         public Outcome<string> TryEncrypt(string unProtectedString)
         {
             return Outcome.Succeed<string>(unProtectedString);
+        }
+
+        public string Encrypt(string unProtectedString)
+        {
+            return unProtectedString;
         }
     }
 }
