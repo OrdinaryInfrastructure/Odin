@@ -65,13 +65,13 @@ jobs:
     - name: Publish to Nuget
       run: |
         dotnet nuget push $PACKAGE_DIR/Odin.Common.*.nupkg --api-key $API_KEY --source $NUGET_SOURCE
-        # dotnet nuget push $PACKAGE_DIR/Odin.BackgroundProcessing.*.nupkg --api-key $API_KEY --source $NUGET_SOURCE
-        # dotnet nuget push $PACKAGE_DIR/Odin.Cryptography.*.nupkg --api-key $API_KEY --source $NUGET_SOURCE
-        # dotnet nuget push $PACKAGE_DIR/Odin.Data.SqlScriptsRunner.*.nupkg --api-key $API_KEY --source $NUGET_SOURCE
-        # dotnet nuget push $PACKAGE_DIR/Odin.Email.*.nupkg --api-key $API_KEY --source $NUGET_SOURCE
-        # dotnet nuget push $PACKAGE_DIR/Odin.Messaging.RabbitMq.*.nupkg --api-key $API_KEY --source $NUGET_SOURCE
-        # dotnet nuget push $PACKAGE_DIR/Odin.Notifications.*.nupkg --api-key $API_KEY --source $NUGET_SOURCE
-        # dotnet nuget push $PACKAGE_DIR/Odin.RemoteFiles.*.nupkg --api-key $API_KEY --source $NUGET_SOURCE
+        dotnet nuget push $PACKAGE_DIR/Odin.BackgroundProcessing.*.nupkg --api-key $API_KEY --source $NUGET_SOURCE
+        dotnet nuget push $PACKAGE_DIR/Odin.Cryptography.*.nupkg --api-key $API_KEY --source $NUGET_SOURCE
+        dotnet nuget push $PACKAGE_DIR/Odin.Data.SqlScriptsRunner.*.nupkg --api-key $API_KEY --source $NUGET_SOURCE
+        dotnet nuget push $PACKAGE_DIR/Odin.Email.*.nupkg --api-key $API_KEY --source $NUGET_SOURCE
+        dotnet nuget push $PACKAGE_DIR/Odin.Messaging.RabbitMq.*.nupkg --api-key $API_KEY --source $NUGET_SOURCE
+        dotnet nuget push $PACKAGE_DIR/Odin.Notifications.*.nupkg --api-key $API_KEY --source $NUGET_SOURCE
+        dotnet nuget push $PACKAGE_DIR/Odin.RemoteFiles.*.nupkg --api-key $API_KEY --source $NUGET_SOURCE
       env:
         API_KEY: ${{ secrets.NUGET_API_KEY }}
         NUGET_SOURCE: ${{ env.NUGET_SOURCE }}
