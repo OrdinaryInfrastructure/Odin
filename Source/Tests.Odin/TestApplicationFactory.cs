@@ -8,6 +8,6 @@ public class TestApplicationFactory : WebApplicationFactory<TestProgram>
 {
     public IConfiguration GetConfiguration()
     {
-        return Services.GetService<IConfiguration>();
+        return Services.GetRequiredService<IConfiguration>();
     }
 }
