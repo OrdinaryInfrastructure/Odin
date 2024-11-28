@@ -1,5 +1,4 @@
-﻿using System;
-using Hangfire.Common;
+﻿using Hangfire.Common;
 using Hangfire.States;
 using Hangfire.Storage;
 

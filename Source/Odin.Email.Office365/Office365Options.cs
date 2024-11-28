@@ -42,7 +42,7 @@ public record Office365Options
             throw new ApplicationException($"{nameof(MicrosoftGraphClientSecretCredentials.ClientSecret)} null or whitespace");
         }
         
-        foreach (var sender in KeyedSenders.Values)
+        foreach (Sender sender in KeyedSenders.Values)
         {
             if (string.IsNullOrWhiteSpace(sender.SenderUserId))
             {

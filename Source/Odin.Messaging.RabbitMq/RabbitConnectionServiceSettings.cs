@@ -66,7 +66,7 @@ public record RabbitConnectionServiceSettings
 
     public string GetConnectionString()
     {
-        var vhost = VirtualHost;
+        string vhost = VirtualHost;
         if (!vhost.StartsWith('/'))
         {
             vhost = "/" + vhost;

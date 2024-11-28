@@ -1,6 +1,4 @@
-﻿using System.IO;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -10,14 +8,21 @@ using Odin.System;
 
 namespace Tests.Odin.Email.Mailgun
 {
+    
     [TestFixture]
     public sealed class MailgunEmailSenderTests : IntegrationTest
     {
-        private string GetTestEmailAddressFromConfig()
+        private string _toTestEmail;
+        private string _fromTestEmail;
+
+        [SetUp]
+        public void Setup()
         {
             IConfiguration config = AppFactory.GetConfiguration();
-            return config["Email-TestAddress"];
+            _toTestEmail = config["Email-TestToAddress"];
+            _fromTestEmail = config["Email-TestFromAddress"];
         }
+        
 
         [Test]
         public async Task Send_email_with_attachment()
@@ -27,10 +32,9 @@ namespace Tests.Odin.Email.Mailgun
                 .WithMailgunOptionsFromTestConfiguration(config)
                 .WithEmailSendingOptionsFromTestConfiguration(config);
             EmailMessage message = new EmailMessage();
-            string testerEmail = GetTestEmailAddressFromConfig();
-            message.From = new EmailAddress(testerEmail);
-            message.ReplyTo = new EmailAddress(testerEmail);
-            message.To.Add(new EmailAddress(testerEmail));
+            message.From = new EmailAddress(_fromTestEmail);
+            message.ReplyTo = new EmailAddress(_fromTestEmail);
+            message.To.Add(new EmailAddress(_toTestEmail));
             message.Subject = "MailgunEmailSenderTests.Send_email_with_attachment";
             message.IsHtml = true;
             message.Body = "<p>Body text</p>";
@@ -50,7 +54,7 @@ namespace Tests.Odin.Email.Mailgun
             scenario.LoggerMock!.Verify(c => c.LogError(It.IsAny<string>(),null), Times.Never);
             // Should log a message to Information
             string expectedLogMessage =
-                $"SendEmail to {testerEmail} succeeded. Subject - '{message.Subject}'. Sent with Mailgun reference {result.Value}.";
+                $"SendEmail to {_toTestEmail} succeeded. Subject - '{message.Subject}'. Sent with Mailgun reference {result.Value}.";
 
             scenario.LoggerMock!.Verify(c => c.Log(LogLevel.Information,expectedLogMessage,null), Times.Once);
             Assert.That(string.IsNullOrWhiteSpace(result.Value), Is.False, "Message Id expected from Mailgun");
@@ -64,8 +68,7 @@ namespace Tests.Odin.Email.Mailgun
                 .WithMailgunOptionsFromTestConfiguration(config)
                 .WithEmailSendingOptionsFromTestConfiguration(config);
             EmailMessage message = new EmailMessage();
-            string testerEmail = GetTestEmailAddressFromConfig();
-            message.To.Add(new EmailAddress(testerEmail));
+            message.To.Add(new EmailAddress(_toTestEmail));
             message.Subject = "Test Mail";
             message.IsHtml = true;
             message.Body = "<p>Body text</p>";
@@ -81,7 +84,7 @@ namespace Tests.Odin.Email.Mailgun
             scenario.LoggerMock!.Verify(c => c.LogError(It.IsAny<string>(),null), Times.Never);
             // Should log a message to Information
             string expectedLogMessage =
-                $"SendEmail to {testerEmail} succeeded. Subject - '{message.Subject}'. Sent with Mailgun reference {result.Value}.";
+                $"SendEmail to {_toTestEmail} succeeded. Subject - '{message.Subject}'. Sent with Mailgun reference {result.Value}.";
 
             scenario.LoggerMock!.Verify(c => c.Log(LogLevel.Information,expectedLogMessage,null), Times.Once);
             Assert.That(string.IsNullOrWhiteSpace(result.Value), Is.False, "Message Id expected from Mailgun");
@@ -100,14 +103,13 @@ namespace Tests.Odin.Email.Mailgun
             scenario.MailgunOptions.ApiKey = "testing_incorrect_api_key";
             MailgunEmailSender mailgunSender = scenario.Build();
             EmailMessage message = new EmailMessage();
-            string testerEmailAddress = GetTestEmailAddressFromConfig();
-            message.From = new EmailAddress(testerEmailAddress);
-            message.To.Add(new EmailAddress(testerEmailAddress));
+            message.From = new EmailAddress(_fromTestEmail);
+            message.To.Add(new EmailAddress(_toTestEmail));
             message.Subject = "Bad api key test";
             message.IsHtml = false;
             message.Body = "Bad api key test";
             string expectedLogMessage =
-                $"SendEmail to {testerEmailAddress} failed. Subject - '{message.Subject}'. Error - Failed to send email with Mailgun. Status code: 401 Unauthorized. Response content: Forbidden";
+                $"SendEmail to {_toTestEmail} failed. Subject - '{message.Subject}'. Error - Failed to send email with Mailgun. Status code: 401 Unauthorized. Response content: Forbidden";
 
             Outcome<string> result = await mailgunSender.SendEmail(message);
 

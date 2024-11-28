@@ -1,10 +1,7 @@
 #nullable enable
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 using NUnit.Framework;
 using Odin.Messaging.RabbitMq;
 
@@ -24,7 +21,7 @@ public class RabbitConnectionServiceTests: IntegrationTest
     [Ignore("So far, RabbitBox is tested manually only.")]
     public async Task Single_Message_Works()
     {
-        var box = new RabbitConnectionService(new RabbitConnectionServiceSettings
+        RabbitConnectionService box = new RabbitConnectionService(new RabbitConnectionServiceSettings
         {
             Host = "localhost",
             VirtualHost = "odin-rabbitbox",
@@ -58,7 +55,7 @@ public class RabbitConnectionServiceTests: IntegrationTest
 
 
 
-        for (var i = 0; i < 1; i++)
+        for (int i = 0; i < 1; i++)
         {
             threadIdentifiersIndexes.Add(i);
             threadIdentifiers.Add(Guid.NewGuid().ToString().Substring(0, 4));
@@ -72,12 +69,12 @@ public class RabbitConnectionServiceTests: IntegrationTest
         }, async (i, token) =>
         {
 
-            var s = threadIdentifiers[i];
+            string s = threadIdentifiers[i];
 
             // await Task.Delay(i * 15, token);
 
             
-            var stopwatch = new Stopwatch();
+            Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
             long millis = 0;
             long sendAsyncTotalMillis = 0;
@@ -86,7 +83,7 @@ public class RabbitConnectionServiceTests: IntegrationTest
             {
                 await Task.Delay(2500);
                 iteration++;
-                var body = JsonSerializer.SerializeToUtf8Bytes(new TestMessage
+                byte[] body = JsonSerializer.SerializeToUtf8Bytes(new TestMessage
                 {
                     MessageNumber = iteration,
                     Redelivered = null,
@@ -101,7 +98,7 @@ public class RabbitConnectionServiceTests: IntegrationTest
                 {
                     millis = stopwatch.ElapsedMilliseconds;
 
-                    var exchange = "test02-fanout"; // Random.Shared.NextDouble() > 0.5 ? "test02-fanout" : "test01";
+                    string exchange = "test02-fanout"; // Random.Shared.NextDouble() > 0.5 ? "test02-fanout" : "test01";
                     
                     await box.SendAsync(exchange, "", new Dictionary<string, object>(), "application/json", body, true, false);
                     // TestContext.Progress.WriteLine($"Sent message {i}\n");
@@ -154,7 +151,7 @@ public class RabbitConnectionServiceTests: IntegrationTest
 
     public async Task QueueSubscription_Works()
     {
-        var box = new RabbitConnectionService(new RabbitConnectionServiceSettings
+        RabbitConnectionService box = new RabbitConnectionService(new RabbitConnectionServiceSettings
         {
             Host = "localhost",
             VirtualHost = "odin-rabbitbox",
@@ -166,7 +163,7 @@ public class RabbitConnectionServiceTests: IntegrationTest
             SendTimeoutMillis = 5000,
         });
 
-        var queueName = "max-length-test-01";
+        string queueName = "max-length-test-01";
 
         IRabbitConnectionService.Subscription? subscription = null;
         try
@@ -181,7 +178,7 @@ public class RabbitConnectionServiceTests: IntegrationTest
                 try
                 {
                     str = Encoding.UTF8.GetString(message.Body);
-                    var body = JsonSerializer.Deserialize<TestMessage>(str)!;
+                    TestMessage body = JsonSerializer.Deserialize<TestMessage>(str)!;
                     consumedMessage = body;
                     // var body = JsonSerializer.Deserialize<TestMessage>(message.Body);
                     body.Redelivered = message.IsRedelivered;

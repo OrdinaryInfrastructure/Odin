@@ -1,9 +1,6 @@
-using System;
-using System.Threading;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Tests.Odin.Messaging.RabbitMq;
 
 namespace Tests.Odin
 {

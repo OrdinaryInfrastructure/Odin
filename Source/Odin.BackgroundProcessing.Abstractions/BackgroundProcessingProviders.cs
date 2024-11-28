@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace Odin.BackgroundProcessing
+﻿namespace Odin.BackgroundProcessing
 {
     /// <summary>
     /// The background processing providers supported

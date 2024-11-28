@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Hangfire.Annotations;
+﻿using Hangfire.Annotations;
 using Hangfire.Dashboard;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

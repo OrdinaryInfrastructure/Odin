@@ -87,21 +87,21 @@ public class RabbitConnectionService: IRabbitConnectionService
         {
             ObjectDisposedException.ThrowIf(_isDisposing, typeof(RabbitConnectionService));
             
-            if (_senders.TryGetValue(exchangeName, out var c))
+            if (_senders.TryGetValue(exchangeName, out SingleExchangeSender? c))
             {
                 return c;
             }
             
-            var channelsCount = GetChannelsCount();
+            long channelsCount = GetChannelsCount();
             
             if (channelsCount >= _maxChannels)
             {
                 throw new Exception($"Will not create new SingleExchangeSender for exchange {exchangeName} as the MaxChannels limit, {_maxChannels}, has been reached.");
             }
             
-            var connection = await GetConnection();
+            IConnection connection = await GetConnection();
 
-            var sender = new SingleExchangeSender(
+            SingleExchangeSender sender = new SingleExchangeSender(
                 exchangeName: exchangeName,
                 connection: connection,
                 sendTimeout: _sendTimeout);
@@ -136,9 +136,9 @@ public class RabbitConnectionService: IRabbitConnectionService
                 throw new ApplicationException($"Will not create new SingleQueueListener for queue {queueName} as the MaxChannels limit, {_maxChannels}, has been reached.");
             }
 
-            var connection = await GetConnection();
+            IConnection connection = await GetConnection();
 
-            var listener = new SingleQueueListener(queueName, connection, checkChannelPeriod, autoAck, exclusive, prefetchCount, _clientProvidedName, channelOperationsTimeout);
+            SingleQueueListener listener = new SingleQueueListener(queueName, connection, checkChannelPeriod, autoAck, exclusive, prefetchCount, _clientProvidedName, channelOperationsTimeout);
 
             _listeners.Add(queueName, listener);
 
@@ -156,7 +156,7 @@ public class RabbitConnectionService: IRabbitConnectionService
         await _listenersSemaphore.WaitAsync();
         try
         {
-            if (_listeners.Remove(queueName, out var l))
+            if (_listeners.Remove(queueName, out SingleQueueListener? l))
             {
                 try
                 {
@@ -193,7 +193,7 @@ public class RabbitConnectionService: IRabbitConnectionService
             throw;
         }
 
-        var subscription = new IRabbitConnectionService.Subscription
+        IRabbitConnectionService.Subscription subscription = new IRabbitConnectionService.Subscription
         {
             CloseChannel = () => RemoveSingleQueueListener(queueName),
             StartConsuming = () => listener.StartConsuming(),
@@ -218,8 +218,8 @@ public class RabbitConnectionService: IRabbitConnectionService
 
     public async Task SendAsync(string exchangeName, string routingKey, Dictionary<string, object> headers, string contentType, byte[] body, bool persistentDelivery = true, bool mandatoryRouting = false)
     {
-        var sender = await GetSingleExchangeSender(exchangeName);
-        var task = sender.EnqueueMessage(routingKey, headers, contentType, body, persistentDelivery, mandatoryRouting);
+        SingleExchangeSender sender = await GetSingleExchangeSender(exchangeName);
+        Task task = sender.EnqueueMessage(routingKey, headers, contentType, body, persistentDelivery, mandatoryRouting);
         await task;
     }
 
@@ -233,7 +233,7 @@ public class RabbitConnectionService: IRabbitConnectionService
         
         _isDisposing = true;
         
-        foreach (var sender in _senders.Values)
+        foreach (SingleExchangeSender sender in _senders.Values)
         {
             try
             {
@@ -244,7 +244,7 @@ public class RabbitConnectionService: IRabbitConnectionService
             }
         }
 
-        foreach (var listener in _listeners.Values)
+        foreach (SingleQueueListener listener in _listeners.Values)
         {
             try
             {

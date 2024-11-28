@@ -1,5 +1,4 @@
-﻿using System;
-using Odin.DesignContracts;
+﻿using Odin.DesignContracts;
 using NUnit.Framework;
 
 namespace Tests.Odin.DesignContracts
