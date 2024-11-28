@@ -14,26 +14,26 @@ public class Office365ServiceInjector: IEmailSenderServiceInjector
     {
         PreCondition.RequiresNotNull(emailConfigurationSection);
 
-        var emailOptions = new EmailSendingOptions();
+        EmailSendingOptions emailOptions = new EmailSendingOptions();
         emailConfigurationSection.Bind(emailOptions);
 
-        var office365Options = new Office365Options();
+        Office365Options office365Options = new Office365Options();
         emailConfigurationSection.Bind(EmailSendingProviders.Office365, office365Options);
         
         office365Options.Validate();
         
-        var credentialOptions = new ClientSecretCredentialOptions
+        ClientSecretCredentialOptions credentialOptions = new ClientSecretCredentialOptions
         {
             AuthorityHost = AzureAuthorityHosts.AzurePublicCloud,
         };
 
-        var clientSecretCredential = new ClientSecretCredential(
+        ClientSecretCredential clientSecretCredential = new ClientSecretCredential(
             office365Options.MicrosoftGraphClientSecretCredentials!.TenantId, 
             office365Options.MicrosoftGraphClientSecretCredentials.ClientId,
             office365Options.MicrosoftGraphClientSecretCredentials.ClientSecret, 
             credentialOptions);
 
-        var graphClient = new GraphServiceClient(clientSecretCredential);
+        GraphServiceClient graphClient = new GraphServiceClient(clientSecretCredential);
 
         serviceCollection.AddLoggerAdapter();
         
@@ -47,7 +47,7 @@ public class Office365ServiceInjector: IEmailSenderServiceInjector
             ));
         }
         
-        foreach (var pair in office365Options.KeyedSenders)
+        foreach (KeyValuePair<string, Office365Options.Sender> pair in office365Options.KeyedSenders)
         {
             serviceCollection.AddKeyedSingleton<IEmailSender>(pair.Key, (provider, o) => new Office365EmailSender(
                 graphClient,

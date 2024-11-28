@@ -1,10 +1,5 @@
-using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
@@ -26,7 +21,7 @@ internal class SingleExchangeSender: IDisposable
     {
         _cancellationTokenSource.Cancel();
         _cancellationTokenSource.Dispose();
-        foreach (var message in MessagesPendingPublish.Concat(PublishedMessagesByMessageId.Values).Concat(PublishedMessagesBySeqNo.Values))
+        foreach (PendingMessage message in MessagesPendingPublish.Concat(PublishedMessagesByMessageId.Values).Concat(PublishedMessagesBySeqNo.Values))
         {
             message.TaskCompletionSource.TrySetCanceled();
         }
@@ -112,7 +107,7 @@ internal class SingleExchangeSender: IDisposable
 
     public Task EnqueueMessage(string routingKey, Dictionary<string, object> headers, string contentType, byte[] body, bool persistentDelivery, bool mandatory)
     {
-        var message = new PendingMessage
+        PendingMessage message = new PendingMessage
         {
             MessageId = Guid.NewGuid().ToString(),
             TaskCompletionSource = new TaskCompletionSource(),
@@ -214,7 +209,7 @@ internal class SingleExchangeSender: IDisposable
                 return;
             }
             
-            if (!PublishedMessagesByMessageId.TryGetValue(args.BasicProperties.MessageId, out var message))
+            if (!PublishedMessagesByMessageId.TryGetValue(args.BasicProperties.MessageId, out PendingMessage? message))
             {
                 return;
             }
@@ -231,11 +226,11 @@ internal class SingleExchangeSender: IDisposable
         {
             if (args.Multiple)
             {
-                var ackedMessages = PublishedMessagesBySeqNo
+                List<PendingMessage> ackedMessages = PublishedMessagesBySeqNo
                     .Where(pair => pair.Key <= args.DeliveryTag)
                     .Select(p => p.Value).ToList();
                 
-                foreach (var message in ackedMessages)
+                foreach (PendingMessage message in ackedMessages)
                 {
                     message.PublishConfirmation = PendingMessage.PublishConfirmationStatus.Acked;
                     TryFinaliseMessage(message);
@@ -243,7 +238,7 @@ internal class SingleExchangeSender: IDisposable
             }
             else
             {
-                if (!PublishedMessagesBySeqNo.TryGetValue(args.DeliveryTag, out var message))
+                if (!PublishedMessagesBySeqNo.TryGetValue(args.DeliveryTag, out PendingMessage? message))
                 {
                     return;
                 }
@@ -260,11 +255,11 @@ internal class SingleExchangeSender: IDisposable
         {
             if (args.Multiple)
             {
-                var nackedMessages = PublishedMessagesBySeqNo
+                List<PendingMessage> nackedMessages = PublishedMessagesBySeqNo
                     .Where(pair => pair.Key <= args.DeliveryTag)
                     .Select(p => p.Value).ToList();
                 
-                foreach (var message in nackedMessages)
+                foreach (PendingMessage message in nackedMessages)
                 {
                     message.PublishConfirmation = PendingMessage.PublishConfirmationStatus.Nacked;
                     TryFinaliseMessage(message);
@@ -272,7 +267,7 @@ internal class SingleExchangeSender: IDisposable
             }
             else
             {
-                if (!PublishedMessagesBySeqNo.TryGetValue(args.DeliveryTag, out var message))
+                if (!PublishedMessagesBySeqNo.TryGetValue(args.DeliveryTag, out PendingMessage? message))
                 {
                     return;
                 }
@@ -346,7 +341,7 @@ internal class SingleExchangeSender: IDisposable
     private async Task ProcessMessagesPendingPublish(CancellationToken cancellationToken)
     {
 
-        var stopwatch = new Stopwatch();
+        Stopwatch stopwatch = new Stopwatch();
         long delta = 0;
         stopwatch.Start();
         
@@ -362,7 +357,7 @@ internal class SingleExchangeSender: IDisposable
 
                 delta = stopwatch.ElapsedMilliseconds;
                 
-                if (!MessagesPendingPublish.TryDequeue(out var message))
+                if (!MessagesPendingPublish.TryDequeue(out PendingMessage? message))
                 {
                     break;
                 }
@@ -373,13 +368,13 @@ internal class SingleExchangeSender: IDisposable
                 {
 
                     delta = stopwatch.ElapsedMilliseconds;
-                    var channel = GetOpenChannel();
+                    IModel channel = GetOpenChannel();
                     _getOpenChannelWaitTotal += stopwatch.ElapsedMilliseconds - delta;
                     
                     message.PublishSeqNo = channel.NextPublishSeqNo;
                     
                     delta = stopwatch.ElapsedMilliseconds;
-                    var props = channel.CreateBasicProperties();
+                    IBasicProperties? props = channel.CreateBasicProperties();
                     _createBasicPropertiesTotal += stopwatch.ElapsedMilliseconds - delta;
                     
                     props.DeliveryMode = message.PersistentDelivery ? PersistentDeliveryMode : TransientDeliveryMode;

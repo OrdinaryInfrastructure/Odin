@@ -1,5 +1,4 @@
-﻿using System;
-using Hangfire;
+﻿using Hangfire;
 
 namespace Odin.BackgroundProcessing
 {

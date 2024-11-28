@@ -1,7 +1,5 @@
 #nullable enable
-using System;
 using System.Text;
-using System.Threading.Tasks;
 using Odin.Messaging.RabbitMq;
 
 namespace Tests.Odin.Messaging.RabbitMq;
@@ -14,7 +12,7 @@ public class ResubscribingRabbitSubscriptionTests()
     {
         try
         {
-            var connectionService = new RabbitConnectionService(new RabbitConnectionServiceSettings
+            RabbitConnectionService connectionService = new RabbitConnectionService(new RabbitConnectionServiceSettings
             {
                 Host = "localhost",
                 VirtualHost = "odin-rabbitbox",
@@ -26,9 +24,9 @@ public class ResubscribingRabbitSubscriptionTests()
                 SendTimeoutMillis = 5000,
             });
 
-            var queueName = "max-length-test-01";
+            string queueName = "max-length-test-01";
 
-            var factory = new ResubscribingRabbitSubscriptionFactory(
+            ResubscribingRabbitSubscriptionFactory factory = new ResubscribingRabbitSubscriptionFactory(
                 connectionService,
                 queueName,
                 false,
@@ -38,7 +36,7 @@ public class ResubscribingRabbitSubscriptionTests()
                 TimeSpan.FromSeconds(4)
             );
 
-            var subscription = factory.Create();
+            IResubscribingRabbitSubscription subscription = factory.Create();
             // RabbitConnectionServiceTests.TestMessage? mostRecent = null;
 
             subscription.OnFailure += ex =>
@@ -51,7 +49,7 @@ public class ResubscribingRabbitSubscriptionTests()
             {
                 // var body = JsonSerializer.Deserialize<RabbitConnectionServiceTests.TestMessage>(message.Body);
 
-                var body = Encoding.UTF8.GetString(message.Body);
+                string body = Encoding.UTF8.GetString(message.Body);
 
                 // Console.WriteLine("Received message " + body);
 

@@ -8,7 +8,7 @@ public static class EmailTestConfiguration
     public static string GetTestEmailAddressFromConfig(IConfiguration config)
     {
         PreCondition.RequiresNotNull(config);
-        return config["Email-TestAddress"];
+        return config["Email-TestToAddress"];
     }
 
     public static string GetTestFromNameFromConfig(IConfiguration config)

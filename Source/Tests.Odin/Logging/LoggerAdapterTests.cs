@@ -1,5 +1,4 @@
-﻿using System;
-using Odin.Logging;
+﻿using Odin.Logging;
 using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;

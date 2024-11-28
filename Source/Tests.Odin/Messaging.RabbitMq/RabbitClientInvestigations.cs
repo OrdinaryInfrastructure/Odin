@@ -1,7 +1,4 @@
 #nullable enable
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Odin.Messaging.RabbitMq;
 using RabbitMQ.Client;
 
@@ -14,7 +11,7 @@ public class RabbitClientInvestigations
     public async Task CreateChannel_Is_ThreadSafe()
     {
 
-        var settings = new RabbitConnectionServiceSettings
+        RabbitConnectionServiceSettings settings = new RabbitConnectionServiceSettings
         {
             Host = "localhost",
             VirtualHost = "odin-rabbitbox",
@@ -26,7 +23,7 @@ public class RabbitClientInvestigations
             SendTimeoutMillis = 1000,
         };
         
-        var factory = new ConnectionFactory()
+        ConnectionFactory factory = new ConnectionFactory()
         {
             AutomaticRecoveryEnabled = true,
             // DispatchConsumersAsync = false,
@@ -41,13 +38,13 @@ public class RabbitClientInvestigations
             ClientProvidedName = settings.ConnectionName,
         };
 
-        var connection = factory.CreateConnection();
+        IConnection? connection = factory.CreateConnection();
 
         int[] threads = [0, 1, 2, 3, 4, 5];
 
-        var channels = new List<IModel?>();
+        List<IModel> channels = new List<IModel?>();
 
-        foreach (var t in threads)
+        foreach (int t in threads)
         {
             channels.Add(null);
         }
@@ -58,7 +55,7 @@ public class RabbitClientInvestigations
             int reportEvery = 10;
             while (!token.IsCancellationRequested)
             {
-                var channel = channels[i];
+                IModel? channel = channels[i];
 
                 if (channel is null)
                 {
@@ -68,7 +65,7 @@ public class RabbitClientInvestigations
                         {
                             Console.WriteLine($"Thread 0 creating channel {loopCounter}");
                         }
-                        var newChannel = connection.CreateModel();
+                        IModel? newChannel = connection.CreateModel();
                         if (newChannel is null)
                         {
                             throw new Exception("newChannel is null");

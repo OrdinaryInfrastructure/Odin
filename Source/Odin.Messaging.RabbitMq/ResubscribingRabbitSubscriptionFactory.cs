@@ -1,5 +1,3 @@
-using System;
-
 namespace Odin.Messaging.RabbitMq;
 
 public interface IResubscribingRabbitSubscriptionFactory

@@ -13,15 +13,16 @@ namespace Odin.Email.Office365;
 /// <param name="graphClient"></param>
 /// <param name="defaultSenderUserId">Microsoft UserId</param>
 /// /// <param name="defaultCategories">Office365 Categories which will be added to each email sent by this Office365EmailSender.</param>
-public class Office365EmailSender(GraphServiceClient graphClient, ILoggerAdapter<Office365EmailSender> logger, string defaultSenderUserId, List<string> defaultCategories) : IEmailSender
+public class Office365EmailSender(GraphServiceClient graphClient, ILoggerAdapter<Office365EmailSender> logger, 
+    string defaultSenderUserId, List<string>? defaultCategories = null) : IEmailSender
 {
     const string MicrosoftGraphFileAttachmentOdataType = "#microsoft.graph.fileAttachment";
     public async Task<Outcome<string?>> SendEmail(IEmailMessage emailToSend)
     {
-        var userId = emailToSend.From?.Address ?? defaultSenderUserId;
+        string userId = emailToSend.From?.Address ?? defaultSenderUserId;
         try
         {
-            var requestBody = new SendMailPostRequestBody()
+            SendMailPostRequestBody requestBody = new SendMailPostRequestBody()
             {
                 Message = new Message
                 {
@@ -34,33 +35,21 @@ public class Office365EmailSender(GraphServiceClient graphClient, ILoggerAdapter
                     },
                     ToRecipients = emailToSend.To.Select(a => new Recipient
                     {
-                        EmailAddress = new Microsoft.Graph.Models.EmailAddress
-                        {
-                            Address = a.Address
-                        }
+                        EmailAddress = a.ToOffice365EmailAddress()
                     }).ToList(),
                     CcRecipients = emailToSend.CC.Select(a => new Recipient
                     {
-                        EmailAddress = new Microsoft.Graph.Models.EmailAddress
-                        {
-                            Address = a.Address,
-                        }
+                        EmailAddress = a.ToOffice365EmailAddress()
                     }).ToList(),
                     BccRecipients = emailToSend.BCC.Select(a => new Recipient
                     {
-                        EmailAddress = new Microsoft.Graph.Models.EmailAddress
-                        {
-                            Address = a.Address,
-                        }
+                        EmailAddress = a.ToOffice365EmailAddress()
                     }).ToList(),
                     From = emailToSend.From is null
                         ? null
                         : new Recipient
                         {
-                            EmailAddress = new Microsoft.Graph.Models.EmailAddress
-                            {
-                                Address = emailToSend.From.Address,
-                            }
+                            EmailAddress = emailToSend.From.ToOffice365EmailAddress()
                         },
                     ReplyTo = emailToSend.ReplyTo is null
                         ? []
@@ -68,10 +57,7 @@ public class Office365EmailSender(GraphServiceClient graphClient, ILoggerAdapter
                         [
                             new Recipient
                             {
-                                EmailAddress = new Microsoft.Graph.Models.EmailAddress
-                                {
-                                    Address = emailToSend.ReplyTo.Address,
-                                }
+                                EmailAddress = emailToSend.ReplyTo.ToOffice365EmailAddress()
                             }
                         ],
                     Attachments = emailToSend.Attachments.Select(a => new FileAttachment
@@ -81,7 +67,9 @@ public class Office365EmailSender(GraphServiceClient graphClient, ILoggerAdapter
                         ContentType = a.ContentType,
                         ContentBytes = ToByteArray(a.Data),
                     } as Microsoft.Graph.Models.Attachment).ToList(),
-                    Categories = defaultCategories.Concat(emailToSend.Tags).ToList(),
+                    Categories = defaultCategories == null ? 
+                        emailToSend.Tags : emailToSend.Tags.Concat(defaultCategories)
+                            .Distinct().ToList(),
                 }
             };
 
@@ -95,6 +83,8 @@ public class Office365EmailSender(GraphServiceClient graphClient, ILoggerAdapter
             return Outcome.Fail<string?>(ex.ToString());
         }
     }
+    
+
 
     static byte[] ToByteArray(Stream inputStream)
     {
@@ -105,7 +95,7 @@ public class Office365EmailSender(GraphServiceClient graphClient, ILoggerAdapter
             inputStream.Seek(0, SeekOrigin.Begin);
         }
 
-        using var memoryStream = new MemoryStream();
+        using MemoryStream memoryStream = new MemoryStream();
         inputStream.CopyTo(memoryStream);
         return memoryStream.ToArray();
     }

@@ -1,67 +1,64 @@
-using System;
-using System.IO;
-using System.Threading.Tasks;
+using System.Text;
 using Azure.Identity;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Graph;
 using NUnit.Framework;
-using Odin;
 using Odin.Email;
 using Odin.Email.Office365;
 using Odin.Logging;
+using Odin.System;
 
 namespace Tests.Odin.Email.Office365;
 
-[Ignore("Manual testing")]
+[TestFixture]
+//[Ignore("Manual testing")]
 public class Office365EmailSenderTests: IntegrationTest
 {
     private Office365EmailSender _sut;
-
-    private const string ToTestEmail = "";
-    private const string FromTestEmail = "";
+    private string _toTestEmail;
+    private string _fromTestEmail;
 
     [SetUp]
     public void Setup()
     {
-        var options = new Office365Options
-        {
-            // Bonus Balances
-            MicrosoftGraphClientSecretCredentials = new MicrosoftGraphClientSecretCredentials
-            {
-                ClientId = "",
-                ClientSecret = "",
-                TenantId = "",
-            }
-        };
+        IConfiguration config = AppFactory.GetConfiguration();
+        IConfigurationSection office365Section = config.GetRequiredSection("Email-Office365");
+        IConfigurationSection  office365Options =  office365Section.GetRequiredSection("Options");
+
+        _toTestEmail = config["Email-TestToAddress"];
+        _fromTestEmail = office365Section["UserId"];
+        Office365Options options = new Office365Options();
+        office365Options.Bind(options);
         
-        var credentialOptions = new ClientSecretCredentialOptions
+        ClientSecretCredentialOptions credentialOptions = new ClientSecretCredentialOptions
         {
             AuthorityHost = AzureAuthorityHosts.AzurePublicCloud,
         };
 
-        var clientSecretCredential = new ClientSecretCredential(
-            options.MicrosoftGraphClientSecretCredentials.TenantId, 
+        ClientSecretCredential clientSecretCredential = new ClientSecretCredential(
+            options.MicrosoftGraphClientSecretCredentials!.TenantId, 
             options.MicrosoftGraphClientSecretCredentials.ClientId,
             options.MicrosoftGraphClientSecretCredentials.ClientSecret, 
             credentialOptions);
 
-        var graphClient = new GraphServiceClient(clientSecretCredential);
+        GraphServiceClient graphClient = new GraphServiceClient(clientSecretCredential);
 
-        _sut = new Office365EmailSender(graphClient, new NullLogger<Office365EmailSender>(), FromTestEmail, []);
+        _sut = new Office365EmailSender(graphClient, new NullLogger<Office365EmailSender>(), _fromTestEmail, []);
     }
 
     [Test]
     public async Task SendEmail_Works()
     {
-        var email = new EmailMessage()
+        EmailMessage email = new EmailMessage()
         {
             Subject = "Test Office365 08",
             Body = "Hello World (Test 08)",
-            To = new EmailAddressCollection(ToTestEmail),
-            From = new EmailAddress(FromTestEmail),
+            To = [new EmailAddress(_toTestEmail, "Test To Name")],
+            From = new EmailAddress(_fromTestEmail, "Test From Name"),
             Tags = ["Dev"]
         };
 
-        var outcome = await _sut.SendEmail(email);
+        Outcome<string> outcome = await _sut.SendEmail(email);
 
         TestContext.Progress.WriteLine(outcome.MessagesToString());
         
@@ -72,18 +69,15 @@ public class Office365EmailSenderTests: IntegrationTest
     [Test]
     public async Task SendEmail_With_Attachment()
     {
-        var testFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "testfile.jpg");
-        var bytes = await File.ReadAllBytesAsync(testFilePath);
-
-        var email = new EmailMessage
+        EmailMessage email = new EmailMessage
         {
             Subject = "Test with attachments 01",
             Body = "Hello, here is a photo 01",
-            To = new EmailAddressCollection(FromTestEmail),
-            Attachments = [new Attachment("myphoto.jpg", new MemoryStream(bytes), "image/jpeg")]
+            To = new EmailAddressCollection(_toTestEmail),
+            Attachments = [new Attachment("file.txt", new MemoryStream("This is a text file"u8.ToArray()), "text/plain")]
         };
         
-        var outcome = await _sut.SendEmail(email);
+        Outcome<string> outcome = await _sut.SendEmail(email);
 
         TestContext.Progress.WriteLine(outcome.MessagesToString());
         

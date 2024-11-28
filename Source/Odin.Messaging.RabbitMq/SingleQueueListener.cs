@@ -70,9 +70,9 @@ internal class SingleQueueListener: IAsyncDisposable
             return;
         }
 
-        var tcs = new TaskCompletionSource();
+        TaskCompletionSource tcs = new TaskCompletionSource();
 
-        var timeoutTask = Task.Delay(_channelOperationsTimeout);
+        Task timeoutTask = Task.Delay(_channelOperationsTimeout);
 
         _consumer.Registered += (obj, args) =>
         {
@@ -92,7 +92,7 @@ internal class SingleQueueListener: IAsyncDisposable
             consumerTag: _consumerTag,
             exclusive: _exclusive);
 
-        var completedTask = await Task.WhenAny(tcs.Task, timeoutTask);
+        Task completedTask = await Task.WhenAny(tcs.Task, timeoutTask);
 
         if (completedTask == timeoutTask)
         {
@@ -115,7 +115,7 @@ internal class SingleQueueListener: IAsyncDisposable
     
     private void HandleMessageReceived(object? sender, BasicDeliverEventArgs args)
     {
-        var message = new IRabbitConnectionService.ConsumedMessage
+        IRabbitConnectionService.ConsumedMessage message = new IRabbitConnectionService.ConsumedMessage
         {
             Body = args.Body.ToArray(),
             ConsumedAt = DateTimeOffset.Now,
@@ -181,13 +181,13 @@ internal class SingleQueueListener: IAsyncDisposable
     
     private void HandleConsumerCancelled(object? sender, ConsumerEventArgs args)
     {
-        var exception = new IRabbitConnectionService.ConsumerCancelledException($"Consumer was cancelled. Cancelled tags: {string.Join(", ", args.ConsumerTags)}. ShutdownReason: " + _consumer.ShutdownReason);
+        IRabbitConnectionService.ConsumerCancelledException exception = new IRabbitConnectionService.ConsumerCancelledException($"Consumer was cancelled. Cancelled tags: {string.Join(", ", args.ConsumerTags)}. ShutdownReason: " + _consumer.ShutdownReason);
         OnFailure?.Invoke(exception);
     }
     
     private void HandleChannelShutdown(object? sender, ShutdownEventArgs args)
     {
-        var exception = new ApplicationException($"Channel shut down. Shutdown reason: {args.ReplyText} CloseReason: " + _channel.CloseReason?.ReplyText);
+        ApplicationException exception = new ApplicationException($"Channel shut down. Shutdown reason: {args.ReplyText} CloseReason: " + _channel.CloseReason?.ReplyText);
         OnFailure?.Invoke(exception);
     }
     
@@ -202,9 +202,9 @@ internal class SingleQueueListener: IAsyncDisposable
             throw new ApplicationException("Cannot cancel consuming since channel is not open.");
         }
 
-        var tcs = new TaskCompletionSource();
+        TaskCompletionSource tcs = new TaskCompletionSource();
 
-        var timeoutTask = Task.Delay(_channelOperationsTimeout);
+        Task timeoutTask = Task.Delay(_channelOperationsTimeout);
 
         _consumer.Unregistered += (obj, args) =>
         {
@@ -219,7 +219,7 @@ internal class SingleQueueListener: IAsyncDisposable
 
         _channel.BasicCancel(_consumerTag);
 
-        var completedTask = await Task.WhenAny(tcs.Task, timeoutTask);
+        Task completedTask = await Task.WhenAny(tcs.Task, timeoutTask);
 
         if (completedTask == timeoutTask)
         {

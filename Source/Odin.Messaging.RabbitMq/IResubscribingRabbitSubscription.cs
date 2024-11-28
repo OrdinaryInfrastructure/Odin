@@ -1,6 +1,3 @@
-using System;
-using System.Threading.Tasks;
-
 namespace Odin.Messaging.RabbitMq;
 
 public interface IResubscribingRabbitSubscription: IAsyncDisposable
