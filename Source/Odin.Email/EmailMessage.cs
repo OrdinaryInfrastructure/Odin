@@ -17,7 +17,7 @@ namespace Odin.Email
             Body = "";
             Subject = "";
         }
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -26,10 +26,13 @@ namespace Odin.Email
         /// <param name="subject"></param>
         /// <param name="body"></param>
         /// <param name="isHtml"></param>
-        public EmailMessage(string toEmailAddress, string fromEmailAddress, string? subject, string? body, bool isHtml = false) 
+        public EmailMessage(string toEmailAddress, string fromEmailAddress, string? subject, string? body,
+            bool isHtml = false)
         {
-            PreCondition.Requires<ArgumentException>(!string.IsNullOrWhiteSpace(toEmailAddress), $"{nameof(toEmailAddress)} is required");
-            PreCondition.Requires<ArgumentException>(!string.IsNullOrWhiteSpace(fromEmailAddress), $"{nameof(fromEmailAddress)} is required");
+            PreCondition.Requires<ArgumentException>(!string.IsNullOrWhiteSpace(toEmailAddress),
+                $"{nameof(toEmailAddress)} is required");
+            PreCondition.Requires<ArgumentException>(!string.IsNullOrWhiteSpace(fromEmailAddress),
+                $"{nameof(fromEmailAddress)} is required");
             if (string.IsNullOrWhiteSpace(subject))
             {
                 Subject = "";
@@ -38,6 +41,7 @@ namespace Odin.Email
             {
                 Subject = subject;
             }
+
             if (string.IsNullOrWhiteSpace(body))
             {
                 Body = "";
@@ -46,9 +50,10 @@ namespace Odin.Email
             {
                 Body = body;
             }
+
             Priority = Priority.Normal;
             IsHtml = isHtml;
-            To.AddAddress(toEmailAddress);
+            To.AddAddresses(toEmailAddress);
             From = new EmailAddress(fromEmailAddress);
         }
 
@@ -68,6 +73,7 @@ namespace Odin.Email
                 {
                     _to = new EmailAddressCollection();
                 }
+
                 return _to;
             }
             set => _to = value;
@@ -86,6 +92,7 @@ namespace Odin.Email
                 {
                     _cc = new EmailAddressCollection();
                 }
+
                 return _cc;
             }
             set => _cc = value;
@@ -104,13 +111,14 @@ namespace Odin.Email
                 {
                     _bcc = new EmailAddressCollection();
                 }
+
                 return _bcc;
             }
             set => _bcc = value;
         }
 
         private EmailAddressCollection _bcc = null!;
-        
+
         /// <summary>
         /// ReplyTo email addresses
         /// </summary>
@@ -127,13 +135,14 @@ namespace Odin.Email
                 {
                     _attachments = new List<Attachment>();
                 }
+
                 return _attachments;
             }
             set => _attachments = value;
         }
 
         private List<Attachment> _attachments = null!;
-        
+
         /// <summary>
         /// Email subject
         /// </summary>
@@ -143,11 +152,11 @@ namespace Odin.Email
         /// Email body
         /// </summary>
         public string Body { get; set; }
-        
+
         /// <summary>
         /// Email priority
         /// </summary>
-        public Priority Priority { get; set; } 
+        public Priority Priority { get; set; }
 
         /// <summary>
         /// Email tags (not supported by all EmailSending providers)
@@ -160,6 +169,7 @@ namespace Odin.Email
                 {
                     _tags = new List<string>();
                 }
+
                 return _tags;
             }
             set => _tags = value;
@@ -170,7 +180,7 @@ namespace Odin.Email
         /// <summary>
         /// Flags the body as HTML. Default is false.
         /// </summary>
-        public bool IsHtml { get; set; } 
+        public bool IsHtml { get; set; }
 
         /// <summary>
         /// Email headers
@@ -183,6 +193,7 @@ namespace Odin.Email
                 {
                     _headers = new Dictionary<string, string>();
                 }
+
                 return _headers;
             }
             set => _headers = value;
