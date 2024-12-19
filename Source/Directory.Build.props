@@ -1,9 +1,6 @@
 <!-- Directory.Build.props file at the root of the solution-->
 <Project>
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
-        <Nullable>enable</Nullable>
-        <ImplicitUsings>true</ImplicitUsings>
         <Authors>Mark Derman</Authors>
         <Company>Soulv Software (Pty) Ltd</Company>
         <Copyright>Copyright (c) Soulv Software 2024</Copyright>
