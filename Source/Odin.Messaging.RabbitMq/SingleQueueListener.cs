@@ -13,9 +13,9 @@ internal class SingleQueueListener: IAsyncDisposable
 
     private readonly TimeSpan _channelOperationsTimeout;
     
-    private readonly IModel _channel;
+    private readonly IChannel _channel;
 
-    private readonly EventingBasicConsumer _consumer;
+    private readonly AsyncEventingBasicConsumer _consumer;
 
     private readonly bool _autoAck;
     private readonly bool _exclusive;
@@ -36,22 +36,23 @@ internal class SingleQueueListener: IAsyncDisposable
         _checkChannelCts = new CancellationTokenSource();
         _checkConsumerCts = new CancellationTokenSource();
         
-        _channel = connection.CreateModel();
+        _channel =  connection.CreateChannelAsync().Result;
+        
         // PrefetchSize 0 means no limit on the number of octets of data the broker will send.
-        _channel.BasicQos(prefetchSize: 0, prefetchCount: prefetchCount, global: true );
+        _channel.BasicQosAsync(prefetchSize: 0, prefetchCount: prefetchCount, global: true );
 
-        _channel.QueueDeclarePassive(queueName);
+        _channel.QueueDeclarePassiveAsync(queueName);
 
         if (!_channel.IsOpen)
         {
             throw new ApplicationException("Failed to open channel. Reason: " + _channel.CloseReason?.ReplyText);
         }
 
-        _consumer = new EventingBasicConsumer(_channel);
+        _consumer = new AsyncEventingBasicConsumer(_channel);
         
-        _consumer.ConsumerCancelled += HandleConsumerCancelled;
-        _consumer.Received += HandleMessageReceived;
-        _channel.ModelShutdown += HandleChannelShutdown;
+        _consumer.HandleBasicCancelAsync += HandleConsumerCancelled;
+        _consumer.ReceivedAsync += HandleMessageReceived;
+        _channel.ChannelShutdownAsync += HandleChannelShutdown;
 
         _consumerTag = $"{clientName}-{_queueName}-{Guid.NewGuid().ToString().Substring(0,4)}";
 
@@ -74,18 +75,18 @@ internal class SingleQueueListener: IAsyncDisposable
 
         Task timeoutTask = Task.Delay(_channelOperationsTimeout);
 
-        _consumer.Registered += (obj, args) =>
+        _consumer.RegisteredAsync += (obj, args) =>
         {
             if (args.ConsumerTags.Length == 1 && args.ConsumerTags[0] == _consumerTag)
             {
                 tcs.TrySetResult();
-                return;
+                return Task.CompletedTask;
             }
 
             tcs.TrySetException(new ApplicationException($"Consume-ok fired with unexpected ConsumerTags (expected [{_consumerTag}]): [{string.Join(", ", args.ConsumerTags)}]"));
         };
         
-        _channel.BasicConsume(
+        _channel.BasicConsumeAsync(
             consumer: _consumer, 
             queue: _queueName, 
             autoAck: _autoAck, 
@@ -113,7 +114,7 @@ internal class SingleQueueListener: IAsyncDisposable
         Console.WriteLine("HandleConsumerUnregistered fired. Tags: " + string.Join(", ", args.ConsumerTags));
     }
     
-    private void HandleMessageReceived(object? sender, BasicDeliverEventArgs args)
+    private Task HandleMessageReceived(object sender, BasicDeliverEventArgs args)
     {
         IRabbitConnectionService.ConsumedMessage message = new IRabbitConnectionService.ConsumedMessage
         {
@@ -143,7 +144,7 @@ internal class SingleQueueListener: IAsyncDisposable
     {
         return () =>
         {
-            _channel.BasicAck(deliveryTag, false);
+            _channel.BasicAckAsync(deliveryTag, false);
         };
     }
 
@@ -151,7 +152,7 @@ internal class SingleQueueListener: IAsyncDisposable
     {
         return shouldRequeue =>
         {
-            _channel.BasicNack(deliveryTag, false, shouldRequeue);
+            _channel.BasicNackAsync(deliveryTag, false, shouldRequeue);
         };
     }
 
@@ -179,13 +180,13 @@ internal class SingleQueueListener: IAsyncDisposable
         }
     }
     
-    private void HandleConsumerCancelled(object? sender, ConsumerEventArgs args)
+    private Task HandleConsumerCancelled(object sender, ConsumerEventArgs args)
     {
         IRabbitConnectionService.ConsumerCancelledException exception = new IRabbitConnectionService.ConsumerCancelledException($"Consumer was cancelled. Cancelled tags: {string.Join(", ", args.ConsumerTags)}. ShutdownReason: " + _consumer.ShutdownReason);
         OnFailure?.Invoke(exception);
     }
     
-    private void HandleChannelShutdown(object? sender, ShutdownEventArgs args)
+    private Task HandleChannelShutdown(object sender, ShutdownEventArgs args)
     {
         ApplicationException exception = new ApplicationException($"Channel shut down. Shutdown reason: {args.ReplyText} CloseReason: " + _channel.CloseReason?.ReplyText);
         OnFailure?.Invoke(exception);
@@ -217,7 +218,7 @@ internal class SingleQueueListener: IAsyncDisposable
             tcs.TrySetException(new ApplicationException($"Consume-cancel-ok fired with unexpected ConsumerTags (expected [{_consumerTag}]): [{string.Join(", ", args.ConsumerTags)}]"));
         };
 
-        _channel.BasicCancel(_consumerTag);
+        await _channel.BasicCancelAsync(_consumerTag);
 
         Task completedTask = await Task.WhenAny(tcs.Task, timeoutTask);
 
@@ -238,10 +239,10 @@ internal class SingleQueueListener: IAsyncDisposable
         }
 
         await _checkChannelCts.CancelAsync();
-        _channel.ModelShutdown -= HandleChannelShutdown;
+        _channel.ChannelShutdownAsync -= HandleChannelShutdown;
         try
         {
-            _channel.Close();
+            await _channel.CloseAsync();
         }
         catch
         {
