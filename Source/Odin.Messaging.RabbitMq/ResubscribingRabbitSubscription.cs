@@ -1,10 +1,9 @@
 namespace Odin.Messaging.RabbitMq;
 
-public class ResubscribingRabbitSubscription: IResubscribingRabbitSubscription
+public class ResubscribingRabbitSubscription : IResubscribingRabbitSubscription
 {
-
     private IRabbitConnectionService.Subscription? _subscription;
-    
+
     private long _currentSubscriptionNumber = 0;
 
     private SemaphoreSlim _subscriptionOperationsSemaphore = new(1);
@@ -12,7 +11,7 @@ public class ResubscribingRabbitSubscription: IResubscribingRabbitSubscription
     private CancellationTokenSource _tryCreateSubscriptionCts = new();
 
     private bool _shouldBeConsuming = false;
-    
+
     /// <summary>
     /// Raised for messages consumed, as per Subscription.
     /// </summary>
@@ -36,7 +35,7 @@ public class ResubscribingRabbitSubscription: IResubscribingRabbitSubscription
     private IRabbitConnectionService _connectionService;
 
     public ResubscribingRabbitSubscription(
-        IRabbitConnectionService connectionService, 
+        IRabbitConnectionService connectionService,
         string queuename,
         bool autoAck,
         bool exclusive,
@@ -52,15 +51,14 @@ public class ResubscribingRabbitSubscription: IResubscribingRabbitSubscription
         _prefetchCount = prefetchCount;
         _checkChannelPeriod = checkChannelPeriod ?? TimeSpan.FromSeconds(5);
         _attemptReconnectPeriod = attemptReconnectPeriod ?? TimeSpan.FromSeconds(30);
-        
-        _ = TryCreateSubscription();
 
+        _ = TryCreateSubscription();
     }
-    
+
     private async Task HandleFailure(long subscriptionNumber, Exception exception)
     {
         await _subscriptionOperationsSemaphore.WaitAsync();
-        
+
         _ = OnFailure?.Invoke(exception);
 
         try
@@ -80,7 +78,6 @@ public class ResubscribingRabbitSubscription: IResubscribingRabbitSubscription
             await _subscription.CloseChannel();
 
             _subscription = null;
-
         }
         finally
         {
@@ -133,13 +130,13 @@ public class ResubscribingRabbitSubscription: IResubscribingRabbitSubscription
             _subscriptionOperationsSemaphore.Release();
         }
     }
-    
+
     private async Task TryCreateSubscription()
     {
         while (!_tryCreateSubscriptionCts.Token.IsCancellationRequested)
         {
             await _subscriptionOperationsSemaphore.WaitAsync(_tryCreateSubscriptionCts.Token);
-
+            
             if (_subscription is null)
             {
                 try
@@ -153,14 +150,40 @@ public class ResubscribingRabbitSubscription: IResubscribingRabbitSubscription
                         _ = HandleFailure(subNumberCopy, ex);
                         return Task.CompletedTask;
                     };
-                    if (_shouldBeConsuming)
-                    {
-                        await _subscription.StartConsuming();
-                    }
                 }
                 catch (Exception ex)
                 {
                     _ = OnFailure?.Invoke(ex);
+                    continue;
+                }
+
+                if (_shouldBeConsuming)
+                {
+                    try
+                    {
+                        await _subscription.StartConsuming();
+                    }
+                    catch (Exception ex)
+                    {
+                        _ = OnFailure?.Invoke(ex);
+                        try
+                        {
+                            await _subscription.StopConsuming();
+                        }
+                        catch
+                        {
+                        }
+
+                        try
+                        {
+                            await _subscription.CloseChannel();
+                        }
+                        catch
+                        {
+                        }
+
+                        _subscription = null;
+                    }
                 }
             }
 
@@ -175,7 +198,7 @@ public class ResubscribingRabbitSubscription: IResubscribingRabbitSubscription
         _ = OnConsumed?.Invoke(message);
         return Task.CompletedTask;
     }
-    
+
     public async ValueTask DisposeAsync()
     {
         await _tryCreateSubscriptionCts.CancelAsync();
@@ -193,6 +216,5 @@ public class ResubscribingRabbitSubscription: IResubscribingRabbitSubscription
         {
             _subscriptionOperationsSemaphore.Release();
         }
-
     }
 }

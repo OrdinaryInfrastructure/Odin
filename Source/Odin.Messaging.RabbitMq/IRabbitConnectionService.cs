@@ -97,12 +97,12 @@ public interface IRabbitConnectionService: IAsyncDisposable
             /// Ack - Acknowledge. If the subscription is AutoAck = false, these callbacks are non-null and calling code MUST call either Ack or Nack after receiving the message.
             /// If the subscription is AutoAck = true, these callbacks are null.
             /// </summary>
-            public required Action Ack { get; init; }
+            public required Func<ValueTask> Ack { get; init; }
             
             /// <summary>
             /// Nack - Not acknowledge. The bool argument of this callback is whether the nacked message should be re-queued.
             /// </summary>
-            public required Action<bool> Nack { get; init; }
+            public required Func<bool, ValueTask> Nack { get; init; }
         }
         
         public AcknowledgementCallbacks? AckNackCallbacks { get; init; }

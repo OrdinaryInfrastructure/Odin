@@ -8,7 +8,7 @@ public class ResubscribingRabbitSubscriptionTests()
 {
 
 
-    public async Task ResubscribingSubscription_Works()
+    public async Task ResubscribingSubscription_Works(CancellationToken cancellationToken)
     {
         try
         {
@@ -18,7 +18,7 @@ public class ResubscribingRabbitSubscriptionTests()
                 VirtualHost = "odin-rabbitbox",
                 Username = "rabbitbox-test",
                 UserPassword = "rabbitbox-test-01",
-                Port = 5672,
+                Port = 5673,
                 ConnectionName = "RabbitBoxIntegTests",
                 MaxChannels = 10,
                 SendTimeoutMillis = 5000,
@@ -63,11 +63,11 @@ public class ResubscribingRabbitSubscriptionTests()
                 // Console.WriteLine("Closing channel");
                 // await subscription.DisposeAsync();
 
-                await Task.Delay(TimeSpan.FromMilliseconds(20));
+                await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
 
                 try
                 {
-                    message.AckNackCallbacks?.Ack.Invoke();
+                    await message.AckNackCallbacks!.Ack.Invoke();
                     Console.WriteLine("Acked message " + body);
                 }
                 catch (Exception ex)
@@ -82,18 +82,18 @@ public class ResubscribingRabbitSubscriptionTests()
 
             };
 
-            await Task.Delay(TimeSpan.FromSeconds(2));
+            await Task.Delay(TimeSpan.FromSeconds(2), cancellationToken);
 
             await subscription.StartConsuming();
             
             Console.WriteLine("Started consuming");
 
-            await Task.Delay(TimeSpan.FromSeconds(120));
+            await Task.Delay(TimeSpan.FromSeconds(120), cancellationToken);
 
             Console.WriteLine("StopConsuming....");
             await subscription.StopConsuming();
 
-            await Task.Delay(TimeSpan.FromSeconds(10));
+            await Task.Delay(TimeSpan.FromSeconds(10), cancellationToken);
 
             Console.WriteLine("Closing subscription");
             await subscription.DisposeAsync();
@@ -107,7 +107,7 @@ public class ResubscribingRabbitSubscriptionTests()
             //     }
             // });
 
-            await Task.Delay(TimeSpan.FromHours(3));
+            await Task.Delay(TimeSpan.FromHours(3), cancellationToken);
 
             // await subscription.DisposeAsync();
         }
