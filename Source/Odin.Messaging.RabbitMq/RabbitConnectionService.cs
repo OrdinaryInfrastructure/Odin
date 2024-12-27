@@ -54,7 +54,7 @@ public class RabbitConnectionService: IRabbitConnectionService
                 return _connection;
             }
             
-            _connection = _connectionFactory.CreateConnection();
+            _connection = await _connectionFactory.CreateConnectionAsync();
 
             return _connection;
         }
@@ -219,8 +219,7 @@ public class RabbitConnectionService: IRabbitConnectionService
     public async Task SendAsync(string exchangeName, string routingKey, Dictionary<string, object> headers, string contentType, byte[] body, bool persistentDelivery = true, bool mandatoryRouting = false)
     {
         SingleExchangeSender sender = await GetSingleExchangeSender(exchangeName);
-        Task task = sender.EnqueueMessage(routingKey, headers, contentType, body, persistentDelivery, mandatoryRouting);
-        await task;
+        await sender.PublishMessage(routingKey, headers, contentType, body, persistentDelivery, mandatoryRouting);
     }
 
     private bool _isDisposing = false;
@@ -257,7 +256,10 @@ public class RabbitConnectionService: IRabbitConnectionService
 
         try
         {
-            _connection?.Close();
+            if (_connection is not null)
+            {
+                await _connection.CloseAsync();
+            }
         }
         catch
         {
