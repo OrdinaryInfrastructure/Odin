@@ -4,6 +4,7 @@ using Hangfire.SqlServer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Odin.DesignContracts;
 using Odin.System;
 
@@ -100,7 +101,7 @@ namespace Odin.BackgroundProcessing
         /// Sets up Hangfire from Hangfire options.
         /// </summary>
         /// <param name="appServices"></param>
-        public IApplicationBuilder UseBackgroundProcessing(IApplicationBuilder appBuilder, IServiceProvider appServices)
+        public IHost UseBackgroundProcessing(IHost app, IServiceProvider appServices)
         {
             HangfireOptions hangfireOptions = appServices.GetRequiredService<HangfireOptions>();
             if (hangfireOptions.StartServer)
@@ -126,6 +127,11 @@ namespace Odin.BackgroundProcessing
 
             if (hangfireOptions.StartDashboard)
             {
+                if (app is not IApplicationBuilder webApplicationBuilder)
+                {
+                    throw new ApplicationException("Host is not a web application.");
+                }
+                
                 string[] filterStrings =
                     hangfireOptions.DashboardAuthorizationFilters.Split(',', ';')
                         .Where(c => !string.IsNullOrWhiteSpace(c.TrimIfNotNull())).ToArray();
@@ -141,10 +147,10 @@ namespace Odin.BackgroundProcessing
                 {
                     options.DashboardTitle = hangfireOptions.DashboardTitle;
                 }
-                appBuilder.UseHangfireDashboard(hangfireOptions.DashboardPath, options);
+                webApplicationBuilder.UseHangfireDashboard(hangfireOptions.DashboardPath, options);
             }
 
-            return appBuilder;
+            return app;
         }
 
         internal static IDashboardAuthorizationFilter? TryCreateDashBoardAuthorizationFilter(string? filterName)

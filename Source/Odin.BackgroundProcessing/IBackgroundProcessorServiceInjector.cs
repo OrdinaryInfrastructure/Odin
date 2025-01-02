@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace Odin.BackgroundProcessing
 {
@@ -17,11 +18,11 @@ namespace Odin.BackgroundProcessing
         void TryAddBackgroundProcessor(IServiceCollection serviceCollection, IConfiguration configuration, IConfigurationSection configSection);
 
         /// <summary>
-        /// Inserts background processing middleware using IApplicationBuilder
+        /// Inserts background processing middleware using IHost / IApplicationBuilder
         /// </summary>
-        /// <param name="appBuilder"></param>
+        /// <param name="app"></param>
         /// <param name="appServices"></param>
         /// <returns></returns>
-        IApplicationBuilder UseBackgroundProcessing(IApplicationBuilder appBuilder, IServiceProvider appServices);
+        IHost UseBackgroundProcessing(IHost app, IServiceProvider appServices);
     }
 }
