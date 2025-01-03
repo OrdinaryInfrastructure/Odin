@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Hosting;
 using Odin.DesignContracts;
 using Odin.System;
 
@@ -95,17 +95,16 @@ namespace Odin.BackgroundProcessing
         /// Sets up Background Processing
         /// </summary>
         /// <param name="appServices"></param>
-        /// <param name="appBuilder"></param>
-        public static IApplicationBuilder UseBackgroundProcessing(this IApplicationBuilder appBuilder,
-            IServiceProvider appServices)
+        /// <param name="app"></param>
+        public static IHost UseBackgroundProcessing(this IHost app, IServiceProvider appServices)
         {
             PreCondition.RequiresNotNull(appServices);
-            PreCondition.RequiresNotNull(appBuilder);
+            PreCondition.RequiresNotNull(app);
 
             BackgroundProcessingOptions options = appServices.GetRequiredService<BackgroundProcessingOptions>();
             if (options.Provider == BackgroundProcessingProviders.Fake)
             {
-                return appBuilder;
+                return app;
             }
 
             ClassFactory activator = new ClassFactory();
@@ -116,7 +115,7 @@ namespace Odin.BackgroundProcessing
 
             if (serviceInjectorCreation.Success)
             {
-                return serviceInjectorCreation.Value.UseBackgroundProcessing(appBuilder, appServices);
+                return serviceInjectorCreation.Value.UseBackgroundProcessing(app, appServices);
             }
 
             string message = $"Unable to load provider Odin.BackgroundProcessing.{options.Provider}.";
