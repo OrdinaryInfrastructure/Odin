@@ -1,4 +1,4 @@
-namespace Odin.Email.Office365;
+namespace Odin.Email;
 
 public static class Utility
 {
