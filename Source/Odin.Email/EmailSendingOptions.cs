@@ -7,7 +7,7 @@ namespace Odin.Email
     /// <summary>
     /// Email settings for loading from configuration 
     /// </summary>
-    public sealed record EmailSendingOptions
+    public record EmailSendingOptions
     {
         private string _provider = EmailSendingProviders.Mailgun;
 
@@ -27,6 +27,18 @@ namespace Odin.Email
         public string? DefaultFromName { get; set; }
         
         /// <summary>
+        /// Text to prefix the Subject of every email sent.
+        /// Useful for marking emails sent from different testing environments. 
+        /// </summary>
+        public string? SubjectPrefix { get; set; }
+        
+        /// <summary>
+        /// Text to postfix the Subject of every email sent.
+        /// Useful for marking emails sent from different testing environments. 
+        /// </summary>
+        public string? SubjectPostfix { get;  set; }
+
+        /// <summary>
         /// Default tags (i.e. Office365 Categories) for the generic IEmailSender in DI
         /// Does nothing when using the Mailgun sender.
         /// </summary>
@@ -38,7 +50,7 @@ namespace Odin.Email
         public string Provider
         {
             get => _provider;
-            set
+            init
             {
                 PreCondition.RequiresNotNullOrWhitespace(value);
                 // Ensure MailgunEmailSender is changed to Mailgun for backwards compatibility

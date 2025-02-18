@@ -123,17 +123,13 @@ namespace Odin.Email
                 if (email.From is null)
                 {
                     PreCondition.RequiresNotNullOrWhitespace(_emailSettings.DefaultFromAddress, "Cannot fall back to the default from address, since it is missing.");
-                    content.Add(
-                        new StringContent(GetEmailAsString(_emailSettings.DefaultFromAddress!,
-                            _emailSettings.DefaultFromName!)), "from");
+                    email.From = new EmailAddress(_emailSettings.DefaultFromAddress!, _emailSettings.DefaultFromName);
                 }
-                else
-                {
-                    content.Add(new StringContent(email.From.ToString()), "from");
-                }
-
+                email.Subject = string.Concat(_emailSettings.SubjectPrefix, email.Subject,
+                    _emailSettings.SubjectPostfix);
+                
+                content.Add(new StringContent(email.From.ToString()), "from");
                 content.Add(new StringContent(string.Join(",", email.To.Select(a => a.ToString()))), "to");
-
                 content.Add(new StringContent(email.Subject), "subject");
 
                 if (email.IsHtml)

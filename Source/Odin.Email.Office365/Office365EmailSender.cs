@@ -1,89 +1,132 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Azure.Identity;
+using Microsoft.Extensions.Logging;
 using Microsoft.Graph;
 using Microsoft.Graph.Models;
 using Microsoft.Graph.Users.Item.SendMail;
+using Odin.DesignContracts;
 using Odin.Logging;
 using Odin.System;
 
-namespace Odin.Email.Office365;
+namespace Odin.Email;
 
 /// <summary>
-/// 
+/// Sends email via Office365 GraphClient
 /// </summary>
-/// <param name="graphClient"></param>
-/// <param name="defaultSenderUserId">Microsoft UserId</param>
-/// /// <param name="defaultCategories">Office365 Categories which will be added to each email sent by this Office365EmailSender.</param>
-public class Office365EmailSender(GraphServiceClient graphClient, ILoggerAdapter<Office365EmailSender> logger, 
-    string defaultSenderUserId, List<string>? defaultCategories = null) : IEmailSender
+public class Office365EmailSender : IEmailSender
 {
-    const string MicrosoftGraphFileAttachmentOdataType = "#microsoft.graph.fileAttachment";
-    public async Task<Outcome<string?>> SendEmail(IEmailMessage emailToSend)
+    private readonly GraphServiceClient _graphClient;
+    private readonly string _senderUserId;
+    private readonly EmailSendingOptions _emailSettings;
+    private readonly ILoggerAdapter<Office365EmailSender> _logger;
+
+    /// <summary>
+    /// Sends email via Office365 GraphClient
+    /// </summary>
+    /// <param name="office365Options"></param>
+    /// <param name="emailSettings"></param>
+    /// <param name="logger">Microsoft UserId</param>
+    public Office365EmailSender(Office365Options office365Options, EmailSendingOptions emailSettings , ILoggerAdapter<Office365EmailSender> logger)
     {
-        string userId = emailToSend.From?.Address ?? defaultSenderUserId;
+        PreCondition.RequiresNotNull(office365Options);
+        PreCondition.RequiresNotNull(emailSettings);
+        PreCondition.RequiresNotNull(logger);
+
+        _emailSettings = emailSettings;
+        _logger = logger;
+        
+        ClientSecretCredentialOptions credentialOptions = new ClientSecretCredentialOptions
+        {
+            AuthorityHost = AzureAuthorityHosts.AzurePublicCloud,
+        };
+        ClientSecretCredential clientSecretCredential = new ClientSecretCredential(
+            office365Options.MicrosoftGraphClientSecretCredentials!.TenantId,
+            office365Options.MicrosoftGraphClientSecretCredentials.ClientId,
+            office365Options.MicrosoftGraphClientSecretCredentials.ClientSecret,
+            credentialOptions);
+
+        _graphClient = new GraphServiceClient(clientSecretCredential);
+
+        _senderUserId = string.IsNullOrWhiteSpace(office365Options.SenderUserId)
+            ? _emailSettings.DefaultFromAddress!
+            : office365Options.SenderUserId;
+    }
+
+
+    const string MicrosoftGraphFileAttachmentOdataType = "#microsoft.graph.fileAttachment";
+    public async Task<Outcome<string?>> SendEmail(IEmailMessage email)
+    {
+        if (email.From is null)
+        {
+            PreCondition.RequiresNotNullOrWhitespace(_emailSettings.DefaultFromAddress, "Cannot fall back to the default from address, since it is missing.");
+            email.From = new EmailAddress(_emailSettings.DefaultFromAddress!, _emailSettings.DefaultFromName);
+        }
+        email.Subject = string.Concat(_emailSettings.SubjectPrefix, email.Subject,
+            _emailSettings.SubjectPostfix);
+        
+       // string userId = email.From?.Address ?? defaultSenderUserId;
         try
         {
             SendMailPostRequestBody requestBody = new SendMailPostRequestBody()
             {
                 Message = new Message
                 {
-                    Subject = emailToSend.Subject,
+                    Subject = email.Subject,
                     Body = new ItemBody
                     {
-                        ContentType = emailToSend.IsHtml ? BodyType.Html : BodyType.Text,
-                        Content = emailToSend.Body,
+                        ContentType = email.IsHtml ? BodyType.Html : BodyType.Text,
+                        Content = email.Body,
 
                     },
-                    ToRecipients = emailToSend.To.Select(a => new Recipient
+                    ToRecipients = email.To.Select(a => new Recipient
                     {
                         EmailAddress = a.ToOffice365EmailAddress()
                     }).ToList(),
-                    CcRecipients = emailToSend.CC.Select(a => new Recipient
+                    CcRecipients = email.CC.Select(a => new Recipient
                     {
                         EmailAddress = a.ToOffice365EmailAddress()
                     }).ToList(),
-                    BccRecipients = emailToSend.BCC.Select(a => new Recipient
+                    BccRecipients = email.BCC.Select(a => new Recipient
                     {
                         EmailAddress = a.ToOffice365EmailAddress()
                     }).ToList(),
-                    From = emailToSend.From is null
+                    From = email.From is null
                         ? null
                         : new Recipient
                         {
-                            EmailAddress = emailToSend.From.ToOffice365EmailAddress()
+                            EmailAddress = email.From.ToOffice365EmailAddress()
                         },
-                    ReplyTo = emailToSend.ReplyTo is null
+                    ReplyTo = email.ReplyTo is null
                         ? []
                         :
                         [
                             new Recipient
                             {
-                                EmailAddress = emailToSend.ReplyTo.ToOffice365EmailAddress()
+                                EmailAddress = email.ReplyTo.ToOffice365EmailAddress()
                             }
                         ],
-                    Attachments = emailToSend.Attachments.Select(a => new FileAttachment
+                    Attachments = email.Attachments.Select(a => new FileAttachment
                     {
                         OdataType = MicrosoftGraphFileAttachmentOdataType,
                         Name = a.FileName,
                         ContentType = a.ContentType,
                         ContentBytes = ToByteArray(a.Data),
                     } as Microsoft.Graph.Models.Attachment).ToList(),
-                    Categories = defaultCategories == null ? 
-                        emailToSend.Tags : emailToSend.Tags.Concat(defaultCategories)
+                    Categories = _emailSettings.DefaultTags == null ? 
+                        email.Tags : email.Tags.Concat(_emailSettings.DefaultTags)
                             .Distinct().ToList(),
                 }
             };
 
-            await graphClient.Users[userId].SendMail.PostAsync(requestBody);
-            LogSendEmailResult(emailToSend, true, LogLevel.Information, $"Sent with Office365 via user {userId}");
-            return Outcome.Succeed<string?>(null);
+            await _graphClient.Users[_senderUserId].SendMail.PostAsync(requestBody);
+            LogSendEmailResult(email, true, LogLevel.Information, $"Sent with Office365 via user {_senderUserId}");
+            return Outcome.Succeed<string?>("Success");
         }
         catch (Exception ex)
         {
-            LogSendEmailResult(emailToSend, false, LogLevel.Error, $"Failed to send with Office365 via user {userId}", ex);
-            return Outcome.Fail<string?>(ex.ToString());
+            LogSendEmailResult(email, false, LogLevel.Error, $"Failed to send with Office365 via user {_senderUserId}", ex);
+            return Outcome.Fail<string?>("Fail: " + ex.Message);
         }
     }
-    
 
 
     static byte[] ToByteArray(Stream inputStream)
@@ -116,12 +159,12 @@ public class Office365EmailSender(GraphServiceClient graphClient, ILoggerAdapter
 
         if (isSuccess)
         {
-            logger.Log(level, $"{nameof(SendEmail)} to {to} succeeded. Subject - '{email.Subject}'. {message}",
+            _logger.Log(level, $"{nameof(SendEmail)} to {to} succeeded. Subject - '{email.Subject}'. {message}",
                 exception);
         }
         else
         {
-            logger.Log(level, $"{nameof(SendEmail)} to {to} failed. Subject - '{email.Subject}'. Error - {message}",
+            _logger.Log(level, $"{nameof(SendEmail)} to {to} failed. Subject - '{email.Subject}'. Error - {message}",
                 exception);
         }
     }
