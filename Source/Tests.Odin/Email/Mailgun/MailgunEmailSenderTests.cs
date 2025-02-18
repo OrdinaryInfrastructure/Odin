@@ -31,7 +31,7 @@ namespace Tests.Odin.Email.Mailgun
         [TestCase("No-default-from-does-not-throw")]
         [TestCase("1-tag")]
         [TestCase("2-tags")]
-        public async Task Send_correctly_implements_email_options(string testCase)
+        public async Task Sending_using_various_email_options(string testCase)
         {
             EmailSendingOptions emailSendingOptions = new EmailSendingOptions();
             IConfiguration config = AppFactory.GetConfiguration();
@@ -88,7 +88,7 @@ namespace Tests.Odin.Email.Mailgun
         }
 
         [Test]
-        public async Task Send_email_with_attachment()
+        public async Task Send_with_attachment()
         {
             IConfiguration config = AppFactory.GetConfiguration();
             MailgunEmailSenderTestBuilder scenario = new MailgunEmailSenderTestBuilder()
@@ -112,29 +112,6 @@ namespace Tests.Odin.Email.Mailgun
             Assert.That(result, Is.Not.Null);
             
             VerifySuccessfulSendAndLogging(scenario, message, result);
-        }
-
-        [Test]
-        public async Task Send_email_uses_default_sending_options()
-        {
-            IConfiguration config = AppFactory.GetConfiguration();
-            MailgunEmailSenderTestBuilder scenario = new MailgunEmailSenderTestBuilder()
-                .WithMailgunOptionsFromTestConfiguration(config)
-                .WithEmailSendingOptionsFromTestConfiguration(config);
-            EmailMessage message = new EmailMessage();
-            message.To.Add(new EmailAddress(_toTestEmail));
-            message.Subject = "Test Mail";
-            message.IsHtml = true;
-            message.Body = "<p>Body text</p>";
-            MailgunEmailSender mailgunSender = scenario.Build();
-
-            Outcome<string> result = await mailgunSender.SendEmail(message);
-
-            Assert.That(result, Is.Not.Null);
-
-            // Should be no errors
-            VerifySuccessfulSendAndLogging(scenario, message, result);
-
         }
 
         private void VerifySuccessfulSendAndLogging(MailgunEmailSenderTestBuilder scenario,EmailMessage message, Outcome<string> result)

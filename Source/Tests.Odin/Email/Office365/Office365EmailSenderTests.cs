@@ -3,7 +3,6 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
 using Odin.Email;
-using Odin.Logging;
 using Odin.System;
 
 namespace Tests.Odin.Email.Office365;
@@ -87,7 +86,11 @@ public class Office365EmailSenderTests : IntegrationTest
                 Assert.Fail($"Case {testCase} not implemented");
                 break;
         }
-        Office365EmailSenderTestBuilder scenario = new Office365EmailSenderTestBuilder();
+        IConfiguration config = AppFactory.GetConfiguration();
+
+        Office365EmailSenderTestBuilder scenario = new Office365EmailSenderTestBuilder()
+            .WithOffice365OptionsFromTestConfiguration(config)
+            .WithEmailSendingOptionsFromTestConfiguration(config);
         Office365EmailSender sut = scenario.Build();
         
         Outcome<string> result = await sut.SendEmail(email);
