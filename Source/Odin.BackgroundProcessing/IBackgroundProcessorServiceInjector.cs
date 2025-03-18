@@ -4,9 +4,6 @@ using Microsoft.Extensions.Hosting;
 
 namespace Odin.BackgroundProcessing
 {
-    /// <summary>
-    /// Sends an email
-    /// </summary>
     public interface IBackgroundProcessorServiceInjector
     {
         /// <summary>
@@ -14,7 +11,7 @@ namespace Odin.BackgroundProcessing
         /// </summary>
         /// <param name="serviceCollection"></param>
         /// <param name="configSection"></param>
-        void TryAddBackgroundProcessor(IServiceCollection serviceCollection, IConfiguration configuration, IConfigurationSection configSection);
+        void TryAddBackgroundProcessor(IServiceCollection serviceCollection, IConfiguration configuration, IConfigurationSection configSection, string? sqlServerConnectionString = null);
 
         /// <summary>
         /// Inserts background processing middleware using IHost / IApplicationBuilder

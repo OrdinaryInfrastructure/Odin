@@ -13,7 +13,7 @@ namespace Odin.BackgroundProcessing
     public class HangfireServiceInjector : IBackgroundProcessorServiceInjector
     {
         public void TryAddBackgroundProcessor(IServiceCollection serviceCollection, IConfiguration configuration,
-            IConfigurationSection backgroundProcessingSection)
+            IConfigurationSection backgroundProcessingSection, string? sqlServerConnectionString = null)
         {
             PreCondition.RequiresNotNull(serviceCollection);
             PreCondition.RequiresNotNull(backgroundProcessingSection);
@@ -35,12 +35,21 @@ namespace Odin.BackgroundProcessing
                     $"Invalid Hangfire configuration. {hangfireSettingsValid.MessagesToString()}");
             }
 
-            string? hangfireSqlConnectionString =
-                configuration.GetConnectionString(hangfireOptions.ConnectionStringName);
+            string? hangfireSqlConnectionString = null;
+
+            if (sqlServerConnectionString is not null)
+            {
+                hangfireSqlConnectionString = sqlServerConnectionString;
+            }
+            else
+            {
+                hangfireSqlConnectionString = configuration.GetConnectionString(hangfireOptions.ConnectionStringName);
+            }
+            
             if (string.IsNullOrWhiteSpace(hangfireSqlConnectionString))
             {
                 throw new ApplicationException(
-                    $"Invalid Hangfire configuration. ConnectionString ({hangfireOptions.ConnectionStringName}) does not exist in configuration.");
+                    $"Invalid Hangfire configuration. ConnectionString ({hangfireOptions.ConnectionStringName}) was not passed explicitly and does not exist in configuration.");
             }
 
             serviceCollection.AddLoggerAdapter();
