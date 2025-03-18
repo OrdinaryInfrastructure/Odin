@@ -21,7 +21,7 @@ namespace Odin.BackgroundProcessing
         /// <param name="sectionName">Cryptography by default</param>
         public static void AddBackgroundProcessing(
             this IServiceCollection serviceCollection, IConfiguration configuration,
-            string sectionName = "BackgroundProcessing")
+            string sectionName = "BackgroundProcessing", string? sqlServerConnectionString = null)
         {
             IConfigurationSection? section = configuration.GetSection(sectionName);
             if (section == null)
@@ -33,7 +33,7 @@ namespace Odin.BackgroundProcessing
                         $"{nameof(AddBackgroundProcessing)}: Section {sectionName} missing in configuration.");
                 }
             }
-            serviceCollection.AddBackgroundProcessing(configuration, section);
+            serviceCollection.AddBackgroundProcessing(configuration, section, sqlServerConnectionString);
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace Odin.BackgroundProcessing
         /// <returns></returns>
         public static void AddBackgroundProcessing(
             this IServiceCollection serviceCollection, IConfiguration configuration,
-            IConfigurationSection configurationSection)
+            IConfigurationSection configurationSection, string? sqlServerConnectionString = null)
         {
             PreCondition.RequiresNotNull(configurationSection);
 
@@ -80,7 +80,7 @@ namespace Odin.BackgroundProcessing
             if (serviceInjectorCreation.Success)
             {
                 serviceInjectorCreation.Value.TryAddBackgroundProcessor(serviceCollection, configuration,
-                    configurationSection);
+                    configurationSection, sqlServerConnectionString);
             }
             else
             {
