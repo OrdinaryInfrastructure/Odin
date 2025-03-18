@@ -76,11 +76,8 @@ namespace Odin.Data
             return Outcome.Succeed(runner);
         }
 
-        public static Outcome<SqlScriptsRunner> CreateFromConnectionString(string connectionString,
-            Assembly assemblyWithEmbeddedScripts, IConfiguration configuration, ILogger logger)
+        public static Outcome<SqlScriptsRunner> CreateFromConnectionString(string connectionString, Assembly assemblyWithEmbeddedScripts)
         {
-            PreCondition.RequiresNotNull(configuration);
-            PreCondition.RequiresNotNull(logger);
             PreCondition.RequiresNotNull(assemblyWithEmbeddedScripts);
             PreCondition.RequiresNotNullOrWhitespace(connectionString);
             SqlScriptsRunner runner = new SqlScriptsRunner(assemblyWithEmbeddedScripts)
