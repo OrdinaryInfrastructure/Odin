@@ -1,7 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.Hosting;
 using Odin.DesignContracts;
 using Odin.System;
 
@@ -14,7 +14,7 @@ namespace Odin.BackgroundProcessing
     public static class ServiceInjector
     {
         /// <summary>
-        /// Sets up IBackgroundProcessor in DI from configuration
+        /// Adds BackgroundProcessing services (such as Hangfire's server) according to the provided ConfigurationSection
         /// </summary>
         /// <param name="serviceCollection"></param>
         /// <param name="configuration"></param>
@@ -37,7 +37,7 @@ namespace Odin.BackgroundProcessing
         }
 
         /// <summary>
-        /// Sets up EmailSending from the provided ConfigurationSection
+        /// Adds BackgroundProcessing services (such as Hangfire's server) according to the provided ConfigurationSection 
         /// </summary>
         /// <param name="serviceCollection"></param>
         /// <param name="configurationSection"></param>
@@ -92,11 +92,11 @@ namespace Odin.BackgroundProcessing
         }
 
         /// <summary>
-        /// Sets up Background Processing
+        /// Adds BackgroundProcessing features (such as Hangfire's dashboard) to the HTTP pipeline.
         /// </summary>
         /// <param name="appServices"></param>
         /// <param name="app"></param>
-        public static IHost UseBackgroundProcessing(this IHost app, IServiceProvider appServices)
+        public static IApplicationBuilder UseBackgroundProcessing(this IApplicationBuilder app, IServiceProvider appServices)
         {
             PreCondition.RequiresNotNull(appServices);
             PreCondition.RequiresNotNull(app);

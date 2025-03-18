@@ -4,7 +4,6 @@ using Hangfire.SqlServer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Odin.DesignContracts;
 using Odin.System;
 
@@ -103,63 +102,57 @@ namespace Odin.BackgroundProcessing
                  {
                      serviceCollection.AddHangfireServer();
                  }
-             }
-        }
+                 
+                 // Keep jobs for configured number of days if specced
+                 if (hangfireOptions.JobExpirationHours.HasValue)
+                 {
+                     GlobalJobFilters.Filters.Add(
+                         new HangfireExpirationPeriodAttribute(
+                             TimeSpan.FromHours(hangfireOptions.JobExpirationHours.Value)));
+                 }
 
+                 // Automatically retry jobs setting...
+                 if (hangfireOptions.NumberOfAutomaticRetries.HasValue)
+                 {
+                     GlobalJobFilters.Filters.Add(new AutomaticRetryAttribute
+                         { Attempts = hangfireOptions.NumberOfAutomaticRetries.Value });
+                 }
+             }
+             
+             
+        }
+        
         /// <summary>
-        /// Sets up Hangfire from Hangfire options.
+        /// If configured, adds Hangfire dashboard to HTTP pipeline.
         /// </summary>
         /// <param name="appServices"></param>
-        public IHost UseBackgroundProcessing(IHost app, IServiceProvider appServices)
+        public IApplicationBuilder UseBackgroundProcessing(IApplicationBuilder builder, IServiceProvider appServices)
         {
             HangfireOptions hangfireOptions = appServices.GetRequiredService<HangfireOptions>();
-            if (hangfireOptions.StartServer)
+
+            if (!hangfireOptions.StartDashboard)
             {
-                GlobalConfiguration.Configuration
-                    .UseActivator(new HangfireActivator(appServices));
-
-                // Keep jobs for configured number of days if specced
-                if (hangfireOptions.JobExpirationHours.HasValue)
-                {
-                    GlobalJobFilters.Filters.Add(
-                        new HangfireExpirationPeriodAttribute(
-                            TimeSpan.FromHours(hangfireOptions.JobExpirationHours.Value)));
-                }
-
-                // Automatically retry jobs setting...
-                if (hangfireOptions.NumberOfAutomaticRetries.HasValue)
-                {
-                    GlobalJobFilters.Filters.Add(new AutomaticRetryAttribute
-                        { Attempts = hangfireOptions.NumberOfAutomaticRetries.Value });
-                }
+                return builder;
             }
-
-            if (hangfireOptions.StartDashboard)
+            
+            string[] filterStrings =
+                hangfireOptions.DashboardAuthorizationFilters.Split(',', ';')
+                    .Where(c => !string.IsNullOrWhiteSpace(c.TrimIfNotNull())).ToArray();
+            IEnumerable<IDashboardAuthorizationFilter> filters =
+                filterStrings.Select(TryCreateDashBoardAuthorizationFilter).Where(c => c != null)!;
+            DashboardOptions options = new DashboardOptions()
             {
-                if (app is not IApplicationBuilder webApplicationBuilder)
-                {
-                    throw new ApplicationException("Host is not a web application.");
-                }
-                
-                string[] filterStrings =
-                    hangfireOptions.DashboardAuthorizationFilters.Split(',', ';')
-                        .Where(c => !string.IsNullOrWhiteSpace(c.TrimIfNotNull())).ToArray();
-                IEnumerable<IDashboardAuthorizationFilter> filters =
-                    filterStrings.Select(TryCreateDashBoardAuthorizationFilter).Where(c => c != null)!;
-                DashboardOptions options = new DashboardOptions()
-                {
-                    Authorization = filters,
-                    StatsPollingInterval = hangfireOptions.StatsPollingInterval,
-                    IgnoreAntiforgeryToken = hangfireOptions.IgnoreAntiforgeryToken
-                };
-                if (!string.IsNullOrWhiteSpace(hangfireOptions.DashboardTitle))
-                {
-                    options.DashboardTitle = hangfireOptions.DashboardTitle;
-                }
-                webApplicationBuilder.UseHangfireDashboard(hangfireOptions.DashboardPath, options);
+                Authorization = filters,
+                StatsPollingInterval = hangfireOptions.StatsPollingInterval,
+                IgnoreAntiforgeryToken = hangfireOptions.IgnoreAntiforgeryToken
+            };
+            if (!string.IsNullOrWhiteSpace(hangfireOptions.DashboardTitle))
+            {
+                options.DashboardTitle = hangfireOptions.DashboardTitle;
             }
+            builder.UseHangfireDashboard(hangfireOptions.DashboardPath, options);
 
-            return app;
+            return builder;
         }
 
         internal static IDashboardAuthorizationFilter? TryCreateDashBoardAuthorizationFilter(string? filterName)
