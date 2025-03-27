@@ -5,6 +5,8 @@
     <ImplicitUsings>true</ImplicitUsings>
     <PackageId>Odin.BackgroundProcessing.Hangfire</PackageId>
     <RootNamespace>Odin.BackgroundProcessing</RootNamespace>
+    <Version>1.0.123</Version>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Hangfire.Core" Version="1.8.17" />

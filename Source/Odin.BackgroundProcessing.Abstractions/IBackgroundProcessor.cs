@@ -62,5 +62,26 @@ namespace Odin.BackgroundProcessing
         /// <returns></returns>
         Outcome RemoveRecurringJob(string recurringJobName);
 
+        /// <summary>
+        /// Monitor job completion periodically checks job status
+        /// </summary>
+        /// <param name="jobId">Active job id (GUID)</param>
+        /// <param name="tcs">Task Completion Source</param>
+        /// <returns></returns>
+        Task MonitorActiveJobsCompletion(string jobId, TaskCompletionSource<bool> tcs, int pollIntervalSeconds = 5);
+
+        /// <summary>
+        /// Waits for all active jobs to complete
+        /// </summary>
+        /// <param name="cancellationToken">Token to indicate cancellation</param>
+        /// <returns></returns>
+        Task WaitForActiveJobsToComplete(TimeSpan timeSpan, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Returns true if there are any active (running) jobs
+        /// </summary>
+        /// <returns></returns>
+        bool HasActiveJobs();
+
     }
 }

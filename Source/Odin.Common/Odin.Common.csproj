@@ -8,6 +8,8 @@
             
 Odin = OrDinary INfrastructure.
         </Description>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>1.0.123</Version>
 
   </PropertyGroup>
   <ItemGroup>

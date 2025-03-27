@@ -132,6 +132,21 @@ namespace Odin.BackgroundProcessing
                     return Outcome.Fail($"Unknown Behaviour - {Behaviour}");
             }
         }
+
+        public async Task MonitorActiveJobsCompletion(string jobId, TaskCompletionSource<bool> tcs, int pollIntervalSeconds = 5)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task WaitForActiveJobsToComplete(TimeSpan timeSpan, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool HasActiveJobs()
+        {
+            throw new NotImplementedException();
+        }
     }
 
     /// <summary>

@@ -22,6 +22,7 @@ namespace Odin.BackgroundProcessing
                 PreCondition.RequiresNotNullOrWhitespace(value);
                 _provider = value.Replace("BackgroundProcessor", "", StringComparison.OrdinalIgnoreCase);   
             }
+            
         }
 
         /// <summary>

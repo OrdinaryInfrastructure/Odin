@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using System.Collections.Concurrent;
+using System.Linq.Expressions;
 using Hangfire;
 using Hangfire.Annotations;
 using Odin.DesignContracts;
@@ -14,14 +15,20 @@ namespace Odin.BackgroundProcessing
     {
         private readonly ILoggerAdapter<HangfireBackgroundProcessor> _logger;
         private readonly IRecurringJobManagerV2 _recurringJobManager;
+
         private readonly IBackgroundJobClient _jobClient;
+
+        //Dictionary of active jobs
+        private readonly ConcurrentDictionary<string, TaskCompletionSource<bool>> _activeJobs = new();
+
 
         /// <summary>
         /// Default constructor
         /// </summary>
         /// <param name="recurringJobManager"></param>
         /// <param name="logger"></param>
-        public HangfireBackgroundProcessor(IRecurringJobManagerV2 recurringJobManager, IBackgroundJobClient jobClient, ILoggerAdapter<HangfireBackgroundProcessor> logger)
+        public HangfireBackgroundProcessor(IRecurringJobManagerV2 recurringJobManager, IBackgroundJobClient jobClient,
+            ILoggerAdapter<HangfireBackgroundProcessor> logger)
         {
             PreCondition.RequiresNotNull(recurringJobManager);
             PreCondition.RequiresNotNull(jobClient);
@@ -29,7 +36,6 @@ namespace Odin.BackgroundProcessing
             _recurringJobManager = recurringJobManager;
             _jobClient = jobClient;
             _logger = logger;
-            
         }
 
         /// <summary>
@@ -39,11 +45,17 @@ namespace Odin.BackgroundProcessing
         /// <param name="enqueueAt"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public Outcome<JobDetails> ScheduleJob<T>([NotNull, InstantHandle] Expression<Func<T, Task>> methodCall, DateTimeOffset enqueueAt)
+        public Outcome<JobDetails> ScheduleJob<T>([NotNull, InstantHandle] Expression<Func<T, Task>> methodCall,
+            DateTimeOffset enqueueAt)
         {
             try
             {
                 string jobId = _jobClient.Schedule<T>(methodCall, enqueueAt);
+                // var tcs = new TaskCompletionSource<bool>();
+                // _activeJobs.TryAdd(jobId, tcs);
+                // _logger.LogInformation($"Active Job added: {jobId}");
+                // _logger.LogInformation($"Active Jobs List: Count: {GetActiveJobIds().ToArray().Length} List: {string.Join(", ", GetActiveJobIds().ToArray())}");
+                // Task.Run(() => MonitorActiveJobsCompletion(jobId, tcs, pollIntervalSeconds: 5));
                 return Outcome.Succeed(new JobDetails(jobId, enqueueAt));
             }
             catch (Exception err)
@@ -53,7 +65,7 @@ namespace Odin.BackgroundProcessing
                 return Outcome.Fail<JobDetails>(message);
             }
         }
-        
+
         /// <summary>
         /// Schedules a once-off job in Hangfire
         /// </summary>
@@ -61,11 +73,17 @@ namespace Odin.BackgroundProcessing
         /// <param name="enqueueAt"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public Outcome<JobDetails> ScheduleJob<T>([NotNull, InstantHandle] Expression<Action<T>> methodCall, DateTimeOffset enqueueAt)
+        public Outcome<JobDetails> ScheduleJob<T>([NotNull, InstantHandle] Expression<Action<T>> methodCall,
+            DateTimeOffset enqueueAt)
         {
             try
             {
                 string jobId = _jobClient.Schedule<T>(methodCall, enqueueAt);
+                // var tcs = new TaskCompletionSource<bool>();
+                // _activeJobs.TryAdd(jobId, tcs);
+                // _logger.LogInformation($"Active Job added: {jobId}");
+                // _logger.LogInformation($"Active Jobs List: Count: {GetActiveJobIds().ToArray().Length} List: {string.Join(", ", GetActiveJobIds().ToArray())}");
+                // Task.Run(() => MonitorActiveJobsCompletion(jobId, tcs, pollIntervalSeconds: 5));
                 return Outcome.Succeed(new JobDetails(jobId, enqueueAt));
             }
             catch (Exception err)
@@ -91,7 +109,13 @@ namespace Odin.BackgroundProcessing
         {
             try
             {
-                _recurringJobManager.AddOrUpdate<T>(recurringJobId, queueName, methodCall, cronExpression, new RecurringJobOptions(){ TimeZone = timeZoneInfo});
+                _recurringJobManager.AddOrUpdate<T>(recurringJobId, queueName, methodCall, cronExpression,
+                    new RecurringJobOptions() { TimeZone = timeZoneInfo });
+                // var tcs = new TaskCompletionSource<bool>();
+                // _activeJobs.TryAdd(recurringJobId, tcs);
+                // _logger.LogInformation($"Active Job added: {recurringJobId}");
+                // _logger.LogInformation($"Active Jobs List: Count: {GetActiveJobIds().ToArray().Length} List: {string.Join(", ", GetActiveJobIds().ToArray())}");
+                // Task.Run(() => MonitorActiveJobsCompletion(recurringJobId, tcs, pollIntervalSeconds: 5));
                 return Outcome.Succeed();
             }
             catch (Exception err)
@@ -129,11 +153,12 @@ namespace Odin.BackgroundProcessing
         /// <param name="enqueueIn"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public Outcome<JobDetails> ScheduleJob<T>([NotNull, InstantHandle] Expression<Func<T, Task>> methodCall, TimeSpan enqueueIn)
+        public Outcome<JobDetails> ScheduleJob<T>([NotNull, InstantHandle] Expression<Func<T, Task>> methodCall,
+            TimeSpan enqueueIn)
         {
             return ScheduleJob(methodCall, DateTimeOffset.Now.Add(enqueueIn));
         }
-        
+
         /// <summary>
         /// Schedules a once-off job in Hangfire
         /// </summary>
@@ -141,9 +166,51 @@ namespace Odin.BackgroundProcessing
         /// <param name="enqueueIn"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public Outcome<JobDetails> ScheduleJob<T>([NotNull, InstantHandle] Expression<Action<T>> methodCall, TimeSpan enqueueIn)
+        public Outcome<JobDetails> ScheduleJob<T>([NotNull, InstantHandle] Expression<Action<T>> methodCall,
+            TimeSpan enqueueIn)
         {
             return ScheduleJob(methodCall, DateTimeOffset.Now.Add(enqueueIn));
+        }
+
+        public async Task MonitorActiveJobsCompletion(string jobId, TaskCompletionSource<bool> tcs,
+            int pollIntervalSeconds = 5)
+        {
+            _logger.LogInformation($"Job still active: {jobId}");
+            // while (true)
+            // {
+            //     using (var connection = JobStorage.Current.GetConnection())
+            //     {
+            //         var jobData = connection.GetJobData(jobId);
+            //
+            //         if (jobData == null || jobData.State == "Succeeded" || jobData.State == "Deleted" ||
+            //             jobData.State == "Failed")
+            //         {
+            //             tcs.SetResult(true);
+            //             _activeJobs.TryRemove(jobId, out _);
+            //             _logger.LogInformation($"Job completed: {jobId} as {jobData!.State}");
+            //             return;
+            //         }
+            //     }
+            //
+            //
+            //     //_logger.LogInformation($"Job still active: {jobId}");
+            //     // await Task.Delay(TimeSpan.FromSeconds(pollIntervalSeconds)); // Poll every 5 seconds
+            // }
+        }
+
+        public async Task WaitForActiveJobsToComplete(TimeSpan timeSpan,CancellationToken cancellationToken = default)
+        {
+            while (JobStorage.Current.GetMonitoringApi().ProcessingJobs(0, int.MaxValue).Any())
+            {
+                await Task.Delay(timeSpan, cancellationToken);
+            }
+        }
+
+        public bool HasActiveJobs()
+        {
+            _logger.LogInformation(
+                $"Jobs {_recurringJobManager.Storage.GetMonitoringApi().ProcessingCount()} processing ...");
+            return !JobStorage.Current.GetMonitoringApi().ProcessingCount().Equals(0);
         }
     }
 }
