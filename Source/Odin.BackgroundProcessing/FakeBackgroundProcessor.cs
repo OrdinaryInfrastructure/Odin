@@ -133,17 +133,32 @@ namespace Odin.BackgroundProcessing
             }
         }
 
-        public async Task MonitorActiveJobsCompletion(string jobId, TaskCompletionSource<bool> tcs, int pollIntervalSeconds = 5)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task WaitForActiveJobsToComplete(TimeSpan timeSpan, CancellationToken cancellationToken = default)
+        public Task WaitForJobsToComplete(TimeSpan timespan, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
 
         public bool HasActiveJobs()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task UpdateJobCompletion(string jobId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task AddJobToTrack(string jobId, TaskCompletionSource tcs)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task StopProcessingNewJobs()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task StopScheduledJobs()
         {
             throw new NotImplementedException();
         }

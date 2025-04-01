@@ -8,7 +8,7 @@
         <Description>Abstracts access to background processing via an IBackgroundProcessor service interface,
             together with a Hangfire and fake implementations.
         </Description>
-        <Version>1.0.123</Version>
+        <Version>1.0.171</Version>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     </PropertyGroup>
 

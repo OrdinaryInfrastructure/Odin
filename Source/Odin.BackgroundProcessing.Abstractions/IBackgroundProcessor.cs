@@ -63,25 +63,44 @@ namespace Odin.BackgroundProcessing
         Outcome RemoveRecurringJob(string recurringJobName);
 
         /// <summary>
-        /// Monitor job completion periodically checks job status
-        /// </summary>
-        /// <param name="jobId">Active job id (GUID)</param>
-        /// <param name="tcs">Task Completion Source</param>
-        /// <returns></returns>
-        Task MonitorActiveJobsCompletion(string jobId, TaskCompletionSource<bool> tcs, int pollIntervalSeconds = 5);
-
-        /// <summary>
         /// Waits for all active jobs to complete
         /// </summary>
-        /// <param name="cancellationToken">Token to indicate cancellation</param>
+        /// <param name="timespan">Time after which server gives up on waiting for processing jobs to complete</param>
         /// <returns></returns>
-        Task WaitForActiveJobsToComplete(TimeSpan timeSpan, CancellationToken cancellationToken = default);
+        Task WaitForJobsToComplete(TimeSpan timespan, CancellationToken cancellationToken);
 
         /// <summary>
         /// Returns true if there are any active (running) jobs
         /// </summary>
         /// <returns></returns>
         bool HasActiveJobs();
+
+        /// <summary>
+        /// Update Job Completion 
+        /// </summary>
+        /// <param name="jobId"></param>
+        /// <returns></returns>
+        Task UpdateJobCompletion(string jobId);
+
+        /// <summary>
+        /// Add Job To Track
+        /// </summary>
+        /// <param name="jobId"></param>
+        /// <param name="tcs"></param>
+        /// <returns></returns>
+        Task AddJobToTrack(string jobId, TaskCompletionSource tcs);
+
+        /// <summary>
+        /// Stop procesing any new jobs
+        /// </summary>
+        /// <returns></returns>
+        Task StopProcessingNewJobs();
+
+        /// <summary>
+        /// Stop any scheduled jobs
+        /// </summary>
+        /// <returns></returns>
+        Task StopScheduledJobs();
 
     }
 }

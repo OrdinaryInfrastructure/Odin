@@ -19,9 +19,9 @@ namespace Odin.BackgroundProcessing
         private readonly IBackgroundJobClient _jobClient;
 
         //Dictionary of active jobs
-        private readonly ConcurrentDictionary<string, TaskCompletionSource<bool>> _activeJobs = new();
-
-
+        private static readonly ConcurrentDictionary<string, TaskCompletionSource> ActiveJobs = new();
+        public static bool IsNotAllowingNewJobs = false;
+        
         /// <summary>
         /// Default constructor
         /// </summary>
@@ -50,12 +50,13 @@ namespace Odin.BackgroundProcessing
         {
             try
             {
+                if (IsNotAllowingNewJobs)
+                {
+                    _logger.LogInformation("No new jobs allowed!");
+                    return Outcome.Fail<JobDetails>($"No new jobs allowed!");
+                }
+                
                 string jobId = _jobClient.Schedule<T>(methodCall, enqueueAt);
-                // var tcs = new TaskCompletionSource<bool>();
-                // _activeJobs.TryAdd(jobId, tcs);
-                // _logger.LogInformation($"Active Job added: {jobId}");
-                // _logger.LogInformation($"Active Jobs List: Count: {GetActiveJobIds().ToArray().Length} List: {string.Join(", ", GetActiveJobIds().ToArray())}");
-                // Task.Run(() => MonitorActiveJobsCompletion(jobId, tcs, pollIntervalSeconds: 5));
                 return Outcome.Succeed(new JobDetails(jobId, enqueueAt));
             }
             catch (Exception err)
@@ -76,14 +77,17 @@ namespace Odin.BackgroundProcessing
         public Outcome<JobDetails> ScheduleJob<T>([NotNull, InstantHandle] Expression<Action<T>> methodCall,
             DateTimeOffset enqueueAt)
         {
+            
             try
             {
+                
+                if (IsNotAllowingNewJobs)
+                {
+                    _logger.LogInformation("No new jobs allowed!");
+                    return Outcome.Fail<JobDetails>($"No new jobs allowed!");
+                }
+                
                 string jobId = _jobClient.Schedule<T>(methodCall, enqueueAt);
-                // var tcs = new TaskCompletionSource<bool>();
-                // _activeJobs.TryAdd(jobId, tcs);
-                // _logger.LogInformation($"Active Job added: {jobId}");
-                // _logger.LogInformation($"Active Jobs List: Count: {GetActiveJobIds().ToArray().Length} List: {string.Join(", ", GetActiveJobIds().ToArray())}");
-                // Task.Run(() => MonitorActiveJobsCompletion(jobId, tcs, pollIntervalSeconds: 5));
                 return Outcome.Succeed(new JobDetails(jobId, enqueueAt));
             }
             catch (Exception err)
@@ -109,13 +113,15 @@ namespace Odin.BackgroundProcessing
         {
             try
             {
+                if (IsNotAllowingNewJobs)
+                {
+                    _logger.LogInformation("No new jobs allowed!");
+                    return Outcome.Fail("No new jobs allowed");
+                }
+
                 _recurringJobManager.AddOrUpdate<T>(recurringJobId, queueName, methodCall, cronExpression,
                     new RecurringJobOptions() { TimeZone = timeZoneInfo });
-                // var tcs = new TaskCompletionSource<bool>();
-                // _activeJobs.TryAdd(recurringJobId, tcs);
-                // _logger.LogInformation($"Active Job added: {recurringJobId}");
-                // _logger.LogInformation($"Active Jobs List: Count: {GetActiveJobIds().ToArray().Length} List: {string.Join(", ", GetActiveJobIds().ToArray())}");
-                // Task.Run(() => MonitorActiveJobsCompletion(recurringJobId, tcs, pollIntervalSeconds: 5));
+                
                 return Outcome.Succeed();
             }
             catch (Exception err)
@@ -156,7 +162,8 @@ namespace Odin.BackgroundProcessing
         public Outcome<JobDetails> ScheduleJob<T>([NotNull, InstantHandle] Expression<Func<T, Task>> methodCall,
             TimeSpan enqueueIn)
         {
-            return ScheduleJob(methodCall, DateTimeOffset.Now.Add(enqueueIn));
+            return IsNotAllowingNewJobs ? Outcome.Fail<JobDetails>($"No new jobs allowed!") : 
+                ScheduleJob(methodCall, DateTimeOffset.Now.Add(enqueueIn));
         }
 
         /// <summary>
@@ -169,48 +176,97 @@ namespace Odin.BackgroundProcessing
         public Outcome<JobDetails> ScheduleJob<T>([NotNull, InstantHandle] Expression<Action<T>> methodCall,
             TimeSpan enqueueIn)
         {
-            return ScheduleJob(methodCall, DateTimeOffset.Now.Add(enqueueIn));
+            return IsNotAllowingNewJobs ? Outcome.Fail<JobDetails>($"No new jobs allowed!") :
+                ScheduleJob(methodCall, DateTimeOffset.Now.Add(enqueueIn));
         }
 
-        public async Task MonitorActiveJobsCompletion(string jobId, TaskCompletionSource<bool> tcs,
-            int pollIntervalSeconds = 5)
+        public async Task WaitForJobsToComplete(TimeSpan timespan, CancellationToken cancellationToken = default)
         {
-            _logger.LogInformation($"Job still active: {jobId}");
-            // while (true)
-            // {
-            //     using (var connection = JobStorage.Current.GetConnection())
-            //     {
-            //         var jobData = connection.GetJobData(jobId);
-            //
-            //         if (jobData == null || jobData.State == "Succeeded" || jobData.State == "Deleted" ||
-            //             jobData.State == "Failed")
-            //         {
-            //             tcs.SetResult(true);
-            //             _activeJobs.TryRemove(jobId, out _);
-            //             _logger.LogInformation($"Job completed: {jobId} as {jobData!.State}");
-            //             return;
-            //         }
-            //     }
-            //
-            //
-            //     //_logger.LogInformation($"Job still active: {jobId}");
-            //     // await Task.Delay(TimeSpan.FromSeconds(pollIntervalSeconds)); // Poll every 5 seconds
-            // }
-        }
-
-        public async Task WaitForActiveJobsToComplete(TimeSpan timeSpan,CancellationToken cancellationToken = default)
-        {
-            while (JobStorage.Current.GetMonitoringApi().ProcessingJobs(0, int.MaxValue).Any())
+            try
             {
-                await Task.Delay(timeSpan, cancellationToken);
+                var processingJobs = JobStorage.Current.GetMonitoringApi().ProcessingJobs(0, int.MaxValue);
+                //Jobs that are processing in Hangfire
+                _logger.LogInformation($"Jobs still processing: {processingJobs.Count}");
+                //Active Jobs (registered tasks that we are tracking)
+                _logger.LogInformation($"Jobs still active: {ActiveJobs.Count}");
+
+                IsNotAllowingNewJobs = false;
+                _logger.LogInformation($"No new jobs will be allowed ...");
+                
             }
+            catch (OperationCanceledException)
+            {
+                _logger.LogWarning($"Timeout reached while waiting for jobs. Remaining jobs: {JobStorage.Current.GetMonitoringApi().ProcessingCount()}");
+            }
+            catch (Exception e)
+            {
+                _logger.LogError("Shutdown with exception: ", e);
+            }
+        }
+
+        public Task StopScheduledJobs()
+        {
+            var scheduledJobs = JobStorage.Current.GetMonitoringApi().ScheduledJobs(0, int.MaxValue);
+            if (scheduledJobs.Any())
+            {
+                foreach (var job in scheduledJobs)
+                {
+                    _logger.LogInformation(
+                        $"Scheduled job: [{job.Key}] has been marked for deletion");
+                    var hasJobBeenDeleted = BackgroundJob.Delete(job.Key);
+                    ActiveJobs.TryRemove(job.Key, out _);
+                    _logger.LogInformation(
+                        hasJobBeenDeleted 
+                            ? $"Scheduled job: [{job.Key}] has been deleted"
+                            : $"Scheduled job: [{job.Key}] failed to be deleted!");
+                }
+            }
+            return Task.CompletedTask;
+        }
+        
+        public Task StopProcessingNewJobs()
+        {
+            IsNotAllowingNewJobs = true;
+            _logger.LogInformation($"No new jobs will be allowed ...");
+            return Task.CompletedTask;
+        }
+
+        public Task UpdateJobCompletion(string jobId)
+        {
+            if (!ActiveJobs.TryGetValue(jobId, out var tcs)) return Task.CompletedTask;
+            
+            tcs.SetResult(); // Ensure the task is completed first
+            if (ActiveJobs.TryRemove(jobId, out _)) // Now remove the entry
+            {
+                _logger.LogInformation($"Job {jobId} completed!");
+            }
+
+            return Task.CompletedTask;
+        }
+        
+        public Task AddJobToTrack(string jobId, TaskCompletionSource tcs)
+        {
+            
+            ActiveJobs.TryAdd(jobId, tcs);
+            
+            tcs.Task.ContinueWith(t =>
+            {
+                if (t.IsFaulted)
+                    tcs.SetException(t.Exception!);
+                else if (t.IsCanceled)
+                    tcs.SetCanceled();
+                else
+                    tcs.SetResult();
+            }, TaskContinuationOptions.ExecuteSynchronously);
+            
+            _logger.LogInformation($"Added job to track: {jobId}");
+            return Task.CompletedTask;
         }
 
         public bool HasActiveJobs()
         {
-            _logger.LogInformation(
-                $"Jobs {_recurringJobManager.Storage.GetMonitoringApi().ProcessingCount()} processing ...");
-            return !JobStorage.Current.GetMonitoringApi().ProcessingCount().Equals(0);
+            _logger.LogInformation($"Jobs {ActiveJobs.Count} processing ...");
+            return ActiveJobs.Count > 0;
         }
     }
 }
