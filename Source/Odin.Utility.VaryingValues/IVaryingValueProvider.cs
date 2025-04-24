@@ -8,7 +8,7 @@ namespace Odin.Utility.VaryingValues;
 public interface IVaryingValueProvider<in TVaryingDimensionType, out TValueType> where TVaryingDimensionType : IComparable 
 {
     /// <summary>
-    /// Gets the Value
+    /// Gets the relevant Value from the ValueChange which occurs on or before 'atPointAlongDimension' (which is most often time).
     /// </summary>
     /// <param name="atPointAlongDimension"></param>
     /// <returns></returns>

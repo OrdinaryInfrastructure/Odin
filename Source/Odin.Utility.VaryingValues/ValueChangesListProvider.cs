@@ -8,12 +8,31 @@ public class ValueChangesListProvider<TRangeType, TValueType> : IVaryingValuePro
 {
     internal List<ValueChange<TRangeType, TValueType>> _valueChangesInOrder = null!;
     
+    /// <summary>
+    /// Initialise from multiple values. Note that the values do not need to be in the correct ascending order of TRangeType.
+    /// </summary>
+    /// <param name="valuesAcrossRange"></param>
     public ValueChangesListProvider(IEnumerable<ValueChange<TRangeType, TValueType>> valuesAcrossRange)
     {
         PreCondition.RequiresNotNull(valuesAcrossRange);
         InitialiseFrom(valuesAcrossRange.ToList());
     }
+    
+    /// <summary>
+    /// Only a single value
+    /// </summary>
+    /// <param name="singleValue"></param>
+    public ValueChangesListProvider(ValueChange<TRangeType, TValueType> singleValue)
+    {
+        PreCondition.RequiresNotNull(singleValue);
+        InitialiseFrom( new List<ValueChange<TRangeType, TValueType>> { singleValue } );
+    }
 
+    /// <summary>
+    /// Load value changes from IConfiguration
+    /// </summary>
+    /// <param name="configuration"></param>
+    /// <param name="sectionName">The name of the configuration section, eg 'TaxHistory'</param>
     public ValueChangesListProvider(IConfiguration configuration, string sectionName)
     {
         PreCondition.RequiresNotNull(configuration);
@@ -22,11 +41,11 @@ public class ValueChangesListProvider<TRangeType, TValueType> : IVaryingValuePro
         InitialiseFrom(valuesInConfig);
     }
     
-    public ValueChangesListProvider(IConfigurationSection section)
+    public ValueChangesListProvider(IConfigurationSection valueChangesSection)
     {
-        PreCondition.RequiresNotNull(section);
+        PreCondition.RequiresNotNull(valueChangesSection);
         List<ValueChange<TRangeType, TValueType>> valuesInConfig = new List<ValueChange<TRangeType, TValueType>>();
-        section.Bind(valuesInConfig);
+        valueChangesSection.Bind(valuesInConfig);
         InitialiseFrom(valuesInConfig);
     }
 
