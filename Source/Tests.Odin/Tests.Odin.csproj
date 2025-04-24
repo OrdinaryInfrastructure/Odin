@@ -29,6 +29,7 @@
     <ProjectReference Include="..\Odin.BackgroundProcessing.Hangfire\Odin.BackgroundProcessing.Hangfire.csproj" />
     <ProjectReference Include="..\Odin.Notifications\Odin.Notifications.csproj" />
     <ProjectReference Include="..\Odin.RemoteFiles\Odin.RemoteFiles.csproj" />
+    <ProjectReference Include="..\Odin.Utility.Tax\Odin.Utility.Tax.csproj" />
     <ProjectReference Include="..\Odin.Utility.VaryingValues\Odin.Utility.VaryingValues.csproj" />
    </ItemGroup>
 </Project>

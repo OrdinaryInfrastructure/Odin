@@ -8,6 +8,7 @@ namespace Odin.Utility.VaryingValues;
 public record ValueChange<TVaryingDimensionType, TValueType> 
     where TVaryingDimensionType : IComparable
 {
+
     public ValueChange(TVaryingDimensionType from, TValueType value)
     {
         From = from;

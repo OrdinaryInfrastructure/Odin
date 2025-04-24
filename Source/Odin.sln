@@ -46,6 +46,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odin.Email.Office365", "Odi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odin.Utility.VaryingValues", "Odin.Utility.VaryingValues\Odin.Utility.VaryingValues.csproj", "{9AB2C4DD-3B78-469B-8A5F-416CE619E6FF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odin.Utility.Tax", "Odin.Utility.Tax\Odin.Utility.Tax.csproj", "{CEF1A5CB-E90D-496C-86C0-DFEB80CCF709}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -128,5 +130,9 @@ Global
 		{9AB2C4DD-3B78-469B-8A5F-416CE619E6FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9AB2C4DD-3B78-469B-8A5F-416CE619E6FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9AB2C4DD-3B78-469B-8A5F-416CE619E6FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CEF1A5CB-E90D-496C-86C0-DFEB80CCF709}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEF1A5CB-E90D-496C-86C0-DFEB80CCF709}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEF1A5CB-E90D-496C-86C0-DFEB80CCF709}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEF1A5CB-E90D-496C-86C0-DFEB80CCF709}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
