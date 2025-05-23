@@ -24,7 +24,7 @@ namespace Tests.Odin
                 opts.ListenLocalhost(Random.Shared.Next(5000, 5100));
             });
             
-            builder.Services.AddLoggerAdapter();
+            builder.Services.AddMockableLogger();
             
             WebApplication app = builder.Build();
 

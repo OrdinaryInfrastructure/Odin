@@ -10,16 +10,16 @@ namespace Odin.Cryptography
     public sealed class DataProtectionCryptographer : ICryptographer
     {
         IDataProtector _protector;
-        private ILoggerAdapter<DataProtectionCryptographer> _logger;
+        private IMockableLogger<DataProtectionCryptographer> _mockableLogger;
 
         /// <summary>
         /// Default constructor
         /// </summary>
         /// <param name="provider"></param>
-        /// <param name="logger"></param>
-        public DataProtectionCryptographer(IDataProtectionProvider provider, ILoggerAdapter<DataProtectionCryptographer> logger)
+        /// <param name="mockableLogger"></param>
+        public DataProtectionCryptographer(IDataProtectionProvider provider, IMockableLogger<DataProtectionCryptographer> mockableLogger)
         {
-            _logger = logger;
+            _mockableLogger = mockableLogger;
             _protector = provider.CreateProtector("Default");
         }
 
@@ -38,7 +38,7 @@ namespace Odin.Cryptography
             }
             catch (Exception err)
             {
-                _logger.LogError($"{nameof(TryDecrypt)} error",err);
+                _mockableLogger.LogError($"{nameof(TryDecrypt)} error",err);
                 return Outcome.Fail<string>(null, err.Message);
             }
         }
@@ -63,7 +63,7 @@ namespace Odin.Cryptography
             }
             catch (Exception err)
             {
-                _logger.LogError($"{nameof(TryEncrypt)} error",err);
+                _mockableLogger.LogError($"{nameof(TryEncrypt)} error",err);
                 return Outcome.Fail<string>(null, err.Message);
             }
         }

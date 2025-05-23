@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net9.0</TargetFramework>
-        <ImplicitUsings>true</ImplicitUsings>
+            <ImplicitUsings>true</ImplicitUsings>
         <Nullable>enable</Nullable>
         <Description>Utility classes, primarily to provide support for configuration values of type TVal that vary over a
             range of value of type TRange. A good example would be to support a tax rate that has changed over the course
@@ -9,7 +8,8 @@
         </Description>
     </PropertyGroup>
     <ItemGroup>
-      <ProjectReference Include="..\Odin.Common\Odin.Common.csproj" />
+      <ProjectReference Include="..\Odin.DesignContracts\Odin.DesignContracts.csproj" />
+      <ProjectReference Include="..\Odin.System\Odin.System.csproj" />
     </ItemGroup>
     <ItemGroup>
       <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.4" />

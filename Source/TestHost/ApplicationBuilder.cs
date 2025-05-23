@@ -21,12 +21,12 @@ public class AppBuilder
 
     public bool IsBuilt { get; private set; } = false;
 
-    public ILoggerAdapter<AppBuilder>? TryGetLogger()
+    public IMockableLogger<AppBuilder>? TryGetLogger()
     {
         if (App == null!) return null;
         try
         {
-            ILoggerAdapter<AppBuilder>? logger = App?.Services?.GetService<ILoggerAdapter<AppBuilder>>();
+            IMockableLogger<AppBuilder>? logger = App?.Services?.GetService<IMockableLogger<AppBuilder>>();
             if (logger != null)
             {
                 return logger;
@@ -42,7 +42,7 @@ public class AppBuilder
 
     public void TryLog(LogLevel level, string message)
     {
-        ILoggerAdapter<AppBuilder>? logger = TryGetLogger();
+        IMockableLogger<AppBuilder>? logger = TryGetLogger();
         if (logger != null)
         {
             logger.Log(level, message);
@@ -86,7 +86,7 @@ public class AppBuilder
             options.DefaultPolicy = options.GetPolicy(AuthPolicies.AllowAnonymous)!;
         });
         Builder.Services.AddSingleton<IAuthorizationHandler, AlwaysAllowHandler>();
-        Builder.Services.AddLoggerAdapter();
+        Builder.Services.AddMockableLogger();
         Builder.Services.AddBackgroundProcessing(Builder.Configuration);
         Builder.Services.AddEmailSending(Builder.Configuration);
 
@@ -105,11 +105,11 @@ public class AppBuilder
         /////////////////////////////////////////////////////////////
         App = Builder.Build();
 
-        // Get our logger for remainder of startup...
-        ILoggerAdapter<AppBuilder>? logger = TryGetLogger();
+        // Get our mockableLogger for remainder of startup...
+        IMockableLogger<AppBuilder>? logger = TryGetLogger();
         if (logger == null)
         {
-            throw new Exception("Startup failed to initialise an ILoggerAdapter");
+            throw new Exception("Startup failed to initialise an IMockableLogger");
         }
 
         logger.LogInformation($"{nameof(Build)}: Build succeeded.");

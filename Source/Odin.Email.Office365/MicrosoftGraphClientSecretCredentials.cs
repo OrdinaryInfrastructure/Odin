@@ -1,4 +1,4 @@
-namespace Odin;
+namespace Odin.Email;
 
 /// <summary>
 /// https://learn.microsoft.com/en-us/graph/sdks/choose-authentication-providers?tabs=csharp#using-a-client-certificate

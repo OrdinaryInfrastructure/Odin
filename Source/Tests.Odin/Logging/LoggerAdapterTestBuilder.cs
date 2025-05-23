@@ -13,9 +13,9 @@ namespace Tests.Odin.Logging
 
         public Mock<ILogger<T>> LoggerMock { get; }
 
-        public LoggerAdapter<T> CreateLogger()
+        public MockableLogger<T> CreateLogger()
         {
-            return new LoggerAdapter<T>(LoggerMock.Object);
+            return new MockableLogger<T>(LoggerMock.Object);
         }
 
         /// <summary>

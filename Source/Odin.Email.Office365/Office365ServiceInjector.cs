@@ -18,7 +18,7 @@ public class Office365ServiceInjector : IEmailSenderServiceInjector
         emailConfigurationSection.Bind(EmailSendingProviders.Office365, office365Options);
         office365Options.Validate();
 
-        serviceCollection.AddLoggerAdapter();
+        serviceCollection.AddMockableLogger();
         serviceCollection.TryAddSingleton(office365Options);
         serviceCollection.TryAddTransient<IEmailSender, Office365EmailSender>();
         

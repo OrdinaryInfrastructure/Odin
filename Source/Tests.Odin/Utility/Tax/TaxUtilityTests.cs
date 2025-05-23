@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Globalization;
+using System.Text;
 using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
 using Odin.Utility.Tax;
@@ -25,7 +26,7 @@ namespace Tests.Odin.Utility.Tax
         [TestCase(123.78, 15,null, "16.1452173913", Description = "Default decimal places is 10")]
         public void Calculation_of_an_included_tax_portion_is_correct(decimal amount, decimal taxRatePercentage, int? roundToDecimalPlaces, string expectedAsString)
         {
-            decimal expected = decimal.Parse(expectedAsString); // NUnit conversion to decimal only goes up to about 14 decimal points for some reason...
+            decimal expected = decimal.Parse(expectedAsString, CultureInfo.InvariantCulture); // NUnit conversion to decimal only goes up to about 14 decimal points for some reason...
             TaxUtility sut = new TaxUtility(taxRatePercentage);
             decimal result;
             if (roundToDecimalPlaces.HasValue)

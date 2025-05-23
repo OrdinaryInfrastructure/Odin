@@ -18,7 +18,7 @@ namespace Odin.Data
     /// </summary>
     public class SqlScriptsRunner
     {
-        // private readonly ILoggerAdapter<T> _logger;
+        // private readonly IMockableLogger<T> _mockableLogger;
 
         private readonly Assembly _assemblyWithEmbeddedScripts;
         private SqlConnectionStringBuilder _connectionStringBuilder = null!;
@@ -43,8 +43,8 @@ namespace Odin.Data
 
         private SqlScriptsRunner(Assembly assemblyWithEmbeddedScripts)
         {
-            // PreCondition.RequiresNotNull(logger);
-            // _logger = logger;
+            // PreCondition.RequiresNotNull(mockableLogger);
+            // _mockableLogger = mockableLogger;
             PreCondition.RequiresNotNull(assemblyWithEmbeddedScripts);
             _assemblyWithEmbeddedScripts = assemblyWithEmbeddedScripts;
         }
@@ -269,9 +269,9 @@ namespace Odin.Data
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(error.Message);
-                // _logger.LogError(error);
+                // _mockableLogger.LogError(error);
                 Console.ResetColor();
-                // _logger.Log(LogLevel.Error,error.Message, error);
+                // _mockableLogger.Log(LogLevel.Error,error.Message, error);
             }
         }
 
@@ -280,7 +280,7 @@ namespace Odin.Data
             if (!string.IsNullOrWhiteSpace(message))
             {
                 Console.WriteLine(message);
-               //_logger.LogInformation(message);
+               //_mockableLogger.LogInformation(message);
             }
         }
 
@@ -290,7 +290,7 @@ namespace Odin.Data
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(error);
-               // _logger.LogError(error);
+               // _mockableLogger.LogError(error);
                 Console.ResetColor();
             }
         }

@@ -1,6 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>true</ImplicitUsings>
     <UserSecretsId>TestHost</UserSecretsId>
@@ -12,7 +11,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Odin.Common\Odin.Common.csproj" />
+    <ProjectReference Include="..\Odin.System\Odin.System.csproj" />
     <ProjectReference Include="..\Odin.BackgroundProcessing.Hangfire\Odin.BackgroundProcessing.Hangfire.csproj" />
     <ProjectReference Include="..\Odin.BackgroundProcessing\Odin.BackgroundProcessing.csproj" />
     <ProjectReference Include="..\Odin.Email.Mailgun\Odin.Email.Mailgun.csproj" />

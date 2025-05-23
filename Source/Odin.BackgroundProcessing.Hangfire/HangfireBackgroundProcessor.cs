@@ -12,7 +12,7 @@ namespace Odin.BackgroundProcessing
     /// </summary>
     public sealed class HangfireBackgroundProcessor : IBackgroundProcessor
     {
-        private readonly ILoggerAdapter<HangfireBackgroundProcessor> _logger;
+        private readonly IMockableLogger<HangfireBackgroundProcessor> _mockableLogger;
         private readonly IRecurringJobManagerV2 _recurringJobManager;
         private readonly IBackgroundJobClient _jobClient;
 
@@ -20,15 +20,15 @@ namespace Odin.BackgroundProcessing
         /// Default constructor
         /// </summary>
         /// <param name="recurringJobManager"></param>
-        /// <param name="logger"></param>
-        public HangfireBackgroundProcessor(IRecurringJobManagerV2 recurringJobManager, IBackgroundJobClient jobClient, ILoggerAdapter<HangfireBackgroundProcessor> logger)
+        /// <param name="mockableLogger"></param>
+        public HangfireBackgroundProcessor(IRecurringJobManagerV2 recurringJobManager, IBackgroundJobClient jobClient, IMockableLogger<HangfireBackgroundProcessor> mockableLogger)
         {
             PreCondition.RequiresNotNull(recurringJobManager);
             PreCondition.RequiresNotNull(jobClient);
-            PreCondition.RequiresNotNull(logger);
+            PreCondition.RequiresNotNull(mockableLogger);
             _recurringJobManager = recurringJobManager;
             _jobClient = jobClient;
-            _logger = logger;
+            _mockableLogger = mockableLogger;
             
         }
 
@@ -49,7 +49,7 @@ namespace Odin.BackgroundProcessing
             catch (Exception err)
             {
                 string message = $"Exception scheduling {methodCall.Name} for {enqueueAt}. {err.Message}";
-                _logger.LogError($"{nameof(ScheduleJob)}: {message}", err);
+                _mockableLogger.LogError($"{nameof(ScheduleJob)}: {message}", err);
                 return Outcome.Fail<JobDetails>(message);
             }
         }
@@ -71,7 +71,7 @@ namespace Odin.BackgroundProcessing
             catch (Exception err)
             {
                 string message = $"Exception scheduling {methodCall.Name} for {enqueueAt}. {err.Message}";
-                _logger.LogError($"{nameof(ScheduleJob)}: {message}", err);
+                _mockableLogger.LogError($"{nameof(ScheduleJob)}: {message}", err);
                 return Outcome.Fail<JobDetails>(message);
             }
         }
@@ -97,7 +97,7 @@ namespace Odin.BackgroundProcessing
             catch (Exception err)
             {
                 string message = $"Error scheduling recurring job {recurringJobId}. {err.Message}";
-                _logger.LogError($"{nameof(AddOrUpdateRecurringJob)}: {message}", err);
+                _mockableLogger.LogError($"{nameof(AddOrUpdateRecurringJob)}: {message}", err);
                 return Outcome.Fail(message);
             }
         }
@@ -116,7 +116,7 @@ namespace Odin.BackgroundProcessing
             catch (Exception err)
             {
                 string message = $"Error removing recurring job {jobName}. {err.Message}";
-                _logger.LogError($"{nameof(RemoveRecurringJob)}: {message}", err);
+                _mockableLogger.LogError($"{nameof(RemoveRecurringJob)}: {message}", err);
                 return Outcome.Fail(message);
             }
         }

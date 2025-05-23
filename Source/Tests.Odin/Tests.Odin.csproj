@@ -1,6 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
     <Nullable>disable</Nullable>
     <GenerateProgramFile>false</GenerateProgramFile>
     <UserSecretsId>Tests.Odin</UserSecretsId>
@@ -22,7 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Odin.Messaging.RabbitMq\Odin.Messaging.RabbitMq.csproj" />
     <ProjectReference Include="..\Odin.Email\Odin.Email.csproj" />
-    <ProjectReference Include="..\Odin.Common\Odin.Common.csproj" />
+    <ProjectReference Include="..\Odin.System\Odin.System.csproj" />
     <ProjectReference Include="..\Odin.Email.Mailgun\Odin.Email.Mailgun.csproj" />
     <ProjectReference Include="..\Odin.Email.Office365\Odin.Email.Office365.csproj" />
     <ProjectReference Include="..\Odin.BackgroundProcessing\Odin.BackgroundProcessing.csproj" />

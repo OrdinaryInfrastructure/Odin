@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odin.Common", "Odin.Common\Odin.Common.csproj", "{9267C5A7-C9E9-4872-BC03-57BE4F252037}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odin.System", "Odin.System\Odin.System.csproj", "{9267C5A7-C9E9-4872-BC03-57BE4F252037}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.Odin", "Tests.Odin\Tests.Odin.csproj", "{B916225A-553B-46E0-ABD3-ABBC31CB3CD5}"
 EndProject
@@ -47,6 +47,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odin.Utility.VaryingValues", "Odin.Utility.VaryingValues\Odin.Utility.VaryingValues.csproj", "{9AB2C4DD-3B78-469B-8A5F-416CE619E6FF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odin.Utility.Tax", "Odin.Utility.Tax\Odin.Utility.Tax.csproj", "{CEF1A5CB-E90D-496C-86C0-DFEB80CCF709}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odin.DesignContracts", "Odin.DesignContracts\Odin.DesignContracts.csproj", "{12E3A700-F55B-4544-A233-0CFFD8F9F4C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odin.Logging", "Odin.Logging\Odin.Logging.csproj", "{49B7A436-744B-4BBE-BCDE-244981595928}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odin.Utility.Strings", "Odin.Utility.Strings\Odin.Utility.Strings.csproj", "{89B455CD-997D-4811-8815-B8596CA2E73B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -134,5 +140,17 @@ Global
 		{CEF1A5CB-E90D-496C-86C0-DFEB80CCF709}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CEF1A5CB-E90D-496C-86C0-DFEB80CCF709}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CEF1A5CB-E90D-496C-86C0-DFEB80CCF709}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12E3A700-F55B-4544-A233-0CFFD8F9F4C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12E3A700-F55B-4544-A233-0CFFD8F9F4C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12E3A700-F55B-4544-A233-0CFFD8F9F4C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12E3A700-F55B-4544-A233-0CFFD8F9F4C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49B7A436-744B-4BBE-BCDE-244981595928}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49B7A436-744B-4BBE-BCDE-244981595928}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49B7A436-744B-4BBE-BCDE-244981595928}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49B7A436-744B-4BBE-BCDE-244981595928}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89B455CD-997D-4811-8815-B8596CA2E73B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89B455CD-997D-4811-8815-B8596CA2E73B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89B455CD-997D-4811-8815-B8596CA2E73B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89B455CD-997D-4811-8815-B8596CA2E73B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

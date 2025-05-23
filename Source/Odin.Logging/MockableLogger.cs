@@ -1,13 +1,42 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using System.Text.Json;
+using Microsoft.Extensions.Logging;
 
-namespace Odin.Logging
+ namespace Odin.Logging
 {
     /// <summary>
-    /// Logger that does not do anything.
+    /// Default IMockableLogger implementation wrapping ILogger of T
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public sealed class NullLogger<T> : ILoggerAdapter<T>
+    public sealed class MockableLogger<T> : IMockableLogger<T>
     {
+        private readonly ILogger<T> _logger;
+        private readonly string _categoryName;
+        
+        /// <summary>
+        /// Default constructor requires ILogger of T
+        /// </summary>
+        /// <param name="logger"></param>
+        public MockableLogger(ILogger<T> logger)
+        {
+            _logger = logger;
+            try
+            {
+                Type typeParameterType = typeof(T);
+                if (typeParameterType != null!)
+                {
+                    _categoryName = typeParameterType.Name + ": ";
+                }
+                else
+                {
+                    _categoryName = "";
+                }
+            }
+            catch (Exception err)
+            {
+                _logger.Log(LogLevel.Error, err, "MockableLogger: Unable to ascertain generic type");
+                _categoryName = "";
+            }
+        }
 
         /// <summary>
         /// Log
@@ -15,8 +44,36 @@ namespace Odin.Logging
         /// <param name="level"></param>
         /// <param name="err"></param>
         /// <param name="message"></param>
-        public void Log(LogLevel level, string? message, Exception? err)
+        public void Log(LogLevel level, string? message, Exception? err = null)
         {
+            _logger.Log(level, err, _categoryName + message);
+        }
+        
+        /// <summary>
+        /// Structured Log Message. Object array contains a list of values to populate
+        /// the logging keys e.g. {ExampleKey} that are included in the log.
+        /// </summary>
+        /// <param name="logLevel"></param>
+        /// <param name="exception"></param>
+        /// <param name="message"></param>
+        /// <param name="args"></param>
+        public void LogStructured(
+            LogLevel logLevel,
+            Exception? exception,
+            string? message,
+            params object?[] args)
+        {
+            _logger.Log(logLevel, exception, message, args);
+        }
+        
+        /// <summary>
+        /// Log
+        /// </summary>
+        /// <param name="level"></param>
+        /// <param name="message"></param>
+        public void Log(LogLevel level, string message)
+        {
+            Log(level, message, null);
         }
 
         /// <summary>
@@ -30,28 +87,27 @@ namespace Odin.Logging
         }
         
         /// <summary>
-        /// Structured Log Message. Object array contains a list of values to populate
-        /// the logging keys e.g. {ExampleKey} that are included in the log. 
-        /// </summary>
-        /// <param name="logLevel"></param>
-        /// <param name="exception"></param>
-        /// <param name="message"></param>
-        /// <param name="args"></param>
-        public void LogStructured(
-            LogLevel logLevel,
-            Exception? exception,
-            string? message,
-            params object?[] args)
-        {
-        }
-
-        /// <summary>
         /// Log
         /// </summary>
         /// <param name="level"></param>
         /// <param name="argsToLogAsJson"></param>
         public void LogToJson(LogLevel level, params object[] argsToLogAsJson)
         {
+            try
+            {
+                JsonSerializerOptions options = new JsonSerializerOptions()
+                {
+                    MaxDepth = 4,
+                    WriteIndented = true,
+                    IncludeFields = false
+                };
+                string json = JsonSerializer.Serialize(argsToLogAsJson,options);
+                Log(level, Environment.NewLine + json);
+            }
+            catch (Exception err)
+            {
+                Log(level, "LogToJson serialization error" + err.Message);
+            }
         }
 
         /// <summary>
@@ -60,6 +116,7 @@ namespace Odin.Logging
         /// <param name="message"></param>
         public void LogTrace(string message)
         {
+            Log(LogLevel.Trace, message);
         }
 
         /// <summary>
@@ -68,7 +125,9 @@ namespace Odin.Logging
         /// <param name="message"></param>
         public void LogDebug(string message)
         {
+            Log(LogLevel.Debug, message);
         }
+        
 
         /// <summary>
         /// LogInformation
@@ -76,6 +135,7 @@ namespace Odin.Logging
         /// <param name="message"></param>
         public void LogInformation(string message)
         {
+            Log(LogLevel.Information, message);
         }
 
         /// <summary>
@@ -84,6 +144,7 @@ namespace Odin.Logging
         /// <param name="message"></param>
         public void LogWarning(string message)
         {
+            Log(LogLevel.Warning, message);
         }
 
         /// <summary>
@@ -93,6 +154,7 @@ namespace Odin.Logging
         /// <param name="err"></param>
         public void LogError(string message, Exception? err = null)
         {
+            Log(LogLevel.Error, message, err);
         }
 
         /// <summary>
@@ -101,8 +163,10 @@ namespace Odin.Logging
         /// <param name="err"></param>
         public void LogError(Exception err)
         {
+            Log(LogLevel.Error, err);
         }
-
+        
+        
         /// <summary>
         /// LogCritical
         /// </summary>
@@ -110,6 +174,7 @@ namespace Odin.Logging
         /// <param name="err"></param>
         public void LogCritical(string message, Exception? err = null)
         {
+            Log(LogLevel.Critical, message, err);
         }
 
         /// <summary>
@@ -118,11 +183,11 @@ namespace Odin.Logging
         /// <param name="err"></param>
         public void LogCritical(Exception err)
         {
+            Log(LogLevel.Critical, null, err);
         }
 
-
         /// <summary>
-        /// Does nothing
+        /// Writes a log entry.. Simply wraps the inner mockableLogger
         /// </summary>
         /// <param name="logLevel"></param>
         /// <param name="eventId"></param>
@@ -132,28 +197,28 @@ namespace Odin.Logging
         /// <typeparam name="TState"></typeparam>
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
         {
-            // Do nothing
+            _logger.Log(logLevel, eventId, state, exception, formatter);
         }
 
         /// <summary>
-        /// Returns true
+        /// Checks if the given logLevel is enabled.. Simply wraps the inner mockableLogger
         /// </summary>
         /// <param name="logLevel"></param>
         /// <returns></returns>
         public bool IsEnabled(LogLevel logLevel)
         {
-            return true;
+            return _logger.IsEnabled(logLevel);
         }
 
         /// <summary>
-        /// Does nothing and returns null.
+        /// Begins a logical operation scope.. Simply wraps the inner mockableLogger
         /// </summary>
         /// <param name="state"></param>
         /// <typeparam name="TState"></typeparam>
         /// <returns></returns>
         public IDisposable? BeginScope<TState>(TState state) where TState : notnull
         {
-            return null;
+            return _logger.BeginScope<TState>(state);
         }
     }
-}  
+}

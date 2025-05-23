@@ -19,7 +19,7 @@ public class QueuedEmailSenderTests
     public void Setup()
     {
         _mockEmailSender = new Mock<IEmailSender>();
-        _sut = new QueuedEmailSender(_mockEmailSender.Object, new Mock<ILoggerAdapter<QueuedEmailSender>>().Object);
+        _sut = new QueuedEmailSender(_mockEmailSender.Object, new Mock<IMockableLogger<QueuedEmailSender>>().Object);
         _messages = new List<IEmailMessage>();
         for (int i = 0; i < 10; i++)
         {
@@ -148,7 +148,7 @@ public class QueuedEmailSenderTests
                 return Outcome.Succeed("", "");
             });
 
-        QueuedEmailSender parallelSut = new QueuedEmailSender(_mockEmailSender.Object, new Mock<ILoggerAdapter<QueuedEmailSender>>().Object, 10);
+        QueuedEmailSender parallelSut = new QueuedEmailSender(_mockEmailSender.Object, new Mock<IMockableLogger<QueuedEmailSender>>().Object, 10);
         
         Stopwatch stopwatch = new Stopwatch();
         List<Task<IQueuedEmailSender.SendOutcome>> taskList = new List<Task<IQueuedEmailSender.SendOutcome>>();

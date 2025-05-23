@@ -18,7 +18,7 @@ public interface IQueuedEmailSender
     }
 }
 
-public class QueuedEmailSender(IEmailSender emailSender, ILoggerAdapter<QueuedEmailSender> logger, int emailSendingParallelism = 1): IQueuedEmailSender
+public class QueuedEmailSender(IEmailSender emailSender, IMockableLogger<QueuedEmailSender> mockableLogger, int emailSendingParallelism = 1): IQueuedEmailSender
 {
     
     private readonly SemaphoreSlim _sendSemaphore = new SemaphoreSlim(emailSendingParallelism);
@@ -67,7 +67,7 @@ public class QueuedEmailSender(IEmailSender emailSender, ILoggerAdapter<QueuedEm
         }
         catch (Exception e)
         {
-            logger.LogError($"Failed to send email with subject {email.Subject}", e);
+            mockableLogger.LogError($"Failed to send email with subject {email.Subject}", e);
             return new IQueuedEmailSender.SendOutcome
             {
                 EmailSubject = email.Subject,

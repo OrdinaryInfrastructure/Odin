@@ -10,8 +10,8 @@ namespace Tests.Odin.Email.Office365
 {
     public sealed class Office365EmailSenderTestBuilder: IBuilder<Office365EmailSender>
     {
-        public ILoggerAdapter<Office365EmailSender> Logger = null!;
-        public Mock<ILoggerAdapter<Office365EmailSender>>? LoggerMock;
+        public IMockableLogger<Office365EmailSender> MockableLogger = null!;
+        public Mock<IMockableLogger<Office365EmailSender>>? LoggerMock;
         public EmailSendingOptions EmailSendingOptions = null!;
         public Mock<EmailSendingOptions>? EmailSendingOptionsMock;
         public Office365Options Office365Options = null!;
@@ -20,7 +20,7 @@ namespace Tests.Odin.Email.Office365
         public Office365EmailSender Build()
         {
             EnsureNullDependenciesAreMocked();
-            return new Office365EmailSender(Office365Options,EmailSendingOptions,Logger);
+            return new Office365EmailSender(Office365Options,EmailSendingOptions,MockableLogger);
         }
         
         public Office365EmailSenderTestBuilder EnsureNullDependenciesAreMocked()
@@ -30,10 +30,10 @@ namespace Tests.Odin.Email.Office365
                 Office365OptionsMock = new Mock<Office365Options>();
                 Office365Options = Office365OptionsMock.Object;
             }
-            if (Logger == null!)
+            if (MockableLogger == null!)
             {
-                LoggerMock = new Mock<ILoggerAdapter<Office365EmailSender>>();
-                Logger = LoggerMock.Object;
+                LoggerMock = new Mock<IMockableLogger<Office365EmailSender>>();
+                MockableLogger = LoggerMock.Object;
             }
             if (EmailSendingOptions == null!)
             {

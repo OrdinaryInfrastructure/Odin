@@ -6,7 +6,7 @@ namespace Odin.Logging
     /// Logging adapter interface to wrap ILogger mainly to ease mocking in tests...
     /// </summary>
     /// <typeparam name="TCategoryName"></typeparam>
-    public interface ILoggerAdapter<out TCategoryName> : ILoggerAdapter
+    public interface IMockableLogger<out TCategoryName> : IMockableLogger
     {
 
     }
@@ -14,7 +14,7 @@ namespace Odin.Logging
     /// <summary>
     /// Logging adapter interface to wrap ILogger mainly to ease mocking in tests
     /// </summary>
-    public interface ILoggerAdapter : ILogger
+    public interface IMockableLogger : ILogger
     {
         /// <summary>
         /// Log

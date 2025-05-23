@@ -18,7 +18,7 @@ namespace Odin.Email
     {
         private readonly MailgunOptions _mailgunSettings;
         private readonly EmailSendingOptions _emailSettings;
-        private readonly ILoggerAdapter<MailgunEmailSender> _logger;
+        private readonly IMockableLogger<MailgunEmailSender> _mockableLogger;
         private HttpClient _httpClient;
         
         private static ResiliencePipeline _resiliencePipeline = new ResiliencePipelineBuilder()
@@ -37,16 +37,16 @@ namespace Odin.Email
         /// </summary>
         /// <param name="mailgunSettings"></param>
         /// <param name="emailSettings"></param>
-        /// <param name="logger"></param>
+        /// <param name="mockableLogger"></param>
         public MailgunEmailSender(MailgunOptions mailgunSettings,
-            EmailSendingOptions emailSettings, ILoggerAdapter<MailgunEmailSender> logger)
+            EmailSendingOptions emailSettings, IMockableLogger<MailgunEmailSender> mockableLogger)
         {
             PreCondition.RequiresNotNull(mailgunSettings);
             PreCondition.RequiresNotNull(emailSettings);
-            PreCondition.RequiresNotNull(logger);
+            PreCondition.RequiresNotNull(mockableLogger);
             _mailgunSettings = mailgunSettings;
             _emailSettings = emailSettings;
-            _logger = logger;
+            _mockableLogger = mockableLogger;
             _httpClient = new HttpClient();
             string endPoint = _mailgunSettings.Region.Equals(MailgunOptions.RegionEU, StringComparison.OrdinalIgnoreCase)
                     ? "https://api.eu.mailgun.net/v3"
@@ -206,12 +206,12 @@ namespace Odin.Email
 
             if (isSuccess)
             {
-                _logger.Log(level, $"{nameof(SendEmail)} to {to} succeeded. Subject - '{email.Subject}'. {message}",
+                _mockableLogger.Log(level, $"{nameof(SendEmail)} to {to} succeeded. Subject - '{email.Subject}'. {message}",
                     exception);
             }
             else
             {
-                _logger.Log(level, $"{nameof(SendEmail)} to {to} failed. Subject - '{email.Subject}'. Error - {message}",
+                _mockableLogger.Log(level, $"{nameof(SendEmail)} to {to} failed. Subject - '{email.Subject}'. Error - {message}",
                     exception);
             }
         }

@@ -25,7 +25,7 @@ namespace Tests.Odin.Notifications
                 DefaultFromAddress = testEmail
             };
             MailgunEmailSender sender = new MailgunEmailSender(mailgunOptions, emailConfig,
-                new Mock<ILoggerAdapter<MailgunEmailSender>>().Object);
+                new Mock<IMockableLogger<MailgunEmailSender>>().Object);
             EmailNotifierOptions emailNotOptions = new EmailNotifierOptions()
             {
                 SubjectPrefix = "Notifier",

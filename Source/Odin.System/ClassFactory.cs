@@ -1,6 +1,5 @@
 using System.Reflection;
 using System.Runtime.Loader;
-using Odin.DesignContracts;
 
 namespace Odin.System;
 
@@ -17,9 +16,9 @@ public class ClassFactory
     /// <returns></returns>
     public Outcome<T> TryCreate<T>(string fullTypeName, string assemblyToLoadFrom) where T : class
     {
-        PreCondition.RequiresNotNullOrWhitespace(fullTypeName);
-        PreCondition.RequiresNotNullOrWhitespace(assemblyToLoadFrom);
-
+        if (string.IsNullOrWhiteSpace(fullTypeName)) throw new ArgumentNullException(nameof(fullTypeName));
+        if (string.IsNullOrWhiteSpace(assemblyToLoadFrom)) throw new ArgumentNullException(nameof(assemblyToLoadFrom));
+        
         AssemblyName assemblyToLoad = new AssemblyName(assemblyToLoadFrom);
         Assembly assembly = AssemblyLoadContext.Default.LoadFromAssemblyName(assemblyToLoad);
         if (assembly == null) return Outcome.Fail<T>($"Unable to load assembly {assemblyToLoadFrom}");
@@ -45,7 +44,8 @@ public class ClassFactory
     /// <returns></returns>
     public Outcome<T> TryCreate<T>(string fullTypeName) where T : class
     {
-        PreCondition.RequiresNotNullOrWhitespace(fullTypeName);
+        if (string.IsNullOrWhiteSpace(fullTypeName)) throw new ArgumentNullException(nameof(fullTypeName));
+        
         Type? typeToCreate = Type.GetType(fullTypeName);
         if (typeToCreate != null)
         {
@@ -70,7 +70,8 @@ public class ClassFactory
     /// <returns></returns>
     public Outcome<T> TryCreate<T>(Type typeToCreate) where T : class
     {
-        PreCondition.RequiresNotNull(typeToCreate);
+        if (typeToCreate == null) throw new ArgumentNullException(nameof(typeToCreate));
+
         try
         {
             object? obj = Activator.CreateInstance(typeToCreate);

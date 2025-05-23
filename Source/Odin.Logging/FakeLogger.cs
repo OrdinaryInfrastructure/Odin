@@ -1,42 +1,13 @@
-﻿using System.Text.Json;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 
- namespace Odin.Logging
+namespace Odin.Logging
 {
     /// <summary>
-    /// Default ILoggerAdapter implementation wrapping ILogger of T
+    /// IMockableLogger that does not do anything.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public sealed class LoggerAdapter<T> : ILoggerAdapter<T>
+    public sealed class FakeLogger<T> : IMockableLogger<T>
     {
-        private readonly ILogger<T> _logger;
-        private readonly string _categoryName;
-        
-        /// <summary>
-        /// Default constructor requires ILogger of T
-        /// </summary>
-        /// <param name="logger"></param>
-        public LoggerAdapter(ILogger<T> logger)
-        {
-            _logger = logger;
-            try
-            {
-                Type typeParameterType = typeof(T);
-                if (typeParameterType != null!)
-                {
-                    _categoryName = typeParameterType.Name + ": ";
-                }
-                else
-                {
-                    _categoryName = "";
-                }
-            }
-            catch (Exception err)
-            {
-                _logger.Log(LogLevel.Error, err, "LoggerAdapter: Unable to ascertain generic type");
-                _categoryName = "";
-            }
-        }
 
         /// <summary>
         /// Log
@@ -44,36 +15,8 @@ using Microsoft.Extensions.Logging;
         /// <param name="level"></param>
         /// <param name="err"></param>
         /// <param name="message"></param>
-        public void Log(LogLevel level, string? message, Exception? err = null)
+        public void Log(LogLevel level, string? message, Exception? err)
         {
-            _logger.Log(level, err, _categoryName + message);
-        }
-        
-        /// <summary>
-        /// Structured Log Message. Object array contains a list of values to populate
-        /// the logging keys e.g. {ExampleKey} that are included in the log.
-        /// </summary>
-        /// <param name="logLevel"></param>
-        /// <param name="exception"></param>
-        /// <param name="message"></param>
-        /// <param name="args"></param>
-        public void LogStructured(
-            LogLevel logLevel,
-            Exception? exception,
-            string? message,
-            params object?[] args)
-        {
-            _logger.Log(logLevel, exception, message, args);
-        }
-        
-        /// <summary>
-        /// Log
-        /// </summary>
-        /// <param name="level"></param>
-        /// <param name="message"></param>
-        public void Log(LogLevel level, string message)
-        {
-            Log(level, message, null);
         }
 
         /// <summary>
@@ -87,27 +30,28 @@ using Microsoft.Extensions.Logging;
         }
         
         /// <summary>
+        /// Structured Log Message. Object array contains a list of values to populate
+        /// the logging keys e.g. {ExampleKey} that are included in the log. 
+        /// </summary>
+        /// <param name="logLevel"></param>
+        /// <param name="exception"></param>
+        /// <param name="message"></param>
+        /// <param name="args"></param>
+        public void LogStructured(
+            LogLevel logLevel,
+            Exception? exception,
+            string? message,
+            params object?[] args)
+        {
+        }
+
+        /// <summary>
         /// Log
         /// </summary>
         /// <param name="level"></param>
         /// <param name="argsToLogAsJson"></param>
         public void LogToJson(LogLevel level, params object[] argsToLogAsJson)
         {
-            try
-            {
-                JsonSerializerOptions options = new JsonSerializerOptions()
-                {
-                    MaxDepth = 4,
-                    WriteIndented = true,
-                    IncludeFields = false
-                };
-                string json = JsonSerializer.Serialize(argsToLogAsJson,options);
-                Log(level, Environment.NewLine + json);
-            }
-            catch (Exception err)
-            {
-                Log(level, "LogToJson serialization error" + err.Message);
-            }
         }
 
         /// <summary>
@@ -116,7 +60,6 @@ using Microsoft.Extensions.Logging;
         /// <param name="message"></param>
         public void LogTrace(string message)
         {
-            Log(LogLevel.Trace, message);
         }
 
         /// <summary>
@@ -125,9 +68,7 @@ using Microsoft.Extensions.Logging;
         /// <param name="message"></param>
         public void LogDebug(string message)
         {
-            Log(LogLevel.Debug, message);
         }
-        
 
         /// <summary>
         /// LogInformation
@@ -135,7 +76,6 @@ using Microsoft.Extensions.Logging;
         /// <param name="message"></param>
         public void LogInformation(string message)
         {
-            Log(LogLevel.Information, message);
         }
 
         /// <summary>
@@ -144,7 +84,6 @@ using Microsoft.Extensions.Logging;
         /// <param name="message"></param>
         public void LogWarning(string message)
         {
-            Log(LogLevel.Warning, message);
         }
 
         /// <summary>
@@ -154,7 +93,6 @@ using Microsoft.Extensions.Logging;
         /// <param name="err"></param>
         public void LogError(string message, Exception? err = null)
         {
-            Log(LogLevel.Error, message, err);
         }
 
         /// <summary>
@@ -163,10 +101,8 @@ using Microsoft.Extensions.Logging;
         /// <param name="err"></param>
         public void LogError(Exception err)
         {
-            Log(LogLevel.Error, err);
         }
-        
-        
+
         /// <summary>
         /// LogCritical
         /// </summary>
@@ -174,7 +110,6 @@ using Microsoft.Extensions.Logging;
         /// <param name="err"></param>
         public void LogCritical(string message, Exception? err = null)
         {
-            Log(LogLevel.Critical, message, err);
         }
 
         /// <summary>
@@ -183,11 +118,11 @@ using Microsoft.Extensions.Logging;
         /// <param name="err"></param>
         public void LogCritical(Exception err)
         {
-            Log(LogLevel.Critical, null, err);
         }
 
+
         /// <summary>
-        /// Writes a log entry.. Simply wraps the inner logger
+        /// Does nothing
         /// </summary>
         /// <param name="logLevel"></param>
         /// <param name="eventId"></param>
@@ -197,28 +132,28 @@ using Microsoft.Extensions.Logging;
         /// <typeparam name="TState"></typeparam>
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
         {
-            _logger.Log(logLevel, eventId, state, exception, formatter);
+            // Do nothing
         }
 
         /// <summary>
-        /// Checks if the given logLevel is enabled.. Simply wraps the inner logger
+        /// Returns true
         /// </summary>
         /// <param name="logLevel"></param>
         /// <returns></returns>
         public bool IsEnabled(LogLevel logLevel)
         {
-            return _logger.IsEnabled(logLevel);
+            return true;
         }
 
         /// <summary>
-        /// Begins a logical operation scope.. Simply wraps the inner logger
+        /// Does nothing and returns null.
         /// </summary>
         /// <param name="state"></param>
         /// <typeparam name="TState"></typeparam>
         /// <returns></returns>
         public IDisposable? BeginScope<TState>(TState state) where TState : notnull
         {
-            return _logger.BeginScope<TState>(state);
+            return null;
         }
     }
-}
+}  

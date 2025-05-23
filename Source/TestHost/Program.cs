@@ -11,7 +11,7 @@ namespace TestHost
             Outcome appBuild = builder.Build();
             if (!appBuild.Success)
             {
-                ILoggerAdapter<AppBuilder>? logger = builder.TryGetLogger();
+                IMockableLogger<AppBuilder>? logger = builder.TryGetLogger();
                 if (logger != null)
                 {
                     logger.LogCritical($"Application build failed: {appBuild.MessagesToString()}");

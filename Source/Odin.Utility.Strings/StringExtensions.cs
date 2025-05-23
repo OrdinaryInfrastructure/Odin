@@ -1,6 +1,7 @@
 ﻿using Odin.DesignContracts;
 
-namespace Odin.System
+// ReSharper disable once CheckNamespace
+namespace System
 {
     /// <summary>
     /// Common string extension utilities

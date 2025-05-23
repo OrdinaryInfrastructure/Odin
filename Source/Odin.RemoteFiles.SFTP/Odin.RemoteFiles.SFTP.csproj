@@ -1,6 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>true</ImplicitUsings>
   </PropertyGroup>
@@ -8,7 +7,7 @@
     <PackageReference Include="SSH.NET" Version="2024.2.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Odin.Common\Odin.Common.csproj" />
+    <ProjectReference Include="..\Odin.System\Odin.System.csproj" />
     <ProjectReference Include="..\Odin.RemoteFiles.Abstractions\Odin.RemoteFiles.Abstractions.csproj" />
   </ItemGroup>
 </Project>

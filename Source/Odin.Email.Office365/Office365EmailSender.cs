@@ -17,22 +17,22 @@ public class Office365EmailSender : IEmailSender
     private readonly GraphServiceClient _graphClient;
     private readonly string _senderUserId;
     private readonly EmailSendingOptions _emailSettings;
-    private readonly ILoggerAdapter<Office365EmailSender> _logger;
+    private readonly IMockableLogger<Office365EmailSender> _mockableLogger;
 
     /// <summary>
     /// Sends email via Office365 GraphClient
     /// </summary>
     /// <param name="office365Options"></param>
     /// <param name="emailSettings"></param>
-    /// <param name="logger">Microsoft UserId</param>
-    public Office365EmailSender(Office365Options office365Options, EmailSendingOptions emailSettings , ILoggerAdapter<Office365EmailSender> logger)
+    /// <param name="mockableLogger">Microsoft UserId</param>
+    public Office365EmailSender(Office365Options office365Options, EmailSendingOptions emailSettings , IMockableLogger<Office365EmailSender> mockableLogger)
     {
         PreCondition.RequiresNotNull(office365Options);
         PreCondition.RequiresNotNull(emailSettings);
-        PreCondition.RequiresNotNull(logger);
+        PreCondition.RequiresNotNull(mockableLogger);
 
         _emailSettings = emailSettings;
-        _logger = logger;
+        _mockableLogger = mockableLogger;
         
         ClientSecretCredentialOptions credentialOptions = new ClientSecretCredentialOptions
         {
@@ -159,12 +159,12 @@ public class Office365EmailSender : IEmailSender
 
         if (isSuccess)
         {
-            _logger.Log(level, $"{nameof(SendEmail)} to {to} succeeded. Subject - '{email.Subject}'. {message}",
+            _mockableLogger.Log(level, $"{nameof(SendEmail)} to {to} succeeded. Subject - '{email.Subject}'. {message}",
                 exception);
         }
         else
         {
-            _logger.Log(level, $"{nameof(SendEmail)} to {to} failed. Subject - '{email.Subject}'. Error - {message}",
+            _mockableLogger.Log(level, $"{nameof(SendEmail)} to {to} failed. Subject - '{email.Subject}'. Error - {message}",
                 exception);
         }
     }

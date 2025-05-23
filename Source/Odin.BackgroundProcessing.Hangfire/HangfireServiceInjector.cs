@@ -51,7 +51,7 @@ namespace Odin.BackgroundProcessing
                     $"Invalid Hangfire configuration. ConnectionString ({hangfireOptions.ConnectionStringName}) was not passed explicitly and does not exist in configuration.");
             }
 
-            serviceCollection.AddLoggerAdapter();
+            serviceCollection.AddMockableLogger();
             serviceCollection.AddTransient<IBackgroundProcessor, HangfireBackgroundProcessor>();
             serviceCollection.AddSingleton(hangfireOptions);
 

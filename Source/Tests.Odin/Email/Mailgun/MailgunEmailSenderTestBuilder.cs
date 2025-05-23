@@ -10,8 +10,8 @@ namespace Tests.Odin.Email.Mailgun
 {
     public sealed class MailgunEmailSenderTestBuilder: IBuilder<MailgunEmailSender>
     {
-        public ILoggerAdapter<MailgunEmailSender> Logger = null!;
-        public Mock<ILoggerAdapter<MailgunEmailSender>>? LoggerMock;
+        public IMockableLogger<MailgunEmailSender> MockableLogger = null!;
+        public Mock<IMockableLogger<MailgunEmailSender>>? LoggerMock;
         public EmailSendingOptions EmailSendingOptions = null!;
         public Mock<EmailSendingOptions>? EmailSendingOptionsMock;
         public MailgunOptions MailgunOptions = null!;
@@ -20,7 +20,7 @@ namespace Tests.Odin.Email.Mailgun
         public MailgunEmailSender Build()
         {
             EnsureNullDependenciesAreMocked();
-            return new MailgunEmailSender(MailgunOptions,EmailSendingOptions,Logger);
+            return new MailgunEmailSender(MailgunOptions,EmailSendingOptions,MockableLogger);
         }
         
         public MailgunEmailSenderTestBuilder EnsureNullDependenciesAreMocked()
@@ -30,10 +30,10 @@ namespace Tests.Odin.Email.Mailgun
                 MailgunOptionsMock = new Mock<MailgunOptions>();
                 MailgunOptions = MailgunOptionsMock.Object;
             }
-            if (Logger is null)
+            if (MockableLogger is null)
             {
-                LoggerMock = new Mock<ILoggerAdapter<MailgunEmailSender>>();
-                Logger = LoggerMock.Object;
+                LoggerMock = new Mock<IMockableLogger<MailgunEmailSender>>();
+                MockableLogger = LoggerMock.Object;
             }
             if (EmailSendingOptions is null)
             {
