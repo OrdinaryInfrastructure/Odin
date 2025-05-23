@@ -47,9 +47,9 @@ jobs:
         dotnet pack ./Source/Odin.BackgroundProcessing.Abstractions/Odin.BackgroundProcessing.Abstractions.csproj --configuration $CONFIGURATION --output $PACKAGE_DIR
         dotnet pack ./Source/Odin.BackgroundProcessing.Hangfire/Odin.BackgroundProcessing.Hangfire.csproj --configuration $CONFIGURATION --output $PACKAGE_DIR 
         dotnet pack ./Source/Odin.BackgroundProcessing/Odin.BackgroundProcessing.csproj --configuration $CONFIGURATION --output $PACKAGE_DIR
-        dotnet pack ./Source/Odin.System/Odin.Common.csproj --configuration $CONFIGURATION --output $PACKAGE_DIR
-        dotnet pack ./Source/Odin.Logging/Odin.Common.csproj --configuration $CONFIGURATION --output $PACKAGE_DIR
-        dotnet pack ./Source/Odin.DesignContracts/Odin.Common.csproj --configuration $CONFIGURATION --output $PACKAGE_DIR
+        dotnet pack ./Source/Odin.System/Odin.System.csproj --configuration $CONFIGURATION --output $PACKAGE_DIR
+        dotnet pack ./Source/Odin.Logging/Odin.Logging.csproj --configuration $CONFIGURATION --output $PACKAGE_DIR
+        dotnet pack ./Source/Odin.DesignContracts/Odin.DesignContracts.csproj --configuration $CONFIGURATION --output $PACKAGE_DIR
         dotnet pack ./Source/Odin.Cryptography/Odin.Cryptography.csproj --configuration $CONFIGURATION --output $PACKAGE_DIR
         dotnet pack ./Source/Odin.Data.SqlScriptsRunner/Odin.Data.SqlScriptsRunner.csproj --configuration $CONFIGURATION --output $PACKAGE_DIR
         dotnet pack ./Source/Odin.Email.Mailgun/Odin.Email.Mailgun.csproj --configuration $CONFIGURATION --output $PACKAGE_DIR
