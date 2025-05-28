@@ -8,13 +8,13 @@
         </Description>
     </PropertyGroup>
     <ItemGroup>
-        <ProjectReference Include="..\Odin.BackgroundProcessing.Abstractions\Odin.BackgroundProcessing.Abstractions.csproj"/>
-        <ProjectReference Include="..\Odin.Common\Odin.Common.csproj"/>
+        <ProjectReference Include="..\Odin.BackgroundProcessing.Abstractions\Odin.BackgroundProcessing.Abstractions.csproj" />
+        <ProjectReference Include="..\Odin.Common\Odin.Common.csproj" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.0"/>
-        <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0"/>
-        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.5" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.5" />
+        <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
+        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.5" />
     </ItemGroup>
 </Project>
