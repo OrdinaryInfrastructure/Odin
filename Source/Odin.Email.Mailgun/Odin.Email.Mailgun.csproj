@@ -9,6 +9,6 @@
     <ProjectReference Include="..\Odin.Email\Odin.Email.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Polly.Core" Version="8.5.0" />
+    <PackageReference Include="Polly.Core" Version="8.5.2" />
   </ItemGroup>
 </Project>
