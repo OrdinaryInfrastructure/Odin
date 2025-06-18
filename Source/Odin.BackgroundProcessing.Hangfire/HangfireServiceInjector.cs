@@ -4,6 +4,7 @@ using Hangfire.SqlServer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Odin.DesignContracts;
 using Odin.System;
 
@@ -12,7 +13,7 @@ namespace Odin.BackgroundProcessing
     public class HangfireServiceInjector : IBackgroundProcessorServiceInjector
     {
         public void TryAddBackgroundProcessor(IServiceCollection serviceCollection, IConfiguration configuration,
-            IConfigurationSection backgroundProcessingSection, string? sqlServerConnectionString = null)
+            IConfigurationSection backgroundProcessingSection, Func<IServiceProvider, string>? connectionStringFactory = null)
         {
             PreCondition.RequiresNotNull(serviceCollection);
             PreCondition.RequiresNotNull(backgroundProcessingSection);
@@ -24,38 +25,85 @@ namespace Odin.BackgroundProcessing
                     $"Section {BackgroundProcessingProviders.Hangfire} missing in BackgroundProcessing configuration.");
             }
 
+            serviceCollection.AddOptions<HangfireOptions>().Bind(providerSection)
+                .ValidateDataAnnotations()
+                .ValidateOnStart();
+
             HangfireOptions hangfireOptions = new HangfireOptions();
             providerSection.Bind(hangfireOptions);
-
-            Outcome hangfireSettingsValid = hangfireOptions.Validate();
-            if (!hangfireSettingsValid.Success)
-            {
-                throw new ApplicationException(
-                    $"Invalid Hangfire configuration. {hangfireSettingsValid.MessagesToString()}");
-            }
-
-            string? hangfireSqlConnectionString = null;
-
-            if (sqlServerConnectionString is not null)
-            {
-                hangfireSqlConnectionString = sqlServerConnectionString;
-            }
-            else
-            {
-                hangfireSqlConnectionString = configuration.GetConnectionString(hangfireOptions.ConnectionStringName);
-            }
             
-            if (string.IsNullOrWhiteSpace(hangfireSqlConnectionString))
+            string GetConnectionString(IServiceProvider sp)
             {
-                throw new ApplicationException(
-                    $"Invalid Hangfire configuration. ConnectionString ({hangfireOptions.ConnectionStringName}) was not passed explicitly and does not exist in configuration.");
+                if (connectionStringFactory is not null)
+                {
+                    return connectionStringFactory(sp);
+                }
+
+                var opts = sp.GetRequiredService<IOptionsMonitor<HangfireOptions>>().CurrentValue;
+
+                if (string.IsNullOrWhiteSpace(opts.ConnectionStringName))
+                {
+                    throw new ApplicationException($"Invalid Hangfire configuration. ConnectionString was not passed explicitly, and " +
+                                                   $"no fallback connection string was named.");
+                }
+                
+                var namedConnString = sp.GetRequiredService<IConfiguration>().GetConnectionString(opts.ConnectionStringName);
+                
+                if (string.IsNullOrWhiteSpace(namedConnString))
+                {
+                    throw new ApplicationException($"Invalid Hangfire configuration. ConnectionString was not passed explicitly " +
+                                                   $"and a connection string named \"{opts.ConnectionStringName}\" does not exist in configuration.");
+                }
+
+                return namedConnString;
+            }
+
+            SqlServerStorageOptions GetSqlServerStorageOptions(IServiceProvider sp)
+            {
+                var opts = sp.GetRequiredService<IOptionsMonitor<HangfireOptions>>().CurrentValue;
+                return GetSqlServerOptions(opts);
             }
 
             serviceCollection.AddLoggerAdapter();
             serviceCollection.AddTransient<IBackgroundProcessor, HangfireBackgroundProcessor>();
-            serviceCollection.AddSingleton(hangfireOptions);
+            
+            serviceCollection.AddHangfire((sp, c) => c
+                .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+                .UseSimpleAssemblyNameTypeSerializer()
+                .UseRecommendedSerializerSettings()
+                .UseSqlServerStorage(GetConnectionString(sp), GetSqlServerStorageOptions(sp)));
 
-            SqlServerStorageOptions sqlOptions = new SqlServerStorageOptions();
+            if (hangfireOptions.StartServer)
+            {
+                if (hangfireOptions.ServerWorkerCount.HasValue)
+                {
+                    serviceCollection.AddHangfireServer(options => options.WorkerCount = hangfireOptions.ServerWorkerCount.Value);
+                }
+                else
+                {
+                    serviceCollection.AddHangfireServer();
+                }
+
+                // Keep jobs for configured number of days if specced
+                if (hangfireOptions.JobExpirationHours.HasValue)
+                {
+                    GlobalJobFilters.Filters.Add(
+                        new HangfireExpirationPeriodAttribute(
+                            TimeSpan.FromHours(hangfireOptions.JobExpirationHours.Value)));
+                }
+
+                // Automatically retry jobs setting...
+                if (hangfireOptions.NumberOfAutomaticRetries.HasValue)
+                {
+                    GlobalJobFilters.Filters.Add(new AutomaticRetryAttribute
+                        { Attempts = hangfireOptions.NumberOfAutomaticRetries.Value });
+                }
+            }
+        }
+
+        private static SqlServerStorageOptions GetSqlServerOptions(HangfireOptions hangfireOptions)
+        {
+            var sqlOptions = new SqlServerStorageOptions();
             if (hangfireOptions.SqlServerCommandBatchMaxTimeoutSeconds.HasValue)
             {
                 sqlOptions.CommandBatchMaxTimeout =
@@ -85,43 +133,9 @@ namespace Odin.BackgroundProcessing
                 sqlOptions.DisableGlobalLocks = hangfireOptions.SqlServerDisableGlobalLocks.Value;
             }
 
-            serviceCollection.AddHangfire(c => c
-                             .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
-                             .UseSimpleAssemblyNameTypeSerializer()
-                             .UseRecommendedSerializerSettings()
-                             .UseSqlServerStorage(hangfireSqlConnectionString, sqlOptions));
-                     
-             if (hangfireOptions.StartServer)
-             {
-                 if (hangfireOptions.ServerWorkerCount.HasValue)
-                 {
-                     serviceCollection.AddHangfireServer(
-                         options => options.WorkerCount = hangfireOptions.ServerWorkerCount.Value);
-                 }
-                 else
-                 {
-                     serviceCollection.AddHangfireServer();
-                 }
-                 
-                 // Keep jobs for configured number of days if specced
-                 if (hangfireOptions.JobExpirationHours.HasValue)
-                 {
-                     GlobalJobFilters.Filters.Add(
-                         new HangfireExpirationPeriodAttribute(
-                             TimeSpan.FromHours(hangfireOptions.JobExpirationHours.Value)));
-                 }
-
-                 // Automatically retry jobs setting...
-                 if (hangfireOptions.NumberOfAutomaticRetries.HasValue)
-                 {
-                     GlobalJobFilters.Filters.Add(new AutomaticRetryAttribute
-                         { Attempts = hangfireOptions.NumberOfAutomaticRetries.Value });
-                 }
-             }
-             
-             
+            return sqlOptions;
         }
-        
+
         /// <summary>
         /// If configured, adds Hangfire dashboard to HTTP pipeline.
         /// </summary>
@@ -134,7 +148,7 @@ namespace Odin.BackgroundProcessing
             {
                 return builder;
             }
-            
+
             string[] filterStrings =
                 hangfireOptions.DashboardAuthorizationFilters.Split(',', ';')
                     .Where(c => !string.IsNullOrWhiteSpace(c.TrimIfNotNull())).ToArray();
@@ -150,6 +164,7 @@ namespace Odin.BackgroundProcessing
             {
                 options.DashboardTitle = hangfireOptions.DashboardTitle;
             }
+
             builder.UseHangfireDashboard(hangfireOptions.DashboardPath, options);
 
             return builder;
