@@ -1,7 +1,4 @@
-﻿using Odin.System;
-
-
-namespace Odin.BackgroundProcessing
+﻿namespace Odin.BackgroundProcessing
 {
     /// <summary>
     /// Hangfire settings 

@@ -142,7 +142,7 @@ namespace Odin.BackgroundProcessing
         /// <param name="appServices"></param>
         public IApplicationBuilder UseBackgroundProcessing(IApplicationBuilder builder, IServiceProvider appServices)
         {
-            HangfireOptions hangfireOptions = appServices.GetRequiredService<HangfireOptions>();
+            var hangfireOptions = appServices.GetRequiredService<IOptionsMonitor<HangfireOptions>>().CurrentValue;
 
             if (!hangfireOptions.StartDashboard)
             {
