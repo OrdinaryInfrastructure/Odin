@@ -46,10 +46,9 @@ namespace Odin.System
         /// </summary>
         /// <param name="aString"></param>
         /// <returns></returns>
-        public static string EnsureNotNull(this string aString)
+        public static string EnsureNotNull(this string? aString)
         {
-            if (aString == null) return string.Empty;
-            return aString;
+            return aString ?? string.Empty;
         }
         
     }
