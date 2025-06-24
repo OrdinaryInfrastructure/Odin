@@ -1,7 +1,9 @@
 name: Publish to Nuget
 
-on: workflow_dispatch
-
+on: 
+  pull_request:
+    branches:
+    - master
 env:
   SOLUTION: './Source/Odin.sln'
   BUILD_CONFIGURATION: Release
