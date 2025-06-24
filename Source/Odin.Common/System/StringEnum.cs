@@ -7,12 +7,16 @@ namespace Odin.System;
 /// <summary>
 /// Provides enum-like behaviour for a set of string values.
 /// Usage: Inherit from StringEnum and add ONLY public const string members.
+/// Use the Values static property to work with a list of all the string values.
+/// Use HasValue(string value) to find out whether a particular string value is a member of Values.
 /// </summary>
 /// <typeparam name="TEnum"></typeparam>
 public abstract class StringEnum<TEnum> where TEnum: StringEnum<TEnum> 
 {
-    // Static field in generic type is fine since we'll get a different one for each TEnum when StringEnum is reified.
-    private static ImmutableHashSet<string>? _values = null;
+    /// <summary>
+    /// Static field in generic type is fine since we'll get a different one for each TEnum when StringEnum is reified.
+    /// </summary>
+    private static ImmutableHashSet<string>? _values;
     
     // ReSharper disable once StaticMemberInGenericType
     private static readonly Lock ValuesReflectionLock = new Lock();
@@ -20,7 +24,7 @@ public abstract class StringEnum<TEnum> where TEnum: StringEnum<TEnum>
     /// <summary>
     /// Returns the set of string values
     /// </summary>
-    public static IImmutableSet<string> Values
+    public static ImmutableHashSet<string> Values
     {
         get
         {
@@ -31,31 +35,33 @@ public abstract class StringEnum<TEnum> where TEnum: StringEnum<TEnum>
 
             lock (ValuesReflectionLock)
             {
-                if (_values is not null)
-                {
-                    return _values;
-                }
-                
-                _values = typeof(TEnum).GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy)
+                if (_values != null) return _values;
+                List<string> nonDistinctValues = typeof(TEnum)
+                    .GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy)
                     .Where(f => f.IsLiteral && !f.IsInitOnly && f.FieldType == typeof(string))
                     .Select(f => (string)f.GetValue(null)!)
-                    .Distinct() // Allow duplicates
-                    .ToImmutableHashSet();
-
+                    .ToList();
+                int numMembers = nonDistinctValues.Count;
+                _values = nonDistinctValues.ToImmutableHashSet(StringComparer.Ordinal);
+                if (numMembers != _values.Count)
+                {
+                    _values = null;
+                    throw new NotSupportedException($"Duplicate string values found in {typeof(TEnum)}");
+                }
                 return _values;
             }
         }
     }
 
     /// <summary>
-    /// 
+    /// Returns true if the value exists as one of the members of Values.
+    /// Comparison is case-sensitive.
     /// </summary>
     /// <param name="value"></param>
-    /// <param name="comparison"></param>
     /// <returns></returns>
-    public static Outcome HasValue(string? value, StringComparison comparison = StringComparison.OrdinalIgnoreCase)
+    public static Outcome HasValue(string? value)
     {
-        StringComparer comparer = StringComparer.FromComparison(comparison);
+        StringComparer comparer = StringComparer.FromComparison(StringComparison.Ordinal);
         if (!Values.Contains(value, comparer))
         {
             return Outcome.Fail(NotAMemberMessage(value));
@@ -63,7 +69,7 @@ public abstract class StringEnum<TEnum> where TEnum: StringEnum<TEnum>
         return Outcome.Succeed();
     }
 
-    private static string NotAMemberMessage(string value) =>
+    private static string NotAMemberMessage(string? value) =>
         $"\"{value}\" is not a valid member of StringEnum {typeof(TEnum)}. Valid members: {string.Join(", ", Values)}";
     
 }
