@@ -4,6 +4,9 @@ on:
   pull_request:
     branches:
     - master
+    types: [closed]
+  workflow_dispatch:
+
 env:
   SOLUTION: './Source/Odin.sln'
   BUILD_CONFIGURATION: Release
