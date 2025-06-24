@@ -1,7 +1,4 @@
-﻿using Odin.System;
-
-
-namespace Odin.BackgroundProcessing
+﻿namespace Odin.BackgroundProcessing
 {
     /// <summary>
     /// Hangfire settings 
@@ -16,7 +13,7 @@ namespace Odin.BackgroundProcessing
         /// <summary>
         /// Name of the SQL connection string in ConnectionStrings in configuration
         /// </summary>
-        public string ConnectionStringName { get; set; } = null!;
+        public string? ConnectionStringName { get; set; }
 
         /// <summary>
         /// Whether to start the dashboard or not.
@@ -85,21 +82,5 @@ namespace Odin.BackgroundProcessing
         public bool? SqlServerUseRecommendedIsolationLevel { get; set; }
 
         public bool? SqlServerDisableGlobalLocks { get; set; }
-
-
-        /// <summary>
-        /// Validates the settings instance
-        /// </summary>
-        /// <returns></returns>
-        public Outcome Validate()
-        {
-            List<string> errors = new List<string>();
-            if (string.IsNullOrWhiteSpace(ConnectionStringName))
-            {
-                errors.Add($"{nameof(ConnectionStringName)} is missing");
-            }
-
-            return new Outcome(!errors.Any(), errors);
-        }
     }
 }

@@ -11,7 +11,8 @@ namespace Odin.BackgroundProcessing
         /// </summary>
         /// <param name="serviceCollection"></param>
         /// <param name="configSection"></param>
-        void TryAddBackgroundProcessor(IServiceCollection serviceCollection, IConfiguration configuration, IConfigurationSection configSection, string? sqlServerConnectionString = null);
+        /// <param name="connectionStringFactory">Constructs the SQL Server connection string</param>
+        void TryAddBackgroundProcessor(IServiceCollection serviceCollection, IConfiguration configuration, IConfigurationSection configSection, Func<IServiceProvider, string>? connectionStringFactory = null);
 
         /// <summary>
         /// Adds BackgroundProcessing features (such as Hangfire's dashboard) to the HTTP pipeline.

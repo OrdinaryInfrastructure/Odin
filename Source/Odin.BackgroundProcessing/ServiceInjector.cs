@@ -35,6 +35,29 @@ namespace Odin.BackgroundProcessing
             }
             serviceCollection.AddBackgroundProcessing(configuration, section, sqlServerConnectionString);
         }
+        
+        public static void AddBackgroundProcessing(
+            this IServiceCollection serviceCollection, IConfiguration configuration,
+            string sectionName, Func<IServiceProvider, string>? sqlServerConnectionStringFactory = null)
+        {
+            IConfigurationSection? section = configuration.GetSection(sectionName);
+            if (section == null)
+            {
+                section = configuration.GetSection($"{sectionName}BackgroundProcessor");
+                if (section == null)
+                {
+                    throw new ApplicationException(
+                        $"{nameof(AddBackgroundProcessing)}: Section {sectionName} missing in configuration.");
+                }
+            }
+            serviceCollection.AddBackgroundProcessing(configuration, section, sqlServerConnectionStringFactory);
+        }
+
+        public static void AddBackgroundProcessing(this IServiceCollection serviceCollection, IConfiguration configuration, IConfigurationSection configurationSection,
+            string? sqlServerConnectionString = null)
+        {
+            AddBackgroundProcessing(serviceCollection, configuration, configurationSection, sqlServerConnectionString is null ? null : _ => sqlServerConnectionString);
+        }
 
         /// <summary>
         /// Adds BackgroundProcessing services (such as Hangfire's server) according to the provided ConfigurationSection 
@@ -44,7 +67,7 @@ namespace Odin.BackgroundProcessing
         /// <returns></returns>
         public static void AddBackgroundProcessing(
             this IServiceCollection serviceCollection, IConfiguration configuration,
-            IConfigurationSection configurationSection, string? sqlServerConnectionString = null)
+            IConfigurationSection configurationSection, Func<IServiceProvider, string>? sqlServerConnectionStringFactory = null)
         {
             PreCondition.RequiresNotNull(configurationSection);
 
@@ -80,7 +103,7 @@ namespace Odin.BackgroundProcessing
             if (serviceInjectorCreation.Success)
             {
                 serviceInjectorCreation.Value.TryAddBackgroundProcessor(serviceCollection, configuration,
-                    configurationSection, sqlServerConnectionString);
+                    configurationSection, sqlServerConnectionStringFactory);
             }
             else
             {
