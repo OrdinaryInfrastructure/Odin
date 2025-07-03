@@ -65,6 +65,7 @@ jobs:
         dotnet pack ./Source/Odin.RemoteFiles/Odin.RemoteFiles.csproj --configuration $CONFIGURATION --output $PACKAGE_DIR
         dotnet pack ./Source/Odin.Utility.VaryingValues/Odin.Utility.VaryingValues.csproj --configuration $CONFIGURATION --output $PACKAGE_DIR
         dotnet pack ./Source/Odin.Utility.Tax/Odin.Utility.Tax.csproj --configuration $CONFIGURATION --output $PACKAGE_DIR
+        dotnet pack ./Source/Odin.AzureBlobJsonConfiguration/Odin.AzureBlobJsonConfiguration.csproj --configuration $CONFIGURATION --output $PACKAGE_DIR
       env:
         CONFIGURATION: ${{env.BUILD_CONFIGURATION}}
         PACKAGE_DIR: ${{env.PACKAGE_DIR}}
@@ -81,6 +82,7 @@ jobs:
         dotnet nuget push $PACKAGE_DIR/Odin.Notifications.*.nupkg --api-key $API_KEY --source $NUGET_SOURCE
         dotnet nuget push $PACKAGE_DIR/Odin.RemoteFiles.*.nupkg --api-key $API_KEY --source $NUGET_SOURCE
         dotnet nuget push $PACKAGE_DIR/Odin.Utility.*.nupkg --api-key $API_KEY --source $NUGET_SOURCE
+        dotnet nuget push $PACKAGE_DIR/Odin.AzureBlobJsonConfiguration.nupkg --api-key $API_KEY --source $NUGET_SOURCE
       env:
         API_KEY: ${{ secrets.NUGET_API_KEY }}
         NUGET_SOURCE: ${{ env.NUGET_SOURCE }}
