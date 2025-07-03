@@ -48,7 +48,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odin.Utility.VaryingValues"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odin.Utility.Tax", "Odin.Utility.Tax\Odin.Utility.Tax.csproj", "{CEF1A5CB-E90D-496C-86C0-DFEB80CCF709}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odin.AzureBlobJsonConfiguration", "Odin.AzureBlobJsonConfiguration\Odin.AzureBlobJsonConfiguration.csproj", "{F14C95DB-A041-417E-93A0-95396664907A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odin.Configuration.AzureBlobJson", "Odin.Configuration.AzureBlobJson\Odin.Configuration.AzureBlobJson.csproj", "{F14C95DB-A041-417E-93A0-95396664907A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Azure.Storage;
 
-namespace Odin.AzureBlobJsonConfiguration;
+namespace Odin.Configuration.AzureBlobJson;
 
 public class BlobJsonConfigurationOptions
 {
