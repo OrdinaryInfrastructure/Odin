@@ -5,7 +5,7 @@ using Azure.Storage.Blobs;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Json;
 
-namespace Odin.AzureBlobJsonConfiguration;
+namespace Odin.Configuration.AzureBlobJson;
 
 public class BlobJsonConfigurationProvider : JsonConfigurationProvider
 {
