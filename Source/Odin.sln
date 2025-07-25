@@ -50,6 +50,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odin.Utility.Tax", "Odin.Ut
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odin.Configuration.AzureBlobJson", "Odin.Configuration.AzureBlobJson\Odin.Configuration.AzureBlobJson.csproj", "{F14C95DB-A041-417E-93A0-95396664907A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odin.Templating.Razor.Abstractions", "Odin.Templating.Razor.Abstractions\Odin.Templating.Razor.Abstractions.csproj", "{C21999CA-9CC7-4FC5-9878-BC754BBD7525}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odin.Templating.Razor", "Odin.Templating.Razor\Odin.Templating.Razor.csproj", "{87351AC5-0EBF-49BA-B7DA-E91CBC5FA629}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -140,5 +144,13 @@ Global
 		{F14C95DB-A041-417E-93A0-95396664907A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F14C95DB-A041-417E-93A0-95396664907A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F14C95DB-A041-417E-93A0-95396664907A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C21999CA-9CC7-4FC5-9878-BC754BBD7525}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C21999CA-9CC7-4FC5-9878-BC754BBD7525}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C21999CA-9CC7-4FC5-9878-BC754BBD7525}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C21999CA-9CC7-4FC5-9878-BC754BBD7525}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87351AC5-0EBF-49BA-B7DA-E91CBC5FA629}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87351AC5-0EBF-49BA-B7DA-E91CBC5FA629}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87351AC5-0EBF-49BA-B7DA-E91CBC5FA629}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87351AC5-0EBF-49BA-B7DA-E91CBC5FA629}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
