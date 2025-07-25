@@ -63,6 +63,8 @@ jobs:
         dotnet pack ./Source/Odin.RemoteFiles.Abstractions/Odin.RemoteFiles.Abstractions.csproj --configuration $CONFIGURATION --output $PACKAGE_DIR
         dotnet pack ./Source/Odin.RemoteFiles.SFTP/Odin.RemoteFiles.SFTP.csproj --configuration $CONFIGURATION --output $PACKAGE_DIR
         dotnet pack ./Source/Odin.RemoteFiles/Odin.RemoteFiles.csproj --configuration $CONFIGURATION --output $PACKAGE_DIR
+        dotnet pack ./Source/Odin.Templating.Razor.Abstractions/Odin.Templating.Razor.Abstractions.csproj --configuration $CONFIGURATION --output $PACKAGE_DIR
+        dotnet pack ./Source/Odin.Templating.Razor/Odin.Templating.Razor.csproj --configuration $CONFIGURATION --output $PACKAGE_DIR
         dotnet pack ./Source/Odin.Utility.VaryingValues/Odin.Utility.VaryingValues.csproj --configuration $CONFIGURATION --output $PACKAGE_DIR
         dotnet pack ./Source/Odin.Utility.Tax/Odin.Utility.Tax.csproj --configuration $CONFIGURATION --output $PACKAGE_DIR
         dotnet pack ./Source/Odin.Configuration.AzureBlobJson/Odin.Configuration.AzureBlobJson.csproj --configuration $CONFIGURATION --output $PACKAGE_DIR
@@ -81,6 +83,7 @@ jobs:
         dotnet nuget push $PACKAGE_DIR/Odin.Messaging.RabbitMq.*.nupkg --api-key $API_KEY --source $NUGET_SOURCE
         dotnet nuget push $PACKAGE_DIR/Odin.Notifications.*.nupkg --api-key $API_KEY --source $NUGET_SOURCE
         dotnet nuget push $PACKAGE_DIR/Odin.RemoteFiles.*.nupkg --api-key $API_KEY --source $NUGET_SOURCE
+        dotnet nuget push $PACKAGE_DIR/Odin.Templating.*.nupkg --api-key $API_KEY --source $NUGET_SOURCE
         dotnet nuget push $PACKAGE_DIR/Odin.Utility.*.nupkg --api-key $API_KEY --source $NUGET_SOURCE
         dotnet nuget push $PACKAGE_DIR/Odin.Configuration.*.nupkg --api-key $API_KEY --source $NUGET_SOURCE
       env:

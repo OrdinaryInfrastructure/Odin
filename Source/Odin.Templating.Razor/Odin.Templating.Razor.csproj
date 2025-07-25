@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <RootNamespace>Odin.Templating.Razor</RootNamespace>
+    <ImplicitUsings>true</ImplicitUsings>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Odin.Common\Odin.Common.csproj" />
+    <ProjectReference Include="..\Odin.Templating.Razor.Abstractions\Odin.Templating.Razor.Abstractions.csproj" />
+  </ItemGroup>
+</Project>
