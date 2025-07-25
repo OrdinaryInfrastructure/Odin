@@ -75,7 +75,7 @@ internal class SingleQueueListener: IAsyncDisposable
     {
         if (_consumer is null)
         {
-            var channel = await GetChannel();
+            IChannel channel = await GetChannel();
             _consumer = new AsyncEventingBasicConsumer(channel);
             _consumer.ReceivedAsync += GetMessageReceivedHandler();
         }
@@ -84,9 +84,9 @@ internal class SingleQueueListener: IAsyncDisposable
 
     public async Task StartConsuming()
     {
-        var channel = await GetChannel();
+        IChannel channel = await GetChannel();
         
-        var consumer = await GetConsumer();
+        AsyncEventingBasicConsumer consumer = await GetConsumer();
         
         if (consumer.IsRunning)
         {

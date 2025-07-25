@@ -26,9 +26,9 @@ internal class SingleExchangeSender(
     
     public async Task PublishMessage(string routingKey, Dictionary<string, object> headers, string contentType, byte[] body, bool persistentDelivery, bool mandatory)
     {
-        var channel = await GetOpenChannel();
+        IChannel channel = await GetOpenChannel();
 
-        var basicProperties = new BasicProperties
+        BasicProperties basicProperties = new BasicProperties
         {
             DeliveryMode = persistentDelivery ? DeliveryModes.Persistent : DeliveryModes.Transient,
             ContentType = contentType,
@@ -36,7 +36,7 @@ internal class SingleExchangeSender(
             MessageId = Guid.NewGuid().ToString(),
         };
 
-        using var cts = new CancellationTokenSource(sendTimeout);
+        using CancellationTokenSource cts = new CancellationTokenSource(sendTimeout);
 
         await channel.BasicPublishAsync(
             exchange: exchangeName,

@@ -9,4 +9,12 @@
     <ProjectReference Include="..\Odin.Common\Odin.Common.csproj" />
     <ProjectReference Include="..\Odin.Templating.Razor.Abstractions\Odin.Templating.Razor.Abstractions.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="RazorLight" Version="2.3.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Odin.Common\AssemblyInfo.cs">
+      <Link>AssemblyInfo.cs</Link>
+    </Compile>
+  </ItemGroup>
 </Project>
