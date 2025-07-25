@@ -39,7 +39,7 @@ namespace Odin.BackgroundProcessing
                     return connectionStringFactory(sp);
                 }
 
-                var opts = sp.GetRequiredService<IOptionsMonitor<HangfireOptions>>().CurrentValue;
+                HangfireOptions opts = sp.GetRequiredService<IOptionsMonitor<HangfireOptions>>().CurrentValue;
 
                 if (string.IsNullOrWhiteSpace(opts.ConnectionStringName))
                 {
@@ -60,7 +60,7 @@ namespace Odin.BackgroundProcessing
 
             SqlServerStorageOptions GetSqlServerStorageOptions(IServiceProvider sp)
             {
-                var opts = sp.GetRequiredService<IOptionsMonitor<HangfireOptions>>().CurrentValue;
+                HangfireOptions opts = sp.GetRequiredService<IOptionsMonitor<HangfireOptions>>().CurrentValue;
                 return GetSqlServerOptions(opts);
             }
 
@@ -103,7 +103,7 @@ namespace Odin.BackgroundProcessing
 
         private static SqlServerStorageOptions GetSqlServerOptions(HangfireOptions hangfireOptions)
         {
-            var sqlOptions = new SqlServerStorageOptions();
+            SqlServerStorageOptions sqlOptions = new SqlServerStorageOptions();
             if (hangfireOptions.SqlServerCommandBatchMaxTimeoutSeconds.HasValue)
             {
                 sqlOptions.CommandBatchMaxTimeout =
@@ -142,7 +142,7 @@ namespace Odin.BackgroundProcessing
         /// <param name="appServices"></param>
         public IApplicationBuilder UseBackgroundProcessing(IApplicationBuilder builder, IServiceProvider appServices)
         {
-            var hangfireOptions = appServices.GetRequiredService<IOptionsMonitor<HangfireOptions>>().CurrentValue;
+            HangfireOptions hangfireOptions = appServices.GetRequiredService<IOptionsMonitor<HangfireOptions>>().CurrentValue;
 
             if (!hangfireOptions.StartDashboard)
             {

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection.Extensions;
 using Odin.Logging;
 
+// ReSharper disable once CheckNamespace
 namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>
@@ -9,7 +10,7 @@ namespace Microsoft.Extensions.DependencyInjection
     public static class LoggerAdapterExtensions
     {
         /// <summary>
-        /// Sets up ILoggerAdapter of T
+        /// Sets up ILoggerAdapter of T in dependency injection
         /// </summary>
         /// <param name="serviceCollection"></param>
         /// <returns></returns>

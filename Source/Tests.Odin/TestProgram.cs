@@ -28,19 +28,19 @@ namespace Tests.Odin
             
             WebApplication app = builder.Build();
 
-            var runTask = app.RunAsync();
+            Task runTask = app.RunAsync();
 
-            var stoppingCts = app.Services.GetRequiredService<IHostApplicationLifetime>().ApplicationStopping;
+            CancellationToken stoppingCts = app.Services.GetRequiredService<IHostApplicationLifetime>().ApplicationStopping;
 
             // For manual testing of RabbitBox
 
-            var tests = new RabbitConnectionServiceTests();
+            RabbitConnectionServiceTests tests = new RabbitConnectionServiceTests();
 
             // await tests.Publish_Works(stoppingCts); 
             
             // await tests.QueueSubscription_Works(stoppingCts);
 
-            var resubscriberTests = new ResubscribingRabbitSubscriptionTests();
+            ResubscribingRabbitSubscriptionTests resubscriberTests = new ResubscribingRabbitSubscriptionTests();
 
             // await resubscriberTests.ResubscribingSubscription_Works(stoppingCts);
 

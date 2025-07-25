@@ -48,7 +48,7 @@ public class RabbitConnectionServiceTests : IntegrationTest
 
         threadIdentifiers[0] = "MONITOR";
 
-        var jsonOptions = new JsonSerializerOptions { WriteIndented = true };
+        JsonSerializerOptions jsonOptions = new JsonSerializerOptions { WriteIndented = true };
 
         var sendingTasks = threadIdentifiersIndexes.Select(i => Task.Run(async () =>
         {

@@ -12,7 +12,7 @@ public class BlobJsonConfigurationProvider : JsonConfigurationProvider
     private Timer _timer;
     public BlobJsonConfigurationProvider(BlobJsonConfigurationSource source) : base(source)
     {
-        var period = TimeSpan.FromSeconds(source.Options.ReloadPeriodSeconds);
+        TimeSpan period = TimeSpan.FromSeconds(source.Options.ReloadPeriodSeconds);
         _timer = new Timer(AutoReload, null, period, period);
     }
 
@@ -66,7 +66,7 @@ public class BlobJsonConfigurationProvider : JsonConfigurationProvider
         await _loadAsyncSemaphore.WaitAsync();
         try
         {
-            var client = GetBlobClient();
+            BlobClient client = GetBlobClient();
             
             var attributes = await client.GetPropertiesAsync();
 
@@ -75,7 +75,7 @@ public class BlobJsonConfigurationProvider : JsonConfigurationProvider
                 return;
             }
 
-            using var memStream = new MemoryStream();
+            using MemoryStream memStream = new MemoryStream();
 
             await client.DownloadToAsync(memStream);
 
@@ -99,7 +99,7 @@ public class BlobJsonConfigurationProvider : JsonConfigurationProvider
         bool ignoreException = false;
         if (Source.OnLoadException != null)
         {
-            var exceptionContext = new FileLoadExceptionContext
+            FileLoadExceptionContext exceptionContext = new FileLoadExceptionContext
             {
                 Provider = this,
                 Exception = info.SourceException
