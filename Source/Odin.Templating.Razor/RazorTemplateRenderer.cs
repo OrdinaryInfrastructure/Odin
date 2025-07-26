@@ -4,6 +4,9 @@ using RazorLight;
 
 namespace Odin.Templating.Razor;
 
+/// <summary>
+/// RazorLight implementation of IRazorTemplateRenderer
+/// </summary>
 public class RazorLightTemplateRenderer : IRazorTemplateRenderer
 {
     private readonly IRazorLightEngine _razorLightEngine;
@@ -35,6 +38,7 @@ public class RazorLightTemplateRenderer : IRazorTemplateRenderer
             .Build();
     }
 
+    /// <inheritdoc />
     public async Task<Outcome<string>> RenderAsync<TModel>(string templateKey, TModel viewModel)
     {
         try

@@ -4,6 +4,7 @@
     <Nullable>enable</Nullable>
     <RootNamespace>Odin.Templating.Razor</RootNamespace>
     <ImplicitUsings>true</ImplicitUsings>
+    <WarningsAsErrors>1591;1573;</WarningsAsErrors> <!-- Not to be removed. Documentation is required. -->
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Odin.Common\Odin.Common.csproj" />

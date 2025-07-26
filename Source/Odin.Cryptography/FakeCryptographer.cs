@@ -14,9 +14,9 @@ namespace Odin.Cryptography
         /// </summary>
         /// <param name="protectedString"></param>
         /// <returns></returns>
-        public Outcome<string> TryDecrypt(string protectedString)
+        public Outcome<string?> TryDecrypt(string protectedString)
         {
-            return Outcome.Succeed<string>(protectedString);
+            return Outcome.Succeed<string?>(protectedString);
         }
 
         public string Decrypt(string protectedString)
@@ -29,9 +29,9 @@ namespace Odin.Cryptography
         /// </summary>
         /// <param name="unProtectedString"></param>
         /// <returns></returns>
-        public Outcome<string> TryEncrypt(string unProtectedString)
+        public Outcome<string?> TryEncrypt(string unProtectedString)
         {
-            return Outcome.Succeed<string>(unProtectedString);
+            return Outcome.Succeed<string?>(unProtectedString);
         }
 
         public string Encrypt(string unProtectedString)

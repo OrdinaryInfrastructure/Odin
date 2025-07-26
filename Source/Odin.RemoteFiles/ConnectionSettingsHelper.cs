@@ -63,7 +63,7 @@ public static class ConnectionSettingsHelper
         if (lowerCaseSettings.ContainsKey(HostKey))
             sftpSettings.Host = lowerCaseSettings[HostKey];
 
-        if (lowerCaseSettings.TryGetValue(PortKey, out string value) && int.TryParse(value, out int port))
+        if (lowerCaseSettings.TryGetValue(PortKey, out string? value) && int.TryParse(value, out int port))
             sftpSettings.Port = port;
 
         if (lowerCaseSettings.ContainsKey(UsernameKey))

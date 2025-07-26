@@ -21,8 +21,8 @@ namespace Odin.Notifications
         /// <param name="options"></param>
         public EmailNotifier(IEmailSender emailSender, EmailNotifierOptions options)
         {
-            PreCondition.Requires<ArgumentNullException>(emailSender != null, nameof(emailSender));
-            PreCondition.Requires<ArgumentNullException>(options != null, nameof(options));
+            PreCondition.RequiresNotNull(emailSender);
+            PreCondition.RequiresNotNull(options);
             _emailSender = emailSender;
             _options = options;
         }

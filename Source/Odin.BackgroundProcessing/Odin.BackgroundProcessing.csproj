@@ -6,6 +6,7 @@
         <Description>Abstracts access to background processing via an IBackgroundProcessor service interface,
             together with a Hangfire and fake implementations.
         </Description>
+        <WarningsAsErrors>1591;1573;</WarningsAsErrors> <!-- Not to be removed. Documentation is required. -->
     </PropertyGroup>
     <ItemGroup>
         <ProjectReference Include="..\Odin.BackgroundProcessing.Abstractions\Odin.BackgroundProcessing.Abstractions.csproj" />

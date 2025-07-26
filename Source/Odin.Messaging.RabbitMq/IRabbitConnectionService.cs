@@ -16,10 +16,13 @@ public interface IRabbitConnectionService: IAsyncDisposable
     /// <param name="exchangeName"></param>
     /// <param name="routingKey"></param>
     /// <param name="headers"></param>
+    /// <param name="contentType"></param>
     /// <param name="body"></param>
+    /// <param name="persistentDelivery"></param>
     /// <param name="mandatoryRouting">If true, throws if the message cannot be delivered (cannot be routed to any queue).</param>
     /// <returns></returns>
-    public Task SendAsync(string exchangeName, string routingKey, Dictionary<string, object> headers, string contentType, byte[] body, bool persistentDelivery = true, bool mandatoryRouting = false);
+    public Task SendAsync(string exchangeName, string routingKey, Dictionary<string, object> headers, string contentType, byte[] body, 
+        bool persistentDelivery = true, bool mandatoryRouting = false);
 
     public class ConsumedMessage
     {

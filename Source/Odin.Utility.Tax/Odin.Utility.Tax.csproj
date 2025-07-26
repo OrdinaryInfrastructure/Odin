@@ -3,8 +3,7 @@
         <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>true</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <Description>Provides 
-        </Description>
+        <WarningsAsErrors>1591;1573;</WarningsAsErrors> <!-- Not to be removed. Documentation is required. -->
     </PropertyGroup>
     <ItemGroup>
       <ProjectReference Include="..\Odin.Utility.VaryingValues\Odin.Utility.VaryingValues.csproj" />

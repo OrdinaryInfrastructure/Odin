@@ -3,6 +3,11 @@ using Odin.DesignContracts;
 
 namespace Odin.Utility.VaryingValues;
 
+/// <summary>
+/// Stores a list of Values over time to implement IVaryingValueProvider.
+/// </summary>
+/// <typeparam name="TRangeType"></typeparam>
+/// <typeparam name="TValueType"></typeparam>
 public class ValueChangesListProvider<TRangeType, TValueType> : IVaryingValueProvider<TRangeType, TValueType> 
     where TRangeType : IComparable
 {
@@ -41,6 +46,10 @@ public class ValueChangesListProvider<TRangeType, TValueType> : IVaryingValuePro
         InitialiseFrom(valuesInConfig);
     }
     
+    /// <summary>
+    /// Load value changes from an IConfigurationSection
+    /// </summary>
+    /// <param name="valueChangesSection"></param>
     public ValueChangesListProvider(IConfigurationSection valueChangesSection)
     {
         PreCondition.RequiresNotNull(valueChangesSection);
@@ -55,7 +64,7 @@ public class ValueChangesListProvider<TRangeType, TValueType> : IVaryingValuePro
         _valueChangesInOrder = valuesAcrossRange.OrderBy(c => c.From).ToList();
     }
 
-
+    /// <inheritdoc />
     public TValueType? GetValue(TRangeType atPointAlongDimension)
     {
         var candidates = _valueChangesInOrder.Where(c => c.From.CompareTo(atPointAlongDimension) <= 0);

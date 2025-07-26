@@ -19,6 +19,7 @@ namespace Odin.BackgroundProcessing
         /// <param name="serviceCollection"></param>
         /// <param name="configuration"></param>
         /// <param name="sectionName">Cryptography by default</param>
+        /// <param name="sqlServerConnectionString"></param>
         public static void AddBackgroundProcessing(
             this IServiceCollection serviceCollection, IConfiguration configuration,
             string sectionName = "BackgroundProcessing", string? sqlServerConnectionString = null)
@@ -36,6 +37,14 @@ namespace Odin.BackgroundProcessing
             serviceCollection.AddBackgroundProcessing(configuration, section, sqlServerConnectionString);
         }
         
+        /// <summary>
+        /// Adds BackgroundProcessing services
+        /// </summary>
+        /// <param name="serviceCollection"></param>
+        /// <param name="configuration"></param>
+        /// <param name="sectionName"></param>
+        /// <param name="sqlServerConnectionStringFactory"></param>
+        /// <exception cref="ApplicationException"></exception>
         public static void AddBackgroundProcessing(
             this IServiceCollection serviceCollection, IConfiguration configuration,
             string sectionName, Func<IServiceProvider, string>? sqlServerConnectionStringFactory = null)
@@ -53,6 +62,13 @@ namespace Odin.BackgroundProcessing
             serviceCollection.AddBackgroundProcessing(configuration, section, sqlServerConnectionStringFactory);
         }
 
+        /// <summary>
+        /// Adds BackgroundProcessing services
+        /// </summary>
+        /// <param name="serviceCollection"></param>
+        /// <param name="configuration"></param>
+        /// <param name="configurationSection"></param>
+        /// <param name="sqlServerConnectionString"></param>
         public static void AddBackgroundProcessing(this IServiceCollection serviceCollection, IConfiguration configuration, IConfigurationSection configurationSection,
             string? sqlServerConnectionString = null)
         {
@@ -63,7 +79,9 @@ namespace Odin.BackgroundProcessing
         /// Adds BackgroundProcessing services (such as Hangfire's server) according to the provided ConfigurationSection 
         /// </summary>
         /// <param name="serviceCollection"></param>
+        /// <param name="configuration"></param>
         /// <param name="configurationSection"></param>
+        /// <param name="sqlServerConnectionStringFactory"></param>
         /// <returns></returns>
         public static void AddBackgroundProcessing(
             this IServiceCollection serviceCollection, IConfiguration configuration,

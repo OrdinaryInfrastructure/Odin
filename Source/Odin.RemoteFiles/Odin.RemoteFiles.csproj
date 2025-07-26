@@ -3,6 +3,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>true</ImplicitUsings>
+    <WarningsAsErrors>1591;1573;</WarningsAsErrors> <!-- Not to be removed. Documentation is required. -->    
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Odin.Common\Odin.Common.csproj" />
