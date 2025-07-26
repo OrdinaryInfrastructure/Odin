@@ -112,7 +112,7 @@ namespace Odin.RemoteFiles
         /// <param name="path">The path to the directory to search under</param>
         /// <param name="searchPattern">Optional search pattern, supporting wildcards (*) and (?).</param>
         /// <returns></returns>
-        public IEnumerable<IRemoteFileInfo> GetFiles(string path, string searchPattern)
+        public IEnumerable<IRemoteFileInfo> GetFiles(string path, string? searchPattern = null)
         {
             switch (Behaviour)
             {
@@ -129,6 +129,7 @@ namespace Odin.RemoteFiles
         /// Exists fake
         /// </summary>
         /// <param name="path"></param>
+        /// <param name="timeoutInSeconds"></param>
         /// <returns></returns>
         public bool Exists(string path, int? timeoutInSeconds = null)
         {

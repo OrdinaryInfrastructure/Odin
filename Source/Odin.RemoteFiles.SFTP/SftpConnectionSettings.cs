@@ -6,12 +6,12 @@ namespace Odin.RemoteFiles
     /// <summary>
     /// Connection info for Sftp connections
     /// </summary>
-    public sealed class SftpConnectionSettings
+    public sealed record SftpConnectionSettings
     {
         /// <summary>
         /// HostName \ IP (no sftp:// at the beginning)
         /// </summary>
-        public string Host { get; set; }
+        public string? Host { get; set; }
 
         /// <summary>
         /// Port number (22 by default)
@@ -21,22 +21,22 @@ namespace Odin.RemoteFiles
         /// <summary>
         /// UserName 
         /// </summary>
-        public string UserName { get; set; }
+        public string? UserName { get; set; }
         
         /// <summary>
         /// Password (optional)
         /// </summary>
-        public string Password { get; set; }
+        public string? Password { get; set; }
         
         /// <summary>
-        /// UserName (optional)
+        /// PrivateKey  (optional)
         /// </summary>
-        public string PrivateKey { get; set; }
+        public string? PrivateKey { get; set; }
         
         /// <summary>
-        /// Password (optional)
+        /// PrivateKeyPassphrase (optional)
         /// </summary>
-        public string PrivateKeyPassphrase { get; set; }
+        public string? PrivateKeyPassphrase { get; set; }
 
         /// <summary>
         /// Returns true if PrivateKey and PrivateKeyPassword are both specified.

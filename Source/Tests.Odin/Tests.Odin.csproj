@@ -5,6 +5,7 @@
     <GenerateProgramFile>false</GenerateProgramFile>
     <UserSecretsId>Tests.Odin</UserSecretsId>
     <ImplicitUsings>true</ImplicitUsings>
+    <NoWarn>1591;</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

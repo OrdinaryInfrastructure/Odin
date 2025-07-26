@@ -4,6 +4,7 @@
     <RootNamespace>Tests.Odin</RootNamespace>
     <ImplicitUsings>true</ImplicitUsings>
     <Nullable>disable</Nullable>
+    <NoWarn>1591;</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

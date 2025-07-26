@@ -5,14 +5,31 @@ using Odin.DesignContracts;
 
 namespace Odin.RemoteFiles;
 
-public static class RemoteFilesServiceCollectionExtensions
+/// <summary>
+/// Dependency injection extensions
+/// </summary>
+public static class DependencyInjectionExtensions
 {
+    /// <summary>
+    /// Adds RemoteFiles to dependency injection 
+    /// </summary>
+    /// <param name="services"></param>
+    /// <param name="configuration"></param>
+    /// <param name="sectionName"></param>
+    /// <returns></returns>
     public static IServiceCollection AddRemoteFiles(this IServiceCollection services, IConfiguration configuration,
-        string sectionName = RemoteFilesOptions.RemoteFilesConfigurationPosition)
+        string sectionName = RemoteFilesOptions.DefaultConfigurationSectionName)
     {
         return AddRemoteFiles(services, configuration.GetSection(sectionName));
     }
 
+    /// <summary>
+    /// Adds RemoteFiles to dependency injection 
+    /// </summary>
+    /// <param name="services"></param>
+    /// <param name="configurationSection"></param>
+    /// <returns></returns>
+    /// <exception cref="ApplicationException"></exception>
     public static IServiceCollection AddRemoteFiles(this IServiceCollection services,
         IConfigurationSection configurationSection)
     {

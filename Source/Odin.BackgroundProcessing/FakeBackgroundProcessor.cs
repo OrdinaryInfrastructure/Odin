@@ -48,11 +48,26 @@ namespace Odin.BackgroundProcessing
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="taskExpression"></param>
+        /// <param name="enqueueIn"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public Outcome<JobDetails> ScheduleJob<T>(Expression<Action<T>> taskExpression, TimeSpan enqueueIn)
         {
             return ScheduleJob(taskExpression, DateTimeOffset.Now.Add(enqueueIn));
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="taskExpression"></param>
+        /// <param name="enqueueAt"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        /// <exception cref="ApplicationException"></exception>
         public Outcome<JobDetails> ScheduleJob<T>(Expression<Action<T>> taskExpression, DateTimeOffset enqueueAt)
         {
             switch (Behaviour)
@@ -89,6 +104,7 @@ namespace Odin.BackgroundProcessing
         /// <param name="jobName"></param>
         /// <param name="cronExpression"></param>
         /// <param name="timeZoneInfo"></param>
+        /// <param name="queueName"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
         /// <exception cref="ApplicationException"></exception>

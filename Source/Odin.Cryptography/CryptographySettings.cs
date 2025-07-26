@@ -6,7 +6,7 @@ namespace Odin.Cryptography
     /// <summary>
     /// Cryptography settings 
     /// </summary>
-    public sealed class CryptographySettings
+    public sealed record CryptographySettings
     {
         /// <summary>
         /// FakeCryptographer or DataProtectionCryptographer

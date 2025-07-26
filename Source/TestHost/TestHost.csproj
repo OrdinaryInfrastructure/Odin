@@ -4,6 +4,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>true</ImplicitUsings>
     <UserSecretsId>TestHost</UserSecretsId>
+    <NoWarn>1591;</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

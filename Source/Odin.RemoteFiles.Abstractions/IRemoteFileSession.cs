@@ -67,6 +67,7 @@ public interface IRemoteFileSession
     /// Checks for file or directory existence. 
     /// </summary>
     /// <param name="path"></param>
+    /// <param name="timeoutInSeconds"></param>
     /// <returns></returns>
     bool Exists(string path, int? timeoutInSeconds = null);
 }

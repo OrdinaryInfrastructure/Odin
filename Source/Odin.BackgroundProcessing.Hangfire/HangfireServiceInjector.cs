@@ -139,6 +139,7 @@ namespace Odin.BackgroundProcessing
         /// <summary>
         /// If configured, adds Hangfire dashboard to HTTP pipeline.
         /// </summary>
+        /// <param name="builder"></param>
         /// <param name="appServices"></param>
         public IApplicationBuilder UseBackgroundProcessing(IApplicationBuilder builder, IServiceProvider appServices)
         {

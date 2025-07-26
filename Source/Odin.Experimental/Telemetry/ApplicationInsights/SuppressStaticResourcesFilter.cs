@@ -56,8 +56,7 @@ namespace Odin.Logging.ApplicationInsights
         public void Process(ITelemetry item)
         {
             // To exclude static requests from our telemetry we should use RequestTelemetry
-            RequestTelemetry req = item as RequestTelemetry;
-            if (req != null)
+            if (item is RequestTelemetry req)
             {
                 for (int i = 0; i < _suppressExtensions.Count; i++)
                 {

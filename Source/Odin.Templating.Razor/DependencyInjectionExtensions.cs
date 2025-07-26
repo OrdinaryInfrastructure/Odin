@@ -6,6 +6,9 @@ using RazorLight;
 // ReSharper disable once CheckNamespace
 namespace Microsoft.Extensions.DependencyInjection;
 
+/// <summary>
+/// Methods for adding these services to the application.
+/// </summary>
 public static class DependencyInjectionExtensions 
 {
     /// <summary>

@@ -20,7 +20,7 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             DirectoryInfo docFolder =
                 new DirectoryInfo(Path.Combine(AppContext.BaseDirectory, xmlDocsPath));
-            FileInfo[] xmlDocs = null;
+            FileInfo[]? xmlDocs = null;
 
             if (docFolder.Exists)
             {

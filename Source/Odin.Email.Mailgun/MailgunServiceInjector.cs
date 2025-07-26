@@ -6,8 +6,12 @@ using Odin.System;
 
 namespace Odin.Email
 {
+    /// <summary>
+    /// Adds MailgunEmailSender to DI
+    /// </summary>
     public class MailgunServiceInjector : IEmailSenderServiceInjector
     {
+        /// <inheritdoc />
         public void TryAddEmailSender(IServiceCollection serviceCollection,
             IConfigurationSection emailConfigurationSection)
         {

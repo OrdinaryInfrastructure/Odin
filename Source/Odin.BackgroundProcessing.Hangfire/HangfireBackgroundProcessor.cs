@@ -20,6 +20,7 @@ namespace Odin.BackgroundProcessing
         /// Default constructor
         /// </summary>
         /// <param name="recurringJobManager"></param>
+        /// <param name="jobClient"></param>
         /// <param name="logger"></param>
         public HangfireBackgroundProcessor(IRecurringJobManagerV2 recurringJobManager, IBackgroundJobClient jobClient, ILoggerAdapter<HangfireBackgroundProcessor> logger)
         {
@@ -83,6 +84,7 @@ namespace Odin.BackgroundProcessing
         /// <param name="recurringJobId"></param>
         /// <param name="cronExpression"></param>
         /// <param name="timeZoneInfo"></param>
+        /// <param name="queueName"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
         public Outcome AddOrUpdateRecurringJob<T>(

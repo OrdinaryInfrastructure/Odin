@@ -5,10 +5,10 @@
     /// </summary>
     public sealed class HangfireOptions
     {
-        public const string DefaultDashboardPath = "/system/background-processing";
-        public const string DefaultAuthorizationFilterNone = "None";
-        public const string DefaultAuthorizationFilterIsAuthenticated = "IsAuthenticated";
-        public const int DefaultJobExpirationHours = 24 * 30;
+        private const string DefaultDashboardPath = "/system/background-processing";
+        internal const string DefaultAuthorizationFilterNone = "None";
+        internal const string DefaultAuthorizationFilterIsAuthenticated = "IsAuthenticated";
+        private const int DefaultJobExpirationHours = 24 * 30;
 
         /// <summary>
         /// Name of the SQL connection string in ConnectionStrings in configuration
@@ -63,6 +63,9 @@
         /// </summary>
         public int? ServerWorkerCount { get; set; } 
 
+        /// <summary>
+        /// TBA
+        /// </summary>
         public bool IgnoreAntiforgeryToken { get; set; } = false;
         
         /// <summary>
@@ -70,8 +73,14 @@
         /// </summary>
         public int StatsPollingInterval { get; set; } = 10000;
 
+        /// <summary>
+        /// TBA
+        /// </summary>
         public int? SqlServerCommandBatchMaxTimeoutSeconds { get; set; }
 
+        /// <summary>
+        /// TBA
+        /// </summary>
         public int? SqlServerSlidingInvisibilityTimeoutSeconds { get; set; }
 
         /// <summary>
@@ -79,8 +88,14 @@
         /// </summary>
         public int? SqlServerQueuePollIntervalSeconds { get; set; } = 20;
 
+        /// <summary>
+        /// TBA
+        /// </summary>
         public bool? SqlServerUseRecommendedIsolationLevel { get; set; }
 
+        /// <summary>
+        /// TBA
+        /// </summary>
         public bool? SqlServerDisableGlobalLocks { get; set; }
     }
 }

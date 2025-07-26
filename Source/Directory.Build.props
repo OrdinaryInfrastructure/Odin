@@ -8,15 +8,8 @@
         <PackageProjectUrl>https://github.com/OrdinaryInfrastructure/Odin</PackageProjectUrl>
         <RepositoryUrl>https://github.com/OrdinaryInfrastructure/Odin</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
-    </PropertyGroup>
-    <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
-        <WarningLevel>4</WarningLevel>
-        <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-        <NoWarn>1701;1702;1591;1573;5104</NoWarn>
-    </PropertyGroup>
-    <PropertyGroup Condition="'$(Configuration)' == 'Release'">
-        <WarningLevel>4</WarningLevel>
-        <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-        <NoWarn>1701;1702;1591;1573;5104</NoWarn>
+        <WarningsAsErrors>8625;8600;8601;8603</WarningsAsErrors>
+<!--     Todo: Add these ones in...   <WarningsAsErrors>8625;8613;8618</WarningsAsErrors>-->
+        <NoWarn>1701;1702;5104;8602;8604;8618;8619</NoWarn>
     </PropertyGroup>
 </Project>

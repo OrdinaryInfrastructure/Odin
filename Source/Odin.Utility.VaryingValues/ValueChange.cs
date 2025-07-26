@@ -9,6 +9,11 @@ public record ValueChange<TVaryingDimensionType, TValueType>
     where TVaryingDimensionType : IComparable
 {
 
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="from"></param>
+    /// <param name="value"></param>
     public ValueChange(TVaryingDimensionType from, TValueType value)
     {
         From = from;

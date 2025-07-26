@@ -8,6 +8,12 @@ namespace Odin.System;
 /// <typeparam name="TStringEnum"></typeparam>
 public class StringEnumMemberAttribute<TStringEnum> : ValidationAttribute where TStringEnum : StringEnum<TStringEnum> 
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="value"></param>
+    /// <param name="validationContext"></param>
+    /// <returns></returns>
     protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
     {
         if (value is null)

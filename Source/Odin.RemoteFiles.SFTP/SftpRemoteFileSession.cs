@@ -13,7 +13,7 @@ namespace Odin.RemoteFiles
     public sealed class SftpRemoteFileSession : IRemoteFileSession
     {
         private readonly SftpConnectionSettings _connectionInfo;
-        private SftpClient _client;
+        private SftpClient? _client;
 
         /// <summary>
         /// Default constructor
@@ -21,7 +21,7 @@ namespace Odin.RemoteFiles
         /// <param name="connectionInfo"></param>
         public SftpRemoteFileSession(SftpConnectionSettings connectionInfo)
         {
-            PreCondition.Requires<ArgumentNullException>(connectionInfo != null, nameof(connectionInfo));
+            PreCondition.RequiresNotNull(connectionInfo);
             _connectionInfo = connectionInfo;
         }
 
@@ -103,8 +103,8 @@ namespace Odin.RemoteFiles
 
             EnsureConnected();
             MemoryStream stream = new MemoryStream(Encoding.ASCII.GetBytes(textFileContents));
-            _client.BufferSize = 4096;
-            _client.UploadFile(stream, fileName);
+            _client!.BufferSize = 4096;
+            _client!.UploadFile(stream, fileName);
         }
 
         /// <summary>
@@ -118,8 +118,8 @@ namespace Odin.RemoteFiles
             PreCondition.Requires<ArgumentNullException>(!string.IsNullOrWhiteSpace(fileName), nameof(fileName));
 
             EnsureConnected();
-            _client.BufferSize = 4096;
-            _client.DownloadFile(fileName, output);
+            _client!.BufferSize = 4096;
+            _client!.DownloadFile(fileName, output);
         }
 
         /// <summary>
@@ -161,7 +161,7 @@ namespace Odin.RemoteFiles
         {
             PreCondition.Requires<ArgumentNullException>(!string.IsNullOrWhiteSpace(path), nameof(path));
             EnsureConnected();
-            _client.CreateDirectory(path);
+            _client!.CreateDirectory(path);
         }
 
         /// <summary>
@@ -172,7 +172,7 @@ namespace Odin.RemoteFiles
         {
             PreCondition.Requires<ArgumentNullException>(!string.IsNullOrWhiteSpace(filePath), nameof(filePath));
             EnsureConnected();
-            _client.DeleteFile(filePath);
+            _client!.DeleteFile(filePath);
         }
 
         /// <summary>
@@ -181,7 +181,7 @@ namespace Odin.RemoteFiles
         /// <param name="path">The path to the directory to search under</param>
         /// <param name="searchPattern">Optional search pattern for the file name under the specified path. Supports wildcards (*) and (?).</param>
         /// <returns></returns>
-        public IEnumerable<IRemoteFileInfo> GetFiles(string path, string searchPattern = null)
+        public IEnumerable<IRemoteFileInfo> GetFiles(string path, string? searchPattern = null)
         {
             PreCondition.Requires<ArgumentNullException>(!string.IsNullOrWhiteSpace(path), nameof(path));
             PreCondition.Requires(!(path!.Contains('*') || path.Contains('?')));
@@ -206,6 +206,7 @@ namespace Odin.RemoteFiles
         /// Checks for file or directory existence. 
         /// </summary>
         /// <param name="path"></param>
+        /// <param name="timeoutInSeconds"></param>
         /// <returns></returns>
         public bool Exists(string path, int? timeoutInSeconds = null)
         {

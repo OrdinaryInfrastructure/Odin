@@ -25,12 +25,12 @@ namespace Odin.Notifications
         public string FromEmail { get; set; }
         
         /// <summary>
-        /// Returns ToEmails as a list, or null if none.
+        /// Returns ToEmails as a list, or an empty list if none.
         /// </summary>
         /// <returns></returns>
         public List<EmailAddress> GetToEmails()
         {
-            if (string.IsNullOrWhiteSpace(ToEmails)) return null;
+            if (string.IsNullOrWhiteSpace(ToEmails)) return new List<EmailAddress>();
             return ToEmails.Split(',', ';').Select(c => new EmailAddress(c)).ToList();
         }
 

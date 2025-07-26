@@ -51,6 +51,7 @@ namespace Odin.BackgroundProcessing
         /// <param name="recurringJobName"></param>
         /// <param name="cronExpression"></param>
         /// <param name="timeZoneInfo"></param>
+        /// <param name="queueName"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
         Outcome AddOrUpdateRecurringJob<T>(Expression<Action<T>> methodCall, string recurringJobName, string cronExpression, TimeZoneInfo timeZoneInfo, string queueName = "default");

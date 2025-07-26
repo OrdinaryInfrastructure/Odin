@@ -3,6 +3,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>true</ImplicitUsings>
+    <RootNamespace>Odin.RemoteFiles</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="SSH.NET" Version="2025.0.0" />
