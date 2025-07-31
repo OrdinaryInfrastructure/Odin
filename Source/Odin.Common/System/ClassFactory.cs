@@ -21,8 +21,8 @@ public class ClassFactory
         PreCondition.RequiresNotNullOrWhitespace(assemblyToLoadFrom);
 
         AssemblyName assemblyToLoad = new AssemblyName(assemblyToLoadFrom);
-        Assembly assembly = AssemblyLoadContext.Default.LoadFromAssemblyName(assemblyToLoad);
-        if (assembly == null) return Outcome.Fail<T>($"Unable to load assembly {assemblyToLoadFrom}");
+        Assembly? assembly = AssemblyLoadContext.Default.LoadFromAssemblyName(assemblyToLoad);
+        if (assembly == null!) return Outcome.Fail<T>($"Unable to load assembly {assemblyToLoadFrom}");
         
         Type? type = assembly.GetType(fullTypeName);
         if (type == null) return Outcome.Fail<T>($"Unable to create type {fullTypeName} from assembly {assemblyToLoadFrom}");
@@ -31,7 +31,7 @@ public class ClassFactory
         if (instance == null) return Outcome.Fail<T>($"Could not create instance of type {type.Name}");
         if (instance is T objT)
         {
-            return Outcome.Succeed(objT);
+            return ResultValue.Succeed(objT);
         }
 
         return Outcome.Fail<T>($"Type {type.FullName} is not of type {nameof(T)}");
@@ -43,7 +43,7 @@ public class ClassFactory
     /// </summary>
     /// <param name="fullTypeName"></param>
     /// <returns></returns>
-    public Outcome<T> TryCreate<T>(string fullTypeName) where T : class
+    public Result<T> TryCreate<T>(string fullTypeName) where T : class
     {
         PreCondition.RequiresNotNullOrWhitespace(fullTypeName);
         Type? typeToCreate = Type.GetType(fullTypeName);
@@ -68,7 +68,7 @@ public class ClassFactory
     /// </summary>
     /// <param name="typeToCreate"></param>
     /// <returns></returns>
-    public Outcome<T> TryCreate<T>(Type typeToCreate) where T : class
+    public Result<T> TryCreate<T>(Type typeToCreate) where T : class
     {
         PreCondition.RequiresNotNull(typeToCreate);
         try
