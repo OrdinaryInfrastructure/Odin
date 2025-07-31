@@ -185,7 +185,7 @@ namespace Odin.Email
             }
             catch (Exception e)
             {
-                return Outcome.Fail<string?>(null, e.ToString());
+                return Outcome.Fail<string?>(e.ToString());
             }
 
         }

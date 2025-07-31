@@ -103,8 +103,7 @@ namespace Tests.Odin.System
         [Test]
         public void Fail_with_value_success_is_false()
         {
-            string failValue = "this is the value";
-            Outcome sut = Outcome.Fail(failValue, "Reason");
+            Outcome sut = Outcome.Fail("Reason");
 
             Assert.That(sut.Success, Is.False);
             Assert.That("Reason", Is.EqualTo(sut.MessagesToString()));         
@@ -118,9 +117,8 @@ namespace Tests.Odin.System
             Outcome sut = new Outcome();
 
             Assert.That(sut.Success, Is.False);
-            Assert.That("An uninitialised outcome is a failure by default.", Is.EqualTo(sut.MessagesToString()));         
-            Assert.That("An uninitialised outcome is a failure by default.", Is.EqualTo(sut.Messages[0]));       
-            Assert.That(1, Is.EqualTo(sut.Messages.Count));  
+            Assert.That(sut.MessagesToString(), Is.Empty);         
+            Assert.That(sut.Messages.Count, Is.EqualTo(0));  
         }
         
         [Test]
@@ -143,7 +141,6 @@ namespace Tests.Odin.System
             Assert.That(result, Is.Not.Null);    
             Assert.That(result.Success, Is.True);       
             Assert.That(result.Messages[0], Is.EqualTo("cool man"));
-            
         }
         
                 
@@ -154,7 +151,7 @@ namespace Tests.Odin.System
             
             string result = JsonSerializer.Serialize(sut);
 
-            Assert.That(string.Compare(result, "{\"Value\":3,\"Success\":true,\"Messages\":[\"cool man\"]}", CultureInfo.CurrentCulture , CompareOptions.IgnoreCase | CompareOptions.IgnoreSymbols)==0, Is.True);
+            Assert.That(result, Is.EqualTo("{\"Value\":3,\"Success\":true,\"Messages\":[\"cool man\"]}"));
         }
         
         [Test]

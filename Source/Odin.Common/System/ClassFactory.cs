@@ -21,8 +21,8 @@ public class ClassFactory
         PreCondition.RequiresNotNullOrWhitespace(assemblyToLoadFrom);
 
         AssemblyName assemblyToLoad = new AssemblyName(assemblyToLoadFrom);
-        Assembly assembly = AssemblyLoadContext.Default.LoadFromAssemblyName(assemblyToLoad);
-        if (assembly == null) return Outcome.Fail<T>($"Unable to load assembly {assemblyToLoadFrom}");
+        Assembly? assembly = AssemblyLoadContext.Default.LoadFromAssemblyName(assemblyToLoad);
+        if (assembly == null!) return Outcome.Fail<T>($"Unable to load assembly {assemblyToLoadFrom}");
         
         Type? type = assembly.GetType(fullTypeName);
         if (type == null) return Outcome.Fail<T>($"Unable to create type {fullTypeName} from assembly {assemblyToLoadFrom}");
@@ -31,7 +31,7 @@ public class ClassFactory
         if (instance == null) return Outcome.Fail<T>($"Could not create instance of type {type.Name}");
         if (instance is T objT)
         {
-            return Outcome.Succeed(objT);
+            return Outcome.Succeed<T>(objT);
         }
 
         return Outcome.Fail<T>($"Type {type.FullName} is not of type {nameof(T)}");
