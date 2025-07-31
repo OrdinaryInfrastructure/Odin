@@ -10,6 +10,7 @@ using Odin.System;
 
 namespace Odin.BackgroundProcessing
 {
+    /// <inheritdoc />
     public class HangfireServiceInjector : IBackgroundProcessorServiceInjector
     {
         public void TryAddBackgroundProcessor(IServiceCollection serviceCollection, IConfiguration configuration,
