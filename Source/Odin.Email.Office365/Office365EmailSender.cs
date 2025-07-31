@@ -53,6 +53,8 @@ public class Office365EmailSender : IEmailSender
 
 
     const string MicrosoftGraphFileAttachmentOdataType = "#microsoft.graph.fileAttachment";
+    
+    /// <inheritdoc />
     public async Task<Outcome<string?>> SendEmail(IEmailMessage email)
     {
         if (email.From is null)
