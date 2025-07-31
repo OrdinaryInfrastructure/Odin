@@ -31,7 +31,7 @@ public class ClassFactory
         if (instance == null) return Outcome.Fail<T>($"Could not create instance of type {type.Name}");
         if (instance is T objT)
         {
-            return ResultValue.Succeed(objT);
+            return Outcome.Succeed<T>(objT);
         }
 
         return Outcome.Fail<T>($"Type {type.FullName} is not of type {nameof(T)}");
@@ -43,7 +43,7 @@ public class ClassFactory
     /// </summary>
     /// <param name="fullTypeName"></param>
     /// <returns></returns>
-    public Result<T> TryCreate<T>(string fullTypeName) where T : class
+    public Outcome<T> TryCreate<T>(string fullTypeName) where T : class
     {
         PreCondition.RequiresNotNullOrWhitespace(fullTypeName);
         Type? typeToCreate = Type.GetType(fullTypeName);
@@ -68,7 +68,7 @@ public class ClassFactory
     /// </summary>
     /// <param name="typeToCreate"></param>
     /// <returns></returns>
-    public Result<T> TryCreate<T>(Type typeToCreate) where T : class
+    public Outcome<T> TryCreate<T>(Type typeToCreate) where T : class
     {
         PreCondition.RequiresNotNull(typeToCreate);
         try

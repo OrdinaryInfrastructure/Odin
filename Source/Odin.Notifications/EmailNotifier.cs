@@ -38,7 +38,7 @@ namespace Odin.Notifications
             PreCondition.Requires<ArgumentNullException>(!string.IsNullOrWhiteSpace(subject),
                 $"{nameof(subject)} is required");
             List<EmailAddress> emails = _options.GetToEmails();
-            if (emails == null || emails.Count==0) return Outcome.Fail($"{nameof(EmailNotifierOptions)} has no ToEmails configured.");
+            if (emails == null! || emails.Count==0) return Outcome.Fail($"{nameof(EmailNotifierOptions)} has no ToEmails configured.");
 
             EmailMessage email = new EmailMessage();
             if (!string.IsNullOrWhiteSpace(_options.FromEmail))
@@ -55,7 +55,7 @@ namespace Odin.Notifications
                 email.Subject = string.Concat(_options.SubjectPrefix, " ", subject);
             }
             email.IsHtml = false;
-            if (dataToSerialize != null)
+            if (dataToSerialize != null!)
             {
                 StringBuilder text = new StringBuilder(64);
                 text.AppendLine(email.Subject);
@@ -89,7 +89,9 @@ namespace Odin.Notifications
 
             try
             {
-                return await _emailSender.SendEmail(email);
+                var sendResult = await _emailSender.SendEmail(email);
+                if (sendResult.Success) return Outcome.Succeed();
+                return Outcome.Fail($"EmailNotifier failed to send notification: {sendResult.MessagesToString()}");
             }
             catch (Exception err)// swallow
             {

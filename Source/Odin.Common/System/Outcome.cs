@@ -8,6 +8,11 @@ namespace Odin.System
     /// <remarks>To be renamed to Result</remarks>
     public record Outcome : Result<string>
     {
+        /// <inheritdoc />
+        public Outcome() 
+        {
+        }
+        
         /// <summary>
         /// Default constructor. Use Outcome.Succeed() for a successful Outcome with no message.
         /// </summary>
@@ -16,8 +21,31 @@ namespace Odin.System
         public Outcome(bool success, string? message = null) : base(success, message)
         {
         }
-        
-        private const string DefaultFailureMessage = "An uninitialised outcome is a failure by default.";
+
+        /// <inheritdoc />
+        public Outcome(bool success, IEnumerable<string>? messages = null) : base(success, messages)
+        {
+        }
+
+        /// <summary>
+        /// Failure
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        public new static Outcome Fail(string? message)
+        {
+            return new Outcome(false, message);
+        }
+
+        /// <summary>
+        /// Success
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        public new static Outcome Succeed(string? message = null)
+        {
+            return new Outcome(true, message);
+        }
 
         /// <summary>
         /// All messages flattened into 1 message.
@@ -26,25 +54,33 @@ namespace Odin.System
         {
             if (_messages == null || _messages.Count == 0)
             {
-                if (Success)
-                    return string.Empty;
-                return DefaultFailureMessage;
+                return string.Empty;
             }
 
             return string.Join(separator, Messages);
         }
-        
+
         /// <summary>
-        /// 
+        /// Failure
         /// </summary>
         /// <param name="message"></param>
         /// <returns></returns>
-        public Outcome<TValue> Fail<TValue>(string? message)
+        public static Outcome<TValue> Fail<TValue>(string? message)
         {
             return new Outcome<TValue>(false, default(TValue), message);
         }
-    }
 
+        /// <summary>
+        /// Success.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        public static Outcome<TValue> Succeed<TValue>(TValue value, string? message = null)
+        {
+            return new Outcome<TValue>(true, value, message);
+        }
+    }
 
     /// <summary>
     /// Represents the result of an operation that can succeed or fail, with a list of messages\errors of type TMessage.
@@ -55,7 +91,7 @@ namespace Odin.System
         /// <summary>
         /// Success
         /// </summary>
-        public bool Success { get; protected set; }
+        public bool Success { get; init; }
 
         /// <summary>
         /// Messages list
@@ -69,14 +105,11 @@ namespace Odin.System
         {
             get
             {
-                // Return default message if a failure and there are no messages.
-                // if (!Success && (_messages == null || _messages.Count == 0))
-                //     return new List<TMessage> { DefaultFailureMessage };
-                if (_messages == null)
-                {
-                    _messages = new List<TMessage>();
-                }
-                return _messages;
+                return _messages ??= new List<TMessage>();       
+            }
+            init  // For deserialisation
+            {
+                _messages = value.ToList();
             }
         }
 
@@ -88,7 +121,10 @@ namespace Odin.System
         protected Result(bool success = false, TMessage? message = null)
         {
             Success = success;
-            _messages = new List<TMessage> { message };
+            if (message != null)
+            {
+                _messages = new List<TMessage> { message };
+            }
         }
 
 
@@ -127,20 +163,11 @@ namespace Odin.System
         }
 
         /// <summary>
-        /// Success
-        /// </summary>
-        /// <returns></returns>
-        public static Result<TMessage> Succeed()
-        {
-            return new Result<TMessage>(true);
-        }
-
-        /// <summary>
         /// Success, including a message
         /// </summary>
         /// <param name="message"></param>
         /// <returns></returns>
-        public static Result<TMessage> Succeed(TMessage message)
+        public static Result<TMessage> Succeed(TMessage? message = null)
         {
             return new Result<TMessage>(true, message);
         }
@@ -181,16 +208,11 @@ namespace Odin.System
     public record Outcome<TValue> : ResultValue<TValue, string>
     {
         /// <summary>
-        /// Default constructor.
+        /// Parameterless constructor for serialization.
         /// </summary>
-        /// <param name="success">true or false</param>
-        /// <param name="value">Required if successful</param>
-        /// <param name="messages">Optional, but good practice is to provide messages for failed results.</param>
-        private Outcome(bool success, TValue? value, IEnumerable<string>? messages = null)
+        public Outcome()
         {
-            PreCondition.Requires(!(value == null && success), "Value is required for a successful result.");
-            _value = value;
-            _messages = messages?.ToList();
+            Success = false;
         }
         
         /// <summary>
@@ -198,15 +220,39 @@ namespace Odin.System
         /// </summary>
         /// <param name="success">true or false</param>
         /// <param name="value">Required if successful</param>
-        /// <param name="message">Optional, but good practice is to provide messages for failed results.</param>
-        private Outcome(bool success, TValue? value, string? message = null)
+        /// <param name="messages">Optional, but good practice is to provide messages for failed results.</param>
+        public Outcome(bool success, TValue? value, IEnumerable<string>? messages)
         {
             PreCondition.Requires(!(value == null && success), "Value is required for a successful result.");
             _value = value;
+            _messages = messages?.ToList();
+        }
+
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
+        /// <param name="success">true or false</param>
+        /// <param name="value">Required if successful</param>
+        /// <param name="message">Optional, but good practice is to provide messages for failed results.</param>
+        public Outcome(bool success, TValue? value, string? message = null)
+        {
+            PreCondition.Requires(!(value == null && success), "Value is required for a successful result.");
+            Success = success;
+            _value = value;
             _messages = message != null ? [message] : null;
         }
-        
 
+        /// <summary>
+        /// All messages flattened into 1 message.
+        /// </summary>
+        public string MessagesToString(string separator = " | ")
+        {
+            if (_messages == null || _messages.Count == 0)
+            {
+                return string.Empty;
+            }
+            return string.Join(separator, Messages);
+        }
     }
 
     /// <summary>
@@ -220,7 +266,14 @@ namespace Odin.System
         /// <summary>
         /// Value is not null when Success is True. Value is null when Success is false.
         /// </summary>
-        public TValue? Value => _value;
+        public TValue? Value
+        {
+            get { return _value; }
+            init
+            {
+                _value = value;
+            }
+        }
 
         /// <summary>
         /// Underlying value.
@@ -235,7 +288,7 @@ namespace Odin.System
             _value = default(TValue);
             _messages = null;
         }
-        
+
         /// <summary>
         /// Default constructor.
         /// </summary>
@@ -248,7 +301,7 @@ namespace Odin.System
             _value = value;
             _messages = messages?.ToList();
         }
-        
+
         /// <summary>
         /// Default constructor.
         /// </summary>
@@ -285,7 +338,7 @@ namespace Odin.System
         public static ResultValue<TValue, TMessage> Succeed(TValue value, TMessage? message = null)
         {
             PreCondition.RequiresNotNull(value);
-            return new ResultValue<TValue, TMessage>(true, value, new List<TMessage>(){message});
+            return new ResultValue<TValue, TMessage>(true, value, new List<TMessage>() { message });
         }
 
         /// <summary>
@@ -296,7 +349,6 @@ namespace Odin.System
         /// <returns></returns>
         public static ResultValue<TValue, TMessage> Fail(IEnumerable<TMessage>? messages = null)
         {
-
             return new ResultValue<TValue, TMessage>(false, default(TValue), messages);
         }
 
@@ -308,7 +360,7 @@ namespace Odin.System
         /// <returns></returns>
         public static ResultValue<TValue, TMessage> Fail(TMessage? message = null)
         {
-            return new ResultValue<TValue, TMessage>(false, default(TValue), new List<TMessage>(){message});
+            return new ResultValue<TValue, TMessage>(false, default(TValue), new List<TMessage>() { message });
         }
     }
 }
