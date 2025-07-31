@@ -96,6 +96,7 @@ namespace Odin.System
         /// <summary>
         /// Messages list
         /// </summary>
+        // ReSharper disable once InconsistentNaming
         protected List<TMessage>? _messages;
 
         /// <summary>
@@ -224,7 +225,7 @@ namespace Odin.System
         public Outcome(bool success, TValue? value, IEnumerable<string>? messages)
         {
             PreCondition.Requires(!(value == null && success), "Value is required for a successful result.");
-            _value = value;
+            Value = value;
             _messages = messages?.ToList();
         }
 
@@ -238,7 +239,7 @@ namespace Odin.System
         {
             PreCondition.Requires(!(value == null && success), "Value is required for a successful result.");
             Success = success;
-            _value = value;
+            Value = value;
             _messages = message != null ? [message] : null;
         }
 
@@ -266,27 +267,19 @@ namespace Odin.System
         /// <summary>
         /// Value is not null when Success is True. Value is null when Success is false.
         /// </summary>
-        public TValue? Value
-        {
-            get { return _value; }
-            init
-            {
-                _value = value;
-            }
-        }
+        public TValue? Value { get; init; }
 
-        /// <summary>
-        /// Underlying value.
-        /// </summary>
-        protected TValue? _value;
+        // /// <summary>
+        // /// Underlying value.
+        // /// </summary>
+        // private TValue? _value;
 
         /// <summary>
         /// Parameterless constructor for serialisation, etc.
         /// </summary>
         public ResultValue()
         {
-            _value = default(TValue);
-            _messages = null;
+            Value = default(TValue);
         }
 
         /// <summary>
@@ -298,7 +291,7 @@ namespace Odin.System
         protected ResultValue(bool success, TValue? value, IEnumerable<TMessage>? messages)
         {
             PreCondition.Requires(!(value == null && success), "Value is required for a successful result.");
-            _value = value;
+            Value = value;
             _messages = messages?.ToList();
         }
 
@@ -311,7 +304,7 @@ namespace Odin.System
         protected ResultValue(bool success, TValue? value, TMessage? message = null)
         {
             PreCondition.Requires(!(value == null && success), "Value is required for a successful result.");
-            _value = value;
+            Value = value;
             _messages = message != null ? [message] : null;
         }
 
