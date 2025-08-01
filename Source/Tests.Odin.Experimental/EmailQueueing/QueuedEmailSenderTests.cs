@@ -40,7 +40,7 @@ public class QueuedEmailSenderTests
             }).Returns(async () =>
             {
                 await Task.Delay(50);
-                return Outcome.Succeed("");
+                return Outcome.Succeed<string>("");
             });
         
         List<Task<IQueuedEmailSender.SendOutcome>> taskList = new List<Task<IQueuedEmailSender.SendOutcome>>();
@@ -83,7 +83,7 @@ public class QueuedEmailSenderTests
                 }
                 lastEmailSentAt = now;
                 await Task.Delay(delay);
-                return Outcome.Succeed("");
+                return Outcome.Succeed<string>("");
             });
         
         List<Task<IQueuedEmailSender.SendOutcome>> taskList = new List<Task<IQueuedEmailSender.SendOutcome>>();
@@ -108,7 +108,7 @@ public class QueuedEmailSenderTests
             .Returns(async () =>
             {
                 await Task.Delay(50);
-                return Outcome.Succeed("");
+                return Outcome.Succeed<string>("");
             });
         
         _mockEmailSender.Setup(m => m.SendEmail(It.Is<IEmailMessage>(e => e.Subject.Contains("7"))))
@@ -145,7 +145,7 @@ public class QueuedEmailSenderTests
             }).Returns(async () =>
             {
                 await Task.Delay(delay);
-                return Outcome.Succeed("");
+                return Outcome.Succeed<string>("");
             });
 
         QueuedEmailSender parallelSut = new QueuedEmailSender(_mockEmailSender.Object, new Mock<ILoggerAdapter<QueuedEmailSender>>().Object, 10);

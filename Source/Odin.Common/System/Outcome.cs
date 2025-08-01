@@ -36,6 +36,16 @@ namespace Odin.System
         {
             return new Outcome(false, message);
         }
+        
+        /// <summary>
+        /// Failure
+        /// </summary>
+        /// <param name="messages"></param>
+        /// <returns></returns>
+        public new static Outcome Fail(IEnumerable<string> messages)
+        {
+            return new Outcome(false, messages);
+        }
 
         /// <summary>
         /// Success
@@ -45,6 +55,16 @@ namespace Odin.System
         public new static Outcome Succeed(string? message = null)
         {
             return new Outcome(true, message);
+        }
+        
+        /// <summary>
+        /// Success
+        /// </summary>
+        /// <param name="messages"></param>
+        /// <returns></returns>
+        public new static Outcome Succeed(IEnumerable<string> messages)
+        {
+            return new Outcome(true, messages);
         }
 
         /// <summary>
