@@ -27,7 +27,7 @@ public class ClassFactory
         Type? type = assembly.GetType(fullTypeName);
         if (type == null) return Outcome.Fail<T>($"Unable to create type {fullTypeName} from assembly {assemblyToLoadFrom}");
 
-        object? instance = Activator.CreateInstance(type);
+        o
         if (instance == null) return Outcome.Fail<T>($"Could not create instance of type {type.Name}");
         if (instance is T objT)
         {
