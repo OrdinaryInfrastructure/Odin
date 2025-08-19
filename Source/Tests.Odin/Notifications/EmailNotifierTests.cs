@@ -13,7 +13,7 @@ namespace Tests.Odin.Notifications
     [TestFixture]
     public sealed class EmailNotifierTests : IntegrationTest
     {
-        [Test]
+        [Test][Ignore("Should be a unit test")]
         public async Task EmailNotifier_sends_real_email_notification()
         {
             IConfiguration config = AppFactory.GetConfiguration();
