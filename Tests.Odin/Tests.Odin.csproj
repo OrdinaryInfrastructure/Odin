@@ -21,17 +21,17 @@
     <PackageReference Include="System.Text.Json" Version="9.0.5" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Messaging\RabbitMq\Odin.Messaging.RabbitMq.csproj" />
-    <ProjectReference Include="..\..\Email\Core\Odin.Email.csproj" />
-    <ProjectReference Include="..\..\Email\Mailgun\Odin.Email.Mailgun.csproj" />
-    <ProjectReference Include="..\..\Email\Office365\Odin.Email.Office365.csproj" />
-    <ProjectReference Include="..\..\BackgroundProcessing\Core\Odin.BackgroundProcessing.csproj" />
-    <ProjectReference Include="..\..\BackgroundProcessing\Hangfire\Odin.BackgroundProcessing.Hangfire.csproj" />
-    <ProjectReference Include="..\..\Notifications\Odin.Notifications.csproj" />
-    <ProjectReference Include="..\..\RemoteFiles\Core\Odin.RemoteFiles.csproj" />
-    <ProjectReference Include="..\..\Templating\Razor\Odin.Templating.Razor.csproj" />
-    <ProjectReference Include="..\..\Utility\Tax\Odin.Utility.Tax.csproj" />
-    <ProjectReference Include="..\..\Utility\VaryingValues\Odin.Utility.VaryingValues.csproj" />
+    <ProjectReference Include="..\Messaging\RabbitMq\Odin.Messaging.RabbitMq.csproj" />
+    <ProjectReference Include="..\Email\Core\Odin.Email.csproj" />
+    <ProjectReference Include="..\Email\Mailgun\Odin.Email.Mailgun.csproj" />
+    <ProjectReference Include="..\Email\Office365\Odin.Email.Office365.csproj" />
+    <ProjectReference Include="..\BackgroundProcessing\Core\Odin.BackgroundProcessing.csproj" />
+    <ProjectReference Include="..\BackgroundProcessing\Hangfire\Odin.BackgroundProcessing.Hangfire.csproj" />
+    <ProjectReference Include="..\Notifications\Odin.Notifications.csproj" />
+    <ProjectReference Include="..\RemoteFiles\Core\Odin.RemoteFiles.csproj" />
+    <ProjectReference Include="..\Templating\Razor\Odin.Templating.Razor.csproj" />
+    <ProjectReference Include="..\Utility\Tax\Odin.Utility.Tax.csproj" />
+    <ProjectReference Include="..\Utility\VaryingValues\Odin.Utility.VaryingValues.csproj" />
    </ItemGroup>
   <ItemGroup>
     <None Remove="Templating\Razor\TestTemplate1.cshtml" />

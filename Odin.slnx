@@ -41,5 +41,5 @@
   <Project Path="Logging\Odin.Logging.csproj" Type="Classic C#" />
   <Project Path="Messaging\RabbitMq\Odin.Messaging.RabbitMq.csproj" Type="Classic C#" />
   <Project Path="Notifications\Odin.Notifications.csproj" Type="Classic C#" />
-  <Project Path="Tests\Tests.Odin\Tests.Odin.csproj" Type="Classic C#" />
+  <Project Path="Tests.Odin\Tests.Odin.csproj" Type="Classic C#" />
 </Solution>

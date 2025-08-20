@@ -2,18 +2,52 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Tests.Odin.Messaging.RabbitMq;
 
 namespace Tests.Odin
 {
     public class TestProgram
     {
+        private static string FindContentRootFromBaseDirectory(string baseDirectory)
+        {
+            // Start from the current domain base directory
+            var currentDirectory = new DirectoryInfo(baseDirectory);
+           
+            // Walk up the directory tree until we find the solution file or project directory
+            while (currentDirectory != null)
+            {
+                // Look for solution file in current directory
+                if (currentDirectory.GetFiles("Odin.slnx").Any())
+                {
+                    return currentDirectory.FullName;
+                }
+                
+                // Look for Tests.Odin directory (if we're not already in it)
+                var testsOdinDir = currentDirectory.GetDirectories("Tests.Odin").FirstOrDefault();
+                if (testsOdinDir != null)
+                {
+                    return testsOdinDir.FullName;
+                }
+                
+                // If we're in the Tests.Odin directory, check if parent has solution file
+                if (currentDirectory.Name == "Tests.Odin")
+                {
+                    var parentDir = currentDirectory.Parent;
+                    if (parentDir != null && parentDir.GetFiles("Odin.slnx").Any())
+                    {
+                        return currentDirectory.FullName;
+                    }
+                }
+                currentDirectory = currentDirectory.Parent;
+            }
+            return null;
+        }
+
         public static async Task Main(string[] args)
         {
             WebApplicationOptions appOptions = new WebApplicationOptions()
             {
-                Args = args
+                Args = args,
+                ContentRootPath = FindContentRootFromBaseDirectory(AppDomain.CurrentDomain.BaseDirectory)
             };
             WebApplicationBuilder builder = WebApplication.CreateBuilder(appOptions);
             builder.Configuration.AddJsonFile("appSettings.json", false);
