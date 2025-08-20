@@ -51,11 +51,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{4F52FD
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "System", "System", "{73BA62BB-2B41-2DC4-C714-51B3D4C2A215}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odin.System", "System\Common\Odin.System.csproj", "{E450FC74-0DBE-320A-FE7A-87255CB4DFAB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odin.System", "System\Core\Odin.System.csproj", "{E450FC74-0DBE-320A-FE7A-87255CB4DFAB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odin.System.Result", "System\Result\Odin.System.Result.csproj", "{0CF0EF6E-BCDF-BD51-51DB-D49F01B0162F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odin.System.Strings", "Utility\Strings\Odin.System.Strings.csproj", "{E0B8D85B-C87E-8585-0B31-7979BD27370A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odin.System.Strings", "System\Strings\Odin.System.Strings.csproj", "{E0B8D85B-C87E-8585-0B31-7979BD27370A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templating", "Templating", "{85003D0A-72DB-A487-DC35-85E02D70F0B1}"
 EndProject
