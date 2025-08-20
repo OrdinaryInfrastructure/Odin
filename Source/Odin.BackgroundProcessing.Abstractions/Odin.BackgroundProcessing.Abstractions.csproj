@@ -12,6 +12,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Odin.Common\Odin.Common.csproj"/>
+        <Compile Include="..\Odin.System.Result\AssemblyInfo.cs">
+            <Link>AssemblyInfo.cs</Link>
+        </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Odin.DesignContracts\Odin.DesignContracts.csproj" />
+      <ProjectReference Include="..\Odin.System.Result\Odin.System.Result.csproj" />
     </ItemGroup>
 </Project>

@@ -1,6 +1,4 @@
-﻿using Odin.DesignContracts;
-
-namespace Odin.System
+﻿namespace Odin.System
 {
     /// <summary>
     /// Represents the outcome of an operation that can succeed or fail, with a simple list of string Messages.
@@ -244,7 +242,7 @@ namespace Odin.System
         /// <param name="messages">Optional, but good practice is to provide messages for failed results.</param>
         public Outcome(bool success, TValue? value, IEnumerable<string>? messages)
         {
-            PreCondition.Requires(!(value == null && success), "Value is required for a successful result.");
+            Assertions.RequiresArgumentPrecondition(!(value == null && success), "Value is required for a successful result.");
             Value = value;
             _messages = messages?.ToList();
         }
@@ -257,7 +255,7 @@ namespace Odin.System
         /// <param name="message">Optional, but good practice is to provide messages for failed results.</param>
         public Outcome(bool success, TValue? value, string? message = null)
         {
-            PreCondition.Requires(!(value == null && success), "Value is required for a successful result.");
+            Assertions.RequiresArgumentPrecondition(!(value == null && success), "Value is required for a successful result.");
             Success = success;
             Value = value;
             _messages = message != null ? [message] : null;
@@ -310,7 +308,7 @@ namespace Odin.System
         /// <param name="messages">Optional, but good practice is to provide messages for failed results.</param>
         protected ResultValue(bool success, TValue? value, IEnumerable<TMessage>? messages)
         {
-            PreCondition.Requires(!(value == null && success), "Value is required for a successful result.");
+            Assertions.RequiresArgumentPrecondition(!(value == null && success), "Value is required for a successful result.");
             Value = value;
             _messages = messages?.ToList();
         }
@@ -323,7 +321,7 @@ namespace Odin.System
         /// <param name="message">Optional, but good practice is to provide messages for failed results.</param>
         protected ResultValue(bool success, TValue? value, TMessage? message = null)
         {
-            PreCondition.Requires(!(value == null && success), "Value is required for a successful result.");
+            Assertions.RequiresArgumentPrecondition(!(value == null && success), "Value is required for a successful result.");
             Value = value;
             _messages = message != null ? [message] : null;
         }
@@ -337,7 +335,7 @@ namespace Odin.System
         /// <returns></returns>
         public static ResultValue<TValue, TMessage> Succeed(TValue value, IEnumerable<TMessage>? messages = null)
         {
-            PreCondition.RequiresNotNull(value);
+            Assertions.RequiresArgumentNotNull(value);
             return new ResultValue<TValue, TMessage>(true, value, messages);
         }
 
@@ -350,7 +348,7 @@ namespace Odin.System
         /// <returns></returns>
         public static ResultValue<TValue, TMessage> Succeed(TValue value, TMessage? message = null)
         {
-            PreCondition.RequiresNotNull(value);
+            Assertions.RequiresArgumentNotNull(value);
             return new ResultValue<TValue, TMessage>(true, value, new List<TMessage>() { message });
         }
 
@@ -374,6 +372,25 @@ namespace Odin.System
         public static ResultValue<TValue, TMessage> Fail(TMessage? message = null)
         {
             return new ResultValue<TValue, TMessage>(false, default(TValue), new List<TMessage>() { message });
+        }
+    }
+
+    internal static class Assertions
+    {
+        internal static void RequiresArgumentPrecondition(bool requirement, string argumentRequirementMessage)
+        {
+            if (!requirement) throw new ArgumentException(argumentRequirementMessage);
+        }
+
+        internal static void RequiresArgumentNotNull(object? argument, string? argumentIsRequiredMessage = null)
+        {
+            if (argument != null) return;
+            if (string.IsNullOrWhiteSpace(argumentIsRequiredMessage))
+            {
+                argumentIsRequiredMessage = $"{nameof(argument)} is required";
+            }
+            ArgumentNullException ex = new ArgumentNullException(argumentIsRequiredMessage);
+            throw ex;
         }
     }
 }

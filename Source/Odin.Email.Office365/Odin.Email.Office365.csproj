@@ -15,5 +15,9 @@
       <PackageReference Include="Azure.Identity" Version="1.14.0" />
       <PackageReference Include="Microsoft.Graph" Version="5.79.0" />
     </ItemGroup>
-
+    <ItemGroup>
+        <Compile Include="..\Odin.System.Result\AssemblyInfo.cs">
+            <Link>AssemblyInfo.cs</Link>
+        </Compile>
+    </ItemGroup>
 </Project>

@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
-    <RootNamespace>Odin</RootNamespace>
     <ImplicitUsings>true</ImplicitUsings>
     <Nullable>enable</Nullable>
     <Description>Common elements used in the OrdinaryInfrastructure libraries, including logging, design contract elements, and various other elements. 
@@ -14,9 +13,9 @@ Odin = OrDinary INfrastructure.
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.5" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.5" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Odin.DesignContracts\Odin.DesignContracts.csproj" />
-    <ProjectReference Include="..\Odin.Logging\Odin.Logging.csproj" />
-    <ProjectReference Include="..\Odin.System.Result\Odin.System.Result.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <Compile Include="..\Odin.System.Result\AssemblyInfo.cs">
+            <Link>AssemblyInfo.cs</Link>
+        </Compile>
+    </ItemGroup>    
 </Project>
