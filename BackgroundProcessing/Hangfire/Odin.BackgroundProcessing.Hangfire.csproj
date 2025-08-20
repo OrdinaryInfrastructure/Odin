@@ -13,7 +13,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Utility\Strings\Odin.System.Strings.csproj" />
+    <ProjectReference Include="..\..\System\Strings\Odin.System.Strings.csproj" />
     <ProjectReference Include="..\Core\Odin.BackgroundProcessing.csproj" />
   </ItemGroup>
 </Project>
