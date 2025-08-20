@@ -5,7 +5,7 @@ using Odin.System;
 namespace Odin.BackgroundProcessing
 {
     /// <summary>
-    /// BackgroundProcessing for loading from configuration 
+    /// BackgroundProcessing for loading from configuration.
     /// </summary>
     public sealed class BackgroundProcessingOptions
     {
@@ -25,7 +25,7 @@ namespace Odin.BackgroundProcessing
         }
 
         /// <summary>
-        /// Validates the settings instance
+        /// Validates the settings instance.
         /// </summary>
         /// <returns></returns>
         public Outcome Validate()
