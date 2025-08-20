@@ -19,5 +19,5 @@ jobs:
       with:
         dotnet-version: 9.x.x
     - name: Build and Test
-      run: dotnet test Source/Tests.Odin/Tests.Odin.csproj --verbosity quiet --filter "FullyQualifiedName!~Odin.Email.Mailgun&FullyQualifiedName!~Odin.Email.Office365"
+      run: dotnet test Tests.Odin/Tests.Odin.csproj --verbosity quiet --filter "FullyQualifiedName!~Odin.Email.Mailgun&FullyQualifiedName!~Odin.Email.Office365"
 
