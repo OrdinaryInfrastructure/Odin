@@ -1,8 +1,7 @@
-using Odin.System;
 
 namespace Odin.DesignContracts
 {
-    internal sealed class ExceptionBuilder<TException> : IBuilder<Exception> where TException: Exception
+    internal sealed class ExceptionBuilder<TException> where TException: Exception
     {
         private string? _exceptionMessage;
         private string _fallbackMessage;

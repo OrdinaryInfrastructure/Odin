@@ -13,4 +13,9 @@
   <ItemGroup>
     <ProjectReference Include="..\Odin.Common\Odin.Common.csproj" />
   </ItemGroup>
+    <ItemGroup>
+        <Compile Include="..\Odin.System.Result\AssemblyInfo.cs">
+            <Link>AssemblyInfo.cs</Link>
+        </Compile>
+    </ItemGroup>    
 </Project>
