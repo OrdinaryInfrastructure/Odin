@@ -12,7 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\DesignContracts\Odin.DesignContracts.csproj" />
-    <ProjectReference Include="..\..\System\Common\Odin.System.csproj" />
+    <ProjectReference Include="..\..\System\Core\Odin.System.csproj" />
     <ProjectReference Include="..\..\System\Result\Odin.System.Result.csproj" />
   </ItemGroup>
 </Project>
