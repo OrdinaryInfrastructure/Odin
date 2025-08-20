@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 env:
-  SOLUTION: './Odin.slnx'
+  SOLUTION: './Odin.sln'
   BUILD_CONFIGURATION: Release
   PACKAGE_DIR: Packaging
   NUGET_SOURCE: https://api.nuget.org/v3/index.json
