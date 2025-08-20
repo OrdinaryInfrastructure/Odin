@@ -1,0 +1,45 @@
+﻿<Solution>
+  <Folder Name="/BackgroundProcessing/">
+    <Project Path="BackgroundProcessing\Abstractions\Odin.BackgroundProcessing.Abstractions.csproj" Type="Classic C#" />
+    <Project Path="BackgroundProcessing\Core\Odin.BackgroundProcessing.csproj" Type="Classic C#" />
+    <Project Path="BackgroundProcessing\Hangfire\Odin.BackgroundProcessing.Hangfire.csproj" Type="Classic C#" />
+  </Folder>
+  <Folder Name="/Email/">
+    <Project Path="Email\Core\Odin.Email.csproj" Type="Classic C#" />
+    <Project Path="Email\Mailgun\Odin.Email.Mailgun.csproj" Type="Classic C#" />
+    <Project Path="Email\Office365\Odin.Email.Office365.csproj" Type="Classic C#" />
+  </Folder>
+  <Folder Name="/RemoteFiles/">
+    <Project Path="RemoteFiles\Abstractions\Odin.RemoteFiles.Abstractions.csproj" Type="Classic C#" />
+    <Project Path="RemoteFiles\Core\Odin.RemoteFiles.csproj" Type="Classic C#" />
+    <Project Path="RemoteFiles\SFTP\Odin.RemoteFiles.SFTP.csproj" Type="Classic C#" />
+  </Folder>
+  <Folder Name="/Shared/">
+    <File Path="global.json" />
+    <File Path="nuget.config" />
+    <File Path=".github\workflows\publish.yml" />
+    <File Path="Directory.Build.props" />
+    <File Path=".github\workflows\pr-validation.yml" />
+  </Folder>
+  <Folder Name="/System/">
+    <Project Path="System\Common\Odin.System.csproj" Type="Classic C#" />
+    <Project Path="System\Result\Odin.System.Result.csproj" Type="Classic C#" />
+    <Project Path="Utility\Strings\Odin.System.Strings.csproj" Type="Classic C#" />
+  </Folder>
+  <Folder Name="/Templating/">
+    <Project Path="Templating\Razor.Abstractions\Odin.Templating.Razor.Abstractions.csproj" Type="Classic C#" />
+    <Project Path="Templating\Razor\Odin.Templating.Razor.csproj" Type="Classic C#" />
+  </Folder>
+  <Folder Name="/Utility/">
+    <Project Path="Utility\Tax\Odin.Utility.Tax.csproj" Type="Classic C#" />
+    <Project Path="Utility\VaryingValues\Odin.Utility.VaryingValues.csproj" Type="Classic C#" />
+  </Folder>
+  <Project Path="Configuration\AzureBlobJson\Odin.Configuration.AzureBlobJson.csproj" Type="Classic C#" />
+  <Project Path="Cryptography\Odin.Cryptography.csproj" Type="Classic C#" />
+  <Project Path="Data\SqlScriptsRunner\Odin.Data.SqlScriptsRunner.csproj" Type="Classic C#" />
+  <Project Path="DesignContracts\Odin.DesignContracts.csproj" Type="Classic C#" />
+  <Project Path="Logging\Odin.Logging.csproj" Type="Classic C#" />
+  <Project Path="Messaging\RabbitMq\Odin.Messaging.RabbitMq.csproj" Type="Classic C#" />
+  <Project Path="Notifications\Odin.Notifications.csproj" Type="Classic C#" />
+  <Project Path="Tests\Tests.Odin\Tests.Odin.csproj" Type="Classic C#" />
+</Solution>

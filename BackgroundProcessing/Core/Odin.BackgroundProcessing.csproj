@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>true</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <Description>Abstracts access to background processing via an IBackgroundProcessor service interface,
+            together with a Hangfire and fake implementations.
+        </Description>
+        <WarningsAsErrors>1591;1573;</WarningsAsErrors> <!-- Not to be removed. Documentation is required. -->
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.5" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.5" />
+        <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
+        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.5" />
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\..\DesignContracts\Odin.DesignContracts.csproj" />
+      <ProjectReference Include="..\..\System\Common\Odin.System.csproj" />
+      <ProjectReference Include="..\..\System\Result\Odin.System.Result.csproj" />
+      <ProjectReference Include="..\Abstractions\Odin.BackgroundProcessing.Abstractions.csproj" />
+    </ItemGroup>
+</Project>
