@@ -1,7 +1,13 @@
 namespace Odin.Email;
 
+/// <summary>
+/// Configuration options for Office365EmailSender
+/// </summary>
 public record Office365Options
 {
+    /// <summary>
+    /// Credentials for Microsoft GraphClient
+    /// </summary>
     public MicrosoftGraphClientSecretCredentials MicrosoftGraphClientSecretCredentials { get; set; } = null!;
 
     /// <summary>
@@ -11,6 +17,10 @@ public record Office365Options
     /// </summary>
     public string? SenderUserId { get; set; }
 
+    /// <summary>
+    /// Throws an ApplicationException if missing or invalid configuration.
+    /// </summary>
+    /// <exception cref="ApplicationException"></exception>
     public void Validate()
     {
         if (MicrosoftGraphClientSecretCredentials == null)
