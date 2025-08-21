@@ -10,7 +10,7 @@ using Odin.System;
 namespace Odin.Email;
 
 /// <summary>
-/// Sends email via Office365 GraphClient
+/// Sends email via Office365 Microsoft GraphClient
 /// </summary>
 public class Office365EmailSender : IEmailSender
 {

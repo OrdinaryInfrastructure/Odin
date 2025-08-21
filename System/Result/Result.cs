@@ -336,7 +336,7 @@
         public static ResultValue<TValue, TMessage> Succeed(TValue value, IEnumerable<TMessage>? messages = null)
         {
             Assertions.RequiresArgumentNotNull(value);
-            return new ResultValue<TValue, TMessage>(true, value, messages);
+            return new ResultValue<TValue, TMessage>(true, value, messages);    
         }
 
         /// <summary>
