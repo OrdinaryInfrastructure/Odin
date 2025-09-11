@@ -49,7 +49,7 @@ namespace Odin.Data
             _assemblyWithEmbeddedScripts = assemblyWithEmbeddedScripts;
         }
 
-        public static Outcome<SqlScriptsRunner> CreateFromConnectionStringName(string connectionStringName,
+        public static ResultValue<SqlScriptsRunner> CreateFromConnectionStringName(string connectionStringName,
             Assembly assemblyWithEmbeddedScripts, IConfiguration configuration)
         {
             PreCondition.RequiresNotNull(configuration);
@@ -60,7 +60,7 @@ namespace Odin.Data
             };
             if (string.IsNullOrWhiteSpace(runner.ConnectionString))
             {
-                return Outcome.Fail<SqlScriptsRunner>(
+                return Result.Fail<SqlScriptsRunner>(
                     $"No ConnectionString named {connectionStringName} exists in application configuration.");
             }
 
@@ -70,13 +70,13 @@ namespace Odin.Data
             }
             catch (Exception err)
             {
-                return Outcome.Fail<SqlScriptsRunner>($"Unable to build connectionString. {err.Message}");
+                return Result.Fail<SqlScriptsRunner>($"Unable to build connectionString. {err.Message}");
             }
 
-            return Outcome.Succeed(runner);
+            return Result.Succeed(runner);
         }
 
-        public static Outcome<SqlScriptsRunner> CreateFromConnectionString(string connectionString, Assembly assemblyWithEmbeddedScripts)
+        public static ResultValue<SqlScriptsRunner> CreateFromConnectionString(string connectionString, Assembly assemblyWithEmbeddedScripts)
         {
             PreCondition.RequiresNotNull(assemblyWithEmbeddedScripts);
             PreCondition.RequiresNotNullOrWhitespace(connectionString);
@@ -90,10 +90,10 @@ namespace Odin.Data
             }
             catch (Exception err)
             {
-                return Outcome.Fail<SqlScriptsRunner>($"Unable to build connectionString. {err.Message}");
+                return Result.Fail<SqlScriptsRunner>($"Unable to build connectionString. {err.Message}");
             }
 
-            return Outcome.Succeed(runner);
+            return Result.Succeed(runner);
         }
 
 
@@ -101,7 +101,7 @@ namespace Odin.Data
         /// Ensure each database exists, creating a blank database if necessary.
         /// </summary>
         /// <returns></returns>
-        private Outcome EnsureDatabaseExists()
+        private Result EnsureDatabaseExists()
         {
             try
             {
@@ -109,14 +109,14 @@ namespace Odin.Data
                     $"Ensuring database {DatabaseName} on {HostName} is created");
 
                 EnsureDatabase.For.SqlDatabase(ConnectionString);
-                return Outcome.Succeed();
+                return Result.Succeed();
             }
             catch (Exception err)
             {
                 string message = $"Ensuring that database {DatabaseName} exists on {HostName} failed - {err.Message}";
                 OutputWriteError(err);
                 OutputWriteError(message);
-                return Outcome.Fail(message);
+                return Result.Fail(message);
             }
         }
 
@@ -124,7 +124,7 @@ namespace Odin.Data
         /// Runs the SQL scripts...
         /// </summary>
         /// <returns></returns>
-        public Outcome Run()
+        public Result Run()
         {
             // Validation...
             // if (!EmbeddedScriptPaths.Any()) OK if this is not specified we use all *.sql embedded resources in the assembly.
@@ -134,10 +134,10 @@ namespace Odin.Data
             
             if (EnsureDatabaseCreated)
             {
-                Outcome databaseExists = EnsureDatabaseExists();
+                Result databaseExists = EnsureDatabaseExists();
                 if (!databaseExists.Success)
                 {
-                    return Outcome.Fail($"Run failed. {databaseExists.MessagesToString()}");
+                    return Result.Fail($"Run failed. {databaseExists.MessagesToString()}");
                 }
             }
 
@@ -231,7 +231,7 @@ namespace Odin.Data
             }
             catch (Exception err)
             {
-                return Outcome.Fail($"Unable to get scripts to run: {err}");
+                return Result.Fail($"Unable to get scripts to run: {err}");
             }
             if (!scriptsToRun.Any())
             {
@@ -253,14 +253,14 @@ namespace Odin.Data
                     string err =
                         $"{DatabaseName} - Run migration scripts completed with errors. {runnerResult.Error}";
                     OutputWriteError(err);
-                    return Outcome.Fail(err);
+                    return Result.Fail(err);
                 }
                 string message =
                     $"{DatabaseName} - {scriptsToRun.Count} scripts executed successfully.";
                 OutputWriteInformation(message);
-                return Outcome.Succeed(message);
+                return Result.Succeed(message);
             }
-            return Outcome.Succeed("No scripts needed to be run.");
+            return Result.Succeed("No scripts needed to be run.");
         }
 
         private void OutputWriteError(Exception error)

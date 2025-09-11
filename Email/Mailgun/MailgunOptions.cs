@@ -43,7 +43,7 @@ namespace Odin.Email
         /// Validates the settings instance
         /// </summary>
         /// <returns></returns>
-        public Outcome IsConfigurationValid()
+        public Result IsConfigurationValid()
         {
             List<string> errors = new List<string>();
             if (string.IsNullOrWhiteSpace(ApiKey))
@@ -56,7 +56,7 @@ namespace Odin.Email
             }
             if (string.IsNullOrWhiteSpace(Domain)) errors.Add("Domain is not specified"); 
             if (Region!=RegionEU && Region!=RegionUSA) errors.Add("Region must be EU or USA"); 
-            return new Outcome(!errors.Any(), errors);
+            return new Result(!errors.Any(), errors);
         }
         
     }

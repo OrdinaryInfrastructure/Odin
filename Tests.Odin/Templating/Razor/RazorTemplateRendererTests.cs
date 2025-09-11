@@ -40,7 +40,7 @@ namespace Tests.Odin.Templating.Razor
             Assembly testsAssembly = typeof(RazorTemplateRendererTests).Assembly;
             RazorLightTemplateRenderer sut = new RazorLightTemplateRenderer(testsAssembly, rootNamespace);
             
-            Outcome<string> result = await sut.RenderAsync(templateKey, new TestViewModel(){ Title = "World"});
+            ResultValue<string> result = await sut.RenderAsync(templateKey, new TestViewModel(){ Title = "World"});
 
             Assert.That(result.Success, Is.EqualTo(shouldSucceed));
             if (shouldSucceed)

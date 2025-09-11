@@ -17,7 +17,7 @@ namespace Odin.Notifications
         /// Validates the settings instance
         /// </summary>
         /// <returns></returns>
-        public Outcome IsConfigurationValid()
+        public Result IsConfigurationValid()
         {
             List<string> errors = new List<string>();
             if (string.IsNullOrWhiteSpace(Provider))
@@ -28,7 +28,7 @@ namespace Odin.Notifications
             {
                 errors.Add($"Notifications:Provider is not recognised ({Provider})");
             }
-            return new Outcome(!errors.Any(), errors);
+            return new Result(!errors.Any(), errors);
         }
         
     }

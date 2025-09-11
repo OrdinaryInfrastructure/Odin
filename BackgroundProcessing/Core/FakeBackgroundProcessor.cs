@@ -31,20 +31,20 @@ namespace Odin.BackgroundProcessing
         /// <param name="enqueueAt"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public Outcome<JobDetails> ScheduleJob<T>(Expression<Func<T, Task>> methodCall, DateTimeOffset enqueueAt)
+        public ResultValue<JobDetails> ScheduleJob<T>(Expression<Func<T, Task>> methodCall, DateTimeOffset enqueueAt)
         {
             switch (Behaviour)
             {
                 case FakeBackgroundJobProviderBehaviour.ReturnSuccessfulOutcome:
-                    return Outcome.Succeed(new JobDetails("1", enqueueAt));
+                    return Result.Succeed(new JobDetails("1", enqueueAt));
                 case FakeBackgroundJobProviderBehaviour.ReturnFailedOutcome:
-                    return Outcome.Fail<JobDetails>("FakeBackgroundJobProvider faking an error");
+                    return Result.Fail<JobDetails>("FakeBackgroundJobProvider faking an error");
                 case FakeBackgroundJobProviderBehaviour.ReturnNull:
                     return null!;
                 case FakeBackgroundJobProviderBehaviour.ThrowException:
                     throw new ApplicationException("FakeBackgroundJobProvider throwing an exception");
                 default:
-                    return Outcome.Fail<JobDetails>($"Unknown Behaviour - {Behaviour}");
+                    return Result.Fail<JobDetails>($"Unknown Behaviour - {Behaviour}");
             }
         }
 
@@ -55,7 +55,7 @@ namespace Odin.BackgroundProcessing
         /// <param name="enqueueIn"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public Outcome<JobDetails> ScheduleJob<T>(Expression<Action<T>> taskExpression, TimeSpan enqueueIn)
+        public ResultValue<JobDetails> ScheduleJob<T>(Expression<Action<T>> taskExpression, TimeSpan enqueueIn)
         {
             return ScheduleJob(taskExpression, DateTimeOffset.Now.Add(enqueueIn));
         }
@@ -68,20 +68,20 @@ namespace Odin.BackgroundProcessing
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
         /// <exception cref="ApplicationException"></exception>
-        public Outcome<JobDetails> ScheduleJob<T>(Expression<Action<T>> taskExpression, DateTimeOffset enqueueAt)
+        public ResultValue<JobDetails> ScheduleJob<T>(Expression<Action<T>> taskExpression, DateTimeOffset enqueueAt)
         {
             switch (Behaviour)
             {
                 case FakeBackgroundJobProviderBehaviour.ReturnSuccessfulOutcome:
-                    return Outcome.Succeed(new JobDetails("1", enqueueAt));
+                    return Result.Succeed(new JobDetails("1", enqueueAt));
                 case FakeBackgroundJobProviderBehaviour.ReturnFailedOutcome:
-                    return Outcome.Fail<JobDetails>("FakeBackgroundJobProvider faking an error");
+                    return Result.Fail<JobDetails>("FakeBackgroundJobProvider faking an error");
                 case FakeBackgroundJobProviderBehaviour.ReturnNull:
                     return null!;
                 case FakeBackgroundJobProviderBehaviour.ThrowException:
                     throw new ApplicationException("FakeBackgroundJobProvider throwing an exception");
                 default:
-                    return Outcome.Fail<JobDetails>($"Unknown Behaviour - {Behaviour}");
+                    return Result.Fail<JobDetails>($"Unknown Behaviour - {Behaviour}");
             }
         }
 
@@ -92,7 +92,7 @@ namespace Odin.BackgroundProcessing
         /// <param name="enqueueIn"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public Outcome<JobDetails> ScheduleJob<T>(Expression<Func<T, Task>> methodCall, TimeSpan enqueueIn)
+        public ResultValue<JobDetails> ScheduleJob<T>(Expression<Func<T, Task>> methodCall, TimeSpan enqueueIn)
         {
             return ScheduleJob(methodCall, DateTimeOffset.Now.Add(enqueueIn));
         }
@@ -109,20 +109,20 @@ namespace Odin.BackgroundProcessing
         /// <returns></returns>
         /// <exception cref="ApplicationException"></exception>
         /// <exception cref="Exception"></exception>
-        public Outcome AddOrUpdateRecurringJob<T>(Expression<Action<T>> methodCall, string jobName, string cronExpression,TimeZoneInfo timeZoneInfo, string queueName = "default")
+        public Result AddOrUpdateRecurringJob<T>(Expression<Action<T>> methodCall, string jobName, string cronExpression,TimeZoneInfo timeZoneInfo, string queueName = "default")
         {
             switch (Behaviour)
             {
                 case FakeBackgroundJobProviderBehaviour.ReturnSuccessfulOutcome:
-                    return Outcome.Succeed();
+                    return Result.Succeed();
                 case FakeBackgroundJobProviderBehaviour.ReturnFailedOutcome:
-                    return Outcome.Fail("Failed");
+                    return Result.Fail("Failed");
                 case FakeBackgroundJobProviderBehaviour.ReturnNull:
                     return null!;
                 case FakeBackgroundJobProviderBehaviour.ThrowException:
                     throw new ApplicationException("FakeBackgroundJobProvider throwing an exception");
                 default:
-                    return Outcome.Fail($"Unknown Behaviour - {Behaviour}");
+                    return Result.Fail($"Unknown Behaviour - {Behaviour}");
             }
         }
 
@@ -132,20 +132,20 @@ namespace Odin.BackgroundProcessing
         /// <param name="jobName"></param>
         /// <exception cref="ApplicationException"></exception>
         /// <exception cref="Exception"></exception>
-        public Outcome RemoveRecurringJob(string jobName)
+        public Result RemoveRecurringJob(string jobName)
         {
             switch (Behaviour)
             {
                 case FakeBackgroundJobProviderBehaviour.ReturnSuccessfulOutcome:
-                    return Outcome.Succeed();
+                    return Result.Succeed();
                 case FakeBackgroundJobProviderBehaviour.ReturnFailedOutcome:
-                    return Outcome.Succeed();
+                    return Result.Succeed();
                 case FakeBackgroundJobProviderBehaviour.ReturnNull:
-                    return Outcome.Succeed();
+                    return Result.Succeed();
                 case FakeBackgroundJobProviderBehaviour.ThrowException:
                     throw new ApplicationException("FakeBackgroundJobProvider throwing an exception");
                 default:
-                    return Outcome.Fail($"Unknown Behaviour - {Behaviour}");
+                    return Result.Fail($"Unknown Behaviour - {Behaviour}");
             }
         }
     }

@@ -34,7 +34,7 @@ namespace Tests.Odin.Notifications
             };
             EmailNotifier sut = new EmailNotifier(sender, emailNotOptions);
 
-            Outcome result = await sut.SendNotification("Integration Testing - INotifier");
+            Result result = await sut.SendNotification("Integration Testing - INotifier");
 
             Assert.That(result, Is.Not.Null);     
             Assert.That(result.Success, Is.True);      
@@ -60,12 +60,12 @@ namespace Tests.Odin.Notifications
                 .WithNotifierOptionsFromConfiguration(AppFactory.GetConfiguration());
             
             scenario.EmailSenderMock.Setup(c => c.SendEmail(It.IsAny<IEmailMessage>()))
-                .ReturnsAsync(Outcome.Succeed<string>("12345"));
+                .ReturnsAsync(Result.Succeed<string>("12345"));
             EmailNotifier sut = scenario.Build();
 
-            Outcome outcome1 = await sut.SendNotification("Subject");
-            Outcome outcome2 = await sut.SendNotification("Subject", new object[0]);
-            Outcome outcome3 = await sut.SendNotification("Subject", new object[1] { null });
+            Result outcome1 = await sut.SendNotification("Subject");
+            Result outcome2 = await sut.SendNotification("Subject", new object[0]);
+            Result outcome3 = await sut.SendNotification("Subject", new object[1] { null });
 
             Assert.That(outcome1.Success, Is.True);     
             Assert.That(outcome2.Success, Is.True);        

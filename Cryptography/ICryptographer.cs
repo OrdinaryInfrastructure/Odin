@@ -14,7 +14,7 @@ namespace Odin.Cryptography
         /// </summary>
         /// <param name="protectedString"></param>
         /// <returns></returns>
-        Outcome<string?> TryDecrypt(string protectedString);
+        ResultValue<string?> TryDecrypt(string protectedString);
         
         /// <summary>
         /// Attempts decryption of a string, returning the decrypted string if successful.
@@ -29,7 +29,7 @@ namespace Odin.Cryptography
         /// </summary>
         /// <param name="unProtectedString"></param>
         /// <returns></returns>
-        Outcome<string?> TryEncrypt(string unProtectedString);
+        ResultValue<string?> TryEncrypt(string unProtectedString);
         
         
         /// <summary>

@@ -15,5 +15,5 @@ public interface IRazorTemplateRenderer
     /// <param name="viewModel"></param>
     /// <typeparam name="TModel">The type of the viewModel</typeparam>
     /// <returns>Success or failure. Is success, the Outcome's Value contains the rendered template.</returns>
-    Task<Outcome<string>> RenderAsync<TModel>(string templateKey, TModel viewModel);
+    Task<ResultValue<string>> RenderAsync<TModel>(string templateKey, TModel viewModel);
 }

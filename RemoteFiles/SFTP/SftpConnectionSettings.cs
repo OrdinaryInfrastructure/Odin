@@ -60,12 +60,12 @@ namespace Odin.RemoteFiles
         /// Validation
         /// </summary>
         /// <returns></returns>
-        public Outcome IsConfigurationValid()
+        public Result IsConfigurationValid()
         {
             List<string> errors = new List<string>();
             if (string.IsNullOrWhiteSpace(Host)) errors.Add("SFTP Host is not specified"); 
             if (Port<=0) errors.Add("SFTP Port is not specified"); 
-            return new Outcome(!errors.Any(), errors);
+            return new Result(!errors.Any(), errors);
         }
 
         /// <summary>

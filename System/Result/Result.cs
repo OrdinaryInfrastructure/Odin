@@ -1,13 +1,14 @@
 ﻿namespace Odin.System
 {
     /// <summary>
-    /// Represents the outcome of an operation that can succeed or fail, with a simple list of string Messages.
+    /// Represents the outcome of an operation that can succeed or fail, with a list of string Messages.
     /// </summary>
+    /// <remarks>Previously named Outcome</remarks>
     /// <remarks>To be renamed to Result</remarks>
-    public record Outcome : Result<string>
+    public record Result : Result<string>
     {
         /// <inheritdoc />
-        public Outcome() 
+        public Result() 
         {
         }
         
@@ -16,12 +17,12 @@
         /// </summary>
         /// <param name="success"></param>
         /// <param name="message"></param>
-        public Outcome(bool success, string? message = null) : base(success, message)
+        public Result(bool success, string? message = null) : base(success, message)
         {
         }
 
         /// <inheritdoc />
-        public Outcome(bool success, IEnumerable<string>? messages = null) : base(success, messages)
+        public Result(bool success, IEnumerable<string>? messages = null) : base(success, messages)
         {
         }
 
@@ -30,9 +31,9 @@
         /// </summary>
         /// <param name="message"></param>
         /// <returns></returns>
-        public new static Outcome Fail(string? message)
+        public new static Result Fail(string? message)
         {
-            return new Outcome(false, message);
+            return new Result(false, message);
         }
         
         /// <summary>
@@ -40,9 +41,9 @@
         /// </summary>
         /// <param name="messages"></param>
         /// <returns></returns>
-        public new static Outcome Fail(IEnumerable<string> messages)
+        public new static Result Fail(IEnumerable<string> messages)
         {
-            return new Outcome(false, messages);
+            return new Result(false, messages);
         }
 
         /// <summary>
@@ -50,9 +51,9 @@
         /// </summary>
         /// <param name="message"></param>
         /// <returns></returns>
-        public new static Outcome Succeed(string? message = null)
+        public new static Result Succeed(string? message = null)
         {
-            return new Outcome(true, message);
+            return new Result(true, message);
         }
         
         /// <summary>
@@ -60,9 +61,9 @@
         /// </summary>
         /// <param name="messages"></param>
         /// <returns></returns>
-        public new static Outcome Succeed(IEnumerable<string> messages)
+        public new static Result Succeed(IEnumerable<string> messages)
         {
-            return new Outcome(true, messages);
+            return new Result(true, messages);
         }
 
         /// <summary>
@@ -76,27 +77,6 @@
             }
 
             return string.Join(separator, Messages);
-        }
-
-        /// <summary>
-        /// Failure
-        /// </summary>
-        /// <param name="message"></param>
-        /// <returns></returns>
-        public static Outcome<TValue> Fail<TValue>(string? message)
-        {
-            return new Outcome<TValue>(false, default(TValue), message);
-        }
-
-        /// <summary>
-        /// Success.
-        /// </summary>
-        /// <param name="value"></param>
-        /// <param name="message"></param>
-        /// <returns></returns>
-        public static Outcome<TValue> Succeed<TValue>(TValue value, string? message = null)
-        {
-            return new Outcome<TValue>(true, value, message);
         }
     }
 
@@ -224,12 +204,12 @@
     /// </summary>
     /// <typeparam name="TValue"></typeparam>
     /// <remarks>To be renamed to ResultValue of TValue</remarks>
-    public record Outcome<TValue> : ResultValue<TValue, string>
+    public record ResultValue<TValue> : ResultValue<TValue, string>
     {
         /// <summary>
         /// Parameterless constructor for serialization.
         /// </summary>
-        public Outcome()
+        public ResultValue()
         {
             Success = false;
         }
@@ -240,7 +220,7 @@
         /// <param name="success">true or false</param>
         /// <param name="value">Required if successful</param>
         /// <param name="messages">Optional, but good practice is to provide messages for failed results.</param>
-        public Outcome(bool success, TValue? value, IEnumerable<string>? messages)
+        public ResultValue(bool success, TValue? value, IEnumerable<string>? messages)
         {
             Assertions.RequiresArgumentPrecondition(!(value == null && success), "Value is required for a successful result.");
             Value = value;
@@ -253,12 +233,44 @@
         /// <param name="success">true or false</param>
         /// <param name="value">Required if successful</param>
         /// <param name="message">Optional, but good practice is to provide messages for failed results.</param>
-        public Outcome(bool success, TValue? value, string? message = null)
+        public ResultValue(bool success, TValue? value, string? message = null)
         {
             Assertions.RequiresArgumentPrecondition(!(value == null && success), "Value is required for a successful result.");
             Success = success;
             Value = value;
             _messages = message != null ? [message] : null;
+        }
+        
+        /// <summary>
+        /// Failure
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        public new static ResultValue<TValue> Fail(string? message)
+        {
+            return new ResultValue<TValue>(false, default(TValue), message);
+        }
+        
+        /// <summary>
+        /// Failure.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        public static ResultValue<TValue?> Fail(TValue? value, string? message = null)
+        {
+            return new ResultValue<TValue?>(false, value, message);
+        }
+        
+        /// <summary>
+        /// Success.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        public new static ResultValue<TValue> Succeed(TValue value, string? message = null)
+        {
+            return new ResultValue<TValue>(true, value, message);
         }
 
         /// <summary>
@@ -333,7 +345,7 @@
         /// <param name="messages">Not normally used for successful operations, but can be for informational purposes.</param>
         /// <typeparam name="TValue"></typeparam>
         /// <returns></returns>
-        public static ResultValue<TValue, TMessage> Succeed(TValue value, IEnumerable<TMessage>? messages = null)
+        public static ResultValue<TValue, TMessage> Succeed(TValue value, IEnumerable<TMessage>? messages)
         {
             Assertions.RequiresArgumentNotNull(value);
             return new ResultValue<TValue, TMessage>(true, value, messages);    

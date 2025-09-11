@@ -82,7 +82,7 @@ namespace Tests.Odin.Email.Mailgun
             }
             MailgunEmailSender sut = scenario.Build();
 
-            Outcome<string> result = await sut.SendEmail(email);
+            ResultValue<string> result = await sut.SendEmail(email);
 
             VerifySuccessfulSendAndLogging(scenario, email, result);
         }
@@ -107,14 +107,14 @@ namespace Tests.Odin.Email.Mailgun
             message.Attachments.Add(txtAttachment);
             MailgunEmailSender mailgunSender = scenario.Build();
 
-            Outcome<string> result = await mailgunSender.SendEmail(message);
+            ResultValue<string> result = await mailgunSender.SendEmail(message);
 
             Assert.That(result, Is.Not.Null);
             
             VerifySuccessfulSendAndLogging(scenario, message, result);
         }
 
-        private void VerifySuccessfulSendAndLogging(MailgunEmailSenderTestBuilder scenario,EmailMessage message, Outcome<string> result)
+        private void VerifySuccessfulSendAndLogging(MailgunEmailSenderTestBuilder scenario,EmailMessage message, ResultValue<string> result)
         {
             // Result
             Assert.That(result.Success, Is.True, result.MessagesToString());
@@ -153,7 +153,7 @@ namespace Tests.Odin.Email.Mailgun
             string expectedLogMessage =
                 $"SendEmail to {_toTestEmail} failed. Subject - '{message.Subject}'. Error - Failed to send email with Mailgun. Status code: 401 Unauthorized. Response content: Forbidden";
 
-            Outcome<string> result = await mailgunSender.SendEmail(message);
+            ResultValue<string> result = await mailgunSender.SendEmail(message);
 
             // 3 retries
             scenario.LoggerMock!.Verify(c => c.Log(LogLevel.Error, expectedLogMessage, null), Times.Exactly(4));

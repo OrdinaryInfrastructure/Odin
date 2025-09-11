@@ -19,7 +19,7 @@ namespace Tests.Odin.Notifications
             settings.Provider = provider;
 
             // Act
-            Outcome result = settings.IsConfigurationValid();
+            Result result = settings.IsConfigurationValid();
 
             // Assert
             Assert.That(result.Success, Is.False, "Options validation should fail with no provider");
@@ -39,7 +39,7 @@ namespace Tests.Odin.Notifications
             settings.Provider = provider;
 
             // Act
-            Outcome result = settings.IsConfigurationValid();
+            Result result = settings.IsConfigurationValid();
 
             // Assert
             Assert.That(result.Success, Is.EqualTo(shouldBeValid), $"IsValid should be {shouldBeValid}");

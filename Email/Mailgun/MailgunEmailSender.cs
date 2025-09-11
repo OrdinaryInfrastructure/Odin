@@ -5,9 +5,9 @@ using System.Text;
 using Microsoft.Extensions.Logging;
 using Odin.DesignContracts;
 using Odin.Logging;
+using Odin.System;
 using Polly;
 using Polly.Retry;
-using Outcome = Odin.System.Outcome;
 
 namespace Odin.Email
 {
@@ -109,7 +109,7 @@ namespace Odin.Email
         /// <param name="email"></param>
         /// <returns>An Outcome containing the Mailgun messageId.</returns>
         /// <exception cref="HttpRequestException"></exception>
-        public async Task<System.Outcome<string?>> SendEmail(IEmailMessage email)
+        public async Task<System.ResultValue<string?>> SendEmail(IEmailMessage email)
         {
             PreCondition.RequiresNotNull(email);
             PreCondition.Requires(email.To.Any(), "Mailgun requires one or more to addresses.");
@@ -181,11 +181,11 @@ namespace Odin.Email
 
                 MailgunSendResponse? response = await responseMessage.Content.ReadFromJsonAsync<MailgunSendResponse>();
                 LogSendEmailResult(email, true, LogLevel.Information, $"Sent with Mailgun reference {response?.Id}.");
-                return Outcome.Succeed<string?>(response?.Id);
+                return Result.Succeed<string?>(response?.Id);
             }
             catch (Exception e)
             {
-                return Outcome.Fail<string?>(e.ToString());
+                return Result.Fail<string?>(e.ToString());
             }
 
         }

@@ -14,7 +14,7 @@ public static class NotifierTestConfiguration
 
         EmailNotifierOptions options = new EmailNotifierOptions();
 
-        Outcome validate = options.IsConfigurationValid();
+        Result validate = options.IsConfigurationValid();
         if (!validate.Success)
         {
             throw new Exception(validate.MessagesToString());

@@ -24,7 +24,7 @@ namespace Microsoft.Extensions.DependencyInjection
             NotificationSettings notificationSettings = new NotificationSettings();
             IConfigurationSection notificationsSection = configuration.GetSection(sectionName);
             notificationsSection.Bind(notificationSettings);
-            Outcome notificationSettingsValidation = notificationSettings.IsConfigurationValid();
+            Result notificationSettingsValidation = notificationSettings.IsConfigurationValid();
             if (!notificationSettingsValidation.Success)
             {
                 throw new ApplicationException(
@@ -37,7 +37,7 @@ namespace Microsoft.Extensions.DependencyInjection
                     new EmailNotifierOptions();
                 IConfigurationSection emailNotifierSection = notificationsSection.GetSection("EmailNotifier");
                 emailNotifierSection.Bind(emailNotificationOptions);
-                Outcome emailNotificationSettingsValid =
+                Result emailNotificationSettingsValid =
                     emailNotificationOptions.IsConfigurationValid();
                 if (!emailNotificationSettingsValid.Success)
                 {

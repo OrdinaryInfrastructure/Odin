@@ -28,18 +28,18 @@ namespace Odin.Cryptography
         /// </summary>
         /// <param name="protectedString"></param>
         /// <returns></returns>
-        public Outcome<string?> TryDecrypt(string protectedString)
+        public ResultValue<string?> TryDecrypt(string protectedString)
         {
-            if (string.IsNullOrWhiteSpace(protectedString)) return Outcome.Fail<string?>($"{nameof(protectedString)} is nullor empty");
+            if (string.IsNullOrWhiteSpace(protectedString)) return ResultValue<string?>.Fail($"{nameof(protectedString)} is nullor empty");
             try
             {
                 string decrypted = _protector.Unprotect(protectedString);
-                return Outcome.Succeed<string?>(decrypted);
+                return Result.Succeed<string?>(decrypted);
             }
             catch (Exception err)
             {
                 _logger.LogError($"{nameof(TryDecrypt)} error",err);
-                return Outcome.Fail<string?>(err.Message);
+                return ResultValue<string?>.Fail(err.Message);
             }
         }
 
@@ -53,18 +53,18 @@ namespace Odin.Cryptography
         /// </summary>
         /// <param name="unProtectedString"></param>
         /// <returns></returns>
-        public Outcome<string?> TryEncrypt(string unProtectedString)
+        public ResultValue<string?> TryEncrypt(string unProtectedString)
         {
-            if (string.IsNullOrWhiteSpace(unProtectedString)) return Outcome.Fail<string?>($"{nameof(unProtectedString)} is null");
+            if (string.IsNullOrWhiteSpace(unProtectedString)) return Result.Fail<string?>($"{nameof(unProtectedString)} is null");
             try
             {
                 string encrypted = _protector.Protect(unProtectedString);
-                return Outcome.Succeed<string?>(encrypted);
+                return Result.Succeed<string?>(encrypted);
             }
             catch (Exception err)
             {
                 _logger.LogError($"{nameof(TryEncrypt)} error",err);
-                return Outcome.Fail<string?>(err.Message);
+                return Result.Fail<string?>(err.Message);
             }
         }
 

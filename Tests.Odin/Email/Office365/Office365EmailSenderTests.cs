@@ -93,7 +93,7 @@ public class Office365EmailSenderTests : IntegrationTest
             .WithEmailSendingOptionsFromTestConfiguration(config);
         Office365EmailSender sut = scenario.Build();
         
-        Outcome<string> result = await sut.SendEmail(email);
+        ResultValue<string> result = await sut.SendEmail(email);
 
         VerifySuccessfulSendAndLogging(scenario, email, result);
     }
@@ -158,13 +158,13 @@ public class Office365EmailSenderTests : IntegrationTest
 
         Office365EmailSender sut = scenario.Build();
 
-        Outcome<string> result = await sut.SendEmail(email);
+        ResultValue<string> result = await sut.SendEmail(email);
 
         VerifySuccessfulSendAndLogging(scenario, email, result);
     }
 
     private void VerifySuccessfulSendAndLogging(Office365EmailSenderTestBuilder scenario, EmailMessage message,
-        Outcome<string> result)
+        ResultValue<string> result)
     {
         // Result
         Assert.That(result.Success, Is.True, result.MessagesToString());

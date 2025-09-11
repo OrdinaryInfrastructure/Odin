@@ -59,14 +59,14 @@ public abstract class StringEnum<TEnum> where TEnum: StringEnum<TEnum>
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
-    public static Outcome HasValue(string? value)
+    public static Result HasValue(string? value)
     {
         StringComparer comparer = StringComparer.FromComparison(StringComparison.Ordinal);
         if (!Values.Contains(value, comparer))
         {
-            return Outcome.Fail(NotAMemberMessage(value));
+            return Result.Fail(NotAMemberMessage(value));
         }
-        return Outcome.Succeed();
+        return Result.Succeed();
     }
 
     private static string NotAMemberMessage(string? value) =>

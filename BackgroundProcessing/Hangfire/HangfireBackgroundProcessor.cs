@@ -40,18 +40,18 @@ namespace Odin.BackgroundProcessing
         /// <param name="enqueueAt"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public Outcome<JobDetails> ScheduleJob<T>([NotNull, InstantHandle] Expression<Func<T, Task>> methodCall, DateTimeOffset enqueueAt)
+        public ResultValue<JobDetails> ScheduleJob<T>([NotNull, InstantHandle] Expression<Func<T, Task>> methodCall, DateTimeOffset enqueueAt)
         {
             try
             {
                 string jobId = _jobClient.Schedule<T>(methodCall, enqueueAt);
-                return Outcome.Succeed(new JobDetails(jobId, enqueueAt));
+                return Result.Succeed(new JobDetails(jobId, enqueueAt));
             }
             catch (Exception err)
             {
                 string message = $"Exception scheduling {methodCall.Name} for {enqueueAt}. {err.Message}";
                 _logger.LogError($"{nameof(ScheduleJob)}: {message}", err);
-                return Outcome.Fail<JobDetails>(message);
+                return Result.Fail<JobDetails>(message);
             }
         }
         
@@ -62,18 +62,18 @@ namespace Odin.BackgroundProcessing
         /// <param name="enqueueAt"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public Outcome<JobDetails> ScheduleJob<T>([NotNull, InstantHandle] Expression<Action<T>> methodCall, DateTimeOffset enqueueAt)
+        public ResultValue<JobDetails> ScheduleJob<T>([NotNull, InstantHandle] Expression<Action<T>> methodCall, DateTimeOffset enqueueAt)
         {
             try
             {
                 string jobId = _jobClient.Schedule<T>(methodCall, enqueueAt);
-                return Outcome.Succeed(new JobDetails(jobId, enqueueAt));
+                return Result.Succeed(new JobDetails(jobId, enqueueAt));
             }
             catch (Exception err)
             {
                 string message = $"Exception scheduling {methodCall.Name} for {enqueueAt}. {err.Message}";
                 _logger.LogError($"{nameof(ScheduleJob)}: {message}", err);
-                return Outcome.Fail<JobDetails>(message);
+                return Result.Fail<JobDetails>(message);
             }
         }
 
@@ -87,20 +87,20 @@ namespace Odin.BackgroundProcessing
         /// <param name="queueName"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public Outcome AddOrUpdateRecurringJob<T>(
+        public Result AddOrUpdateRecurringJob<T>(
             [NotNull, InstantHandle] Expression<Action<T>> methodCall,
             string recurringJobId, string cronExpression, TimeZoneInfo timeZoneInfo, string queueName = "default")
         {
             try
             {
                 _recurringJobManager.AddOrUpdate<T>(recurringJobId, queueName, methodCall, cronExpression, new RecurringJobOptions(){ TimeZone = timeZoneInfo});
-                return Outcome.Succeed();
+                return Result.Succeed();
             }
             catch (Exception err)
             {
                 string message = $"Error scheduling recurring job {recurringJobId}. {err.Message}";
                 _logger.LogError($"{nameof(AddOrUpdateRecurringJob)}: {message}", err);
-                return Outcome.Fail(message);
+                return Result.Fail(message);
             }
         }
 
@@ -108,18 +108,18 @@ namespace Odin.BackgroundProcessing
         /// Removes a job if it exists
         /// </summary>
         /// <param name="jobName"></param>
-        public Outcome RemoveRecurringJob(string jobName)
+        public Result RemoveRecurringJob(string jobName)
         {
             try
             {
                 _recurringJobManager.RemoveIfExists(jobName);
-                return Outcome.Succeed();
+                return Result.Succeed();
             }
             catch (Exception err)
             {
                 string message = $"Error removing recurring job {jobName}. {err.Message}";
                 _logger.LogError($"{nameof(RemoveRecurringJob)}: {message}", err);
-                return Outcome.Fail(message);
+                return Result.Fail(message);
             }
         }
 
@@ -131,7 +131,7 @@ namespace Odin.BackgroundProcessing
         /// <param name="enqueueIn"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public Outcome<JobDetails> ScheduleJob<T>([NotNull, InstantHandle] Expression<Func<T, Task>> methodCall, TimeSpan enqueueIn)
+        public ResultValue<JobDetails> ScheduleJob<T>([NotNull, InstantHandle] Expression<Func<T, Task>> methodCall, TimeSpan enqueueIn)
         {
             return ScheduleJob(methodCall, DateTimeOffset.Now.Add(enqueueIn));
         }
@@ -143,7 +143,7 @@ namespace Odin.BackgroundProcessing
         /// <param name="enqueueIn"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public Outcome<JobDetails> ScheduleJob<T>([NotNull, InstantHandle] Expression<Action<T>> methodCall, TimeSpan enqueueIn)
+        public ResultValue<JobDetails> ScheduleJob<T>([NotNull, InstantHandle] Expression<Action<T>> methodCall, TimeSpan enqueueIn)
         {
             return ScheduleJob(methodCall, DateTimeOffset.Now.Add(enqueueIn));
         }

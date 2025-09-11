@@ -23,7 +23,7 @@ public class RemoteFileSessionsTests
             }
         };
         RemoteFileSessionFactory factory = new RemoteFileSessionFactory(remoteFileConfig);
-        Outcome<IRemoteFileSession> sut = factory.CreateRemoteFileSession("local");
+        ResultValue<IRemoteFileSession> sut = factory.CreateRemoteFileSession("local");
         IEnumerable<IRemoteFileInfo> results = sut.Value.GetFiles(baseDirectory ,filePath);
         if (expectedCount != -1)
         {

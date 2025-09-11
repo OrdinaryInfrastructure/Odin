@@ -38,12 +38,12 @@ namespace Odin.Notifications
         /// Validates the settings instance
         /// </summary>
         /// <returns></returns>
-        public Outcome IsConfigurationValid()
+        public Result IsConfigurationValid()
         {
             List<string> errors = new List<string>();
             if (string.IsNullOrWhiteSpace(ToEmails)) errors.Add($"{nameof(ToEmails)} is not specified"); 
             if (string.IsNullOrWhiteSpace(FromEmail)) errors.Add($"{nameof(FromEmail)} is not specified"); 
-            return new Outcome(!errors.Any(), errors);
+            return new Result(!errors.Any(), errors);
         }
 
 

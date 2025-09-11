@@ -72,7 +72,7 @@ namespace Tests.Odin.Email.Mailgun
             IConfigurationSection section = config.GetSection("Email-MailgunOptions");
             MailgunOptions options = new MailgunOptions();
             section.Bind(options);
-            Outcome optionsAreValid = options.IsConfigurationValid();
+            Result optionsAreValid = options.IsConfigurationValid();
             if (!optionsAreValid.Success)
                 throw new Exception(
                     $"Invalid Email-MailgunOptions configuration. {optionsAreValid.MessagesToString()}");

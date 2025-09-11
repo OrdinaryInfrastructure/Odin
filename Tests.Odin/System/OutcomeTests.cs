@@ -6,12 +6,12 @@ using System.Text.Json;
 namespace Tests.Odin.System
 {
     [TestFixture]
-    public sealed class OutcomeTests
+    public sealed class ResultValueTests
     {
         [Test]
         public void Succeed()
         {
-            Outcome sut = Outcome.Succeed();
+            Result sut = Result.Succeed();
             
             Assert.That(sut.Success, Is.True);
             Assert.That(sut.MessagesToString(), Is.Empty);
@@ -21,7 +21,7 @@ namespace Tests.Odin.System
         [Test]
         public void Fail()
         {
-            Outcome sut = Outcome.Fail("Reason");
+            Result sut = Result.Fail("Reason");
             
             Assert.That(sut.Success, Is.False);
             Assert.That("Reason", Is.EqualTo(sut.MessagesToString()));         
@@ -32,7 +32,7 @@ namespace Tests.Odin.System
         [Test]
         public void Succeed_with_message()
         {
-            Outcome sut = Outcome.Succeed("lovely");
+            Result sut = Result.Succeed("lovely");
             
             Assert.That(sut.Success, Is.True);
             Assert.That("lovely", Is.EqualTo(sut.MessagesToString()));         
@@ -44,7 +44,7 @@ namespace Tests.Odin.System
         public void Succeed_with_object_value()
         {
             object obj = new CategoryAttribute("123");
-            Outcome<object> sut = Outcome.Succeed<object>(obj);
+            ResultValue<object> sut = Result.Succeed<object>(obj);
             
             Assert.That(sut.Success, Is.True);
             Assert.That(sut.MessagesToString(), Is.Empty.Or.Null);
@@ -56,7 +56,7 @@ namespace Tests.Odin.System
         public void Succeed_with_string_value_and_no_message()
         {
             string stringVal = "123";
-            Outcome<string> sut = Outcome.Succeed<string>(stringVal);
+            ResultValue<string> sut = Result.Succeed<string>(stringVal);
             
             Assert.That(sut.Success, Is.True);
             Assert.That(sut.MessagesToString(), Is.Empty.Or.Null);
@@ -69,7 +69,7 @@ namespace Tests.Odin.System
         public void Succeed_with_string_value_and_message()
         {
             string stringVal = "123";
-            Outcome<string> sut = Outcome.Succeed<string>(stringVal, "message");
+            ResultValue<string> sut = Result.Succeed<string>(stringVal, "message");
             
             Assert.That(sut.Success, Is.True);      
             Assert.That(sut.MessagesToString(), Is.EqualTo("message"));
@@ -82,7 +82,7 @@ namespace Tests.Odin.System
         public void Succeed_with_struct_value_and_message()
         {
             double num = 13.8;
-            Outcome<double> sut = Outcome.Succeed<double>(num, "message");
+            ResultValue<double> sut = Result.Succeed<double>(num, "message");
             
             Assert.That(sut.Success, Is.True);       
             Assert.That(sut.MessagesToString(), Is.EqualTo("message"));
@@ -95,7 +95,7 @@ namespace Tests.Odin.System
         [TestCase(false)]
         public void Create_outcome_with_success_and_failure(bool testValue)
         {
-            Outcome sut = new Outcome(testValue, "message");
+            Result sut = new Result(testValue, "message");
             
             Assert.That(sut.Success, Is.EqualTo(testValue));
         }
@@ -103,7 +103,7 @@ namespace Tests.Odin.System
         [Test]
         public void Fail_with_value_success_is_false()
         {
-            Outcome sut = Outcome.Fail("Reason");
+            Result sut = Result.Fail("Reason");
 
             Assert.That(sut.Success, Is.False);
             Assert.That("Reason", Is.EqualTo(sut.MessagesToString()));         
@@ -114,7 +114,7 @@ namespace Tests.Odin.System
         [Test]
         public void Default_outcome_is_a_failure()
         {
-            Outcome sut = new Outcome();
+            Result sut = new Result();
 
             Assert.That(sut.Success, Is.False);
             Assert.That(sut.MessagesToString(), Is.Empty);         
@@ -124,7 +124,7 @@ namespace Tests.Odin.System
         [Test]
         public void Outcome_serialises_with_system_dot_text_dot_json()
         {
-            Outcome sut = Outcome.Succeed("cool man");
+            Result sut = Result.Succeed("cool man");
             
             string result = JsonSerializer.Serialize(sut);
             
@@ -136,7 +136,7 @@ namespace Tests.Odin.System
         {
             string serialised = "{\"Success\":true,\"Messages\":[\"cool man\"]}";
             
-            Outcome result = JsonSerializer.Deserialize<Outcome>(serialised);
+            Result result = JsonSerializer.Deserialize<Result>(serialised);
             
             Assert.That(result, Is.Not.Null);    
             Assert.That(result.Success, Is.True);       
@@ -147,7 +147,7 @@ namespace Tests.Odin.System
         [Test]
         public void Outcome_of_T_serialises_with_system_dot_text_dot_json()
         {
-            Outcome<int> sut = Outcome.Succeed(3, "cool man");
+            ResultValue<int> sut = Result.Succeed(3, "cool man");
             
             string result = JsonSerializer.Serialize(sut);
 
@@ -159,7 +159,7 @@ namespace Tests.Odin.System
         {
             string serialised = "{\"Value\":3,\"Success\":true,\"Messages\":[\"cool man\"]}";
             
-            Outcome<int> result = JsonSerializer.Deserialize<Outcome<int>>(serialised);
+            ResultValue<int> result = JsonSerializer.Deserialize<ResultValue<int>>(serialised);
             
             Assert.That(result, Is.Not.Null);    
             Assert.That(result.Success, Is.True);       

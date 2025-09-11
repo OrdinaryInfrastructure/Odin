@@ -26,7 +26,7 @@ namespace Microsoft.Extensions.DependencyInjection
             CryptographySettings settings = new CryptographySettings();
             configuration.Bind(sectionName, settings);
 
-            Outcome configValidation = settings.IsConfigurationValid();
+            Result configValidation = settings.IsConfigurationValid();
 
             if (!configValidation.Success)
             {
