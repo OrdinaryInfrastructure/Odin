@@ -6,9 +6,9 @@
         <WarningsAsErrors>1591;1573;</WarningsAsErrors> <!-- Not to be removed. Documentation is required. -->
     </PropertyGroup>
     <ItemGroup>
-        <ProjectReference Include="..\Core\Odin.Email.csproj"/>
+        <ProjectReference Include="..\Core\Odin.Email.csproj" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Polly.Core" Version="8.5.2"/>
+        <PackageReference Include="Polly.Core" Version="8.6.3" />
     </ItemGroup>
 </Project>

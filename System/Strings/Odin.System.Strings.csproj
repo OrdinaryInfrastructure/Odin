@@ -11,8 +11,8 @@
         <RootNamespace>Odin.System</RootNamespace> <!-- Not to be removed. Documentation is required. -->
     </PropertyGroup>
     <ItemGroup>
-      <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.5" />
-      <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.5" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.9" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.9" />
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\..\DesignContracts\Odin.DesignContracts.csproj" />
