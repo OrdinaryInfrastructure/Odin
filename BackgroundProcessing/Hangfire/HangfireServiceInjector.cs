@@ -13,6 +13,7 @@ namespace Odin.BackgroundProcessing
     /// <inheritdoc />
     public class HangfireServiceInjector : IBackgroundProcessorServiceInjector
     {
+        /// <inheritdoc />
         public void TryAddBackgroundProcessor(IServiceCollection serviceCollection, IConfiguration configuration,
             IConfigurationSection backgroundProcessingSection, Func<IServiceProvider, string>? connectionStringFactory = null)
         {

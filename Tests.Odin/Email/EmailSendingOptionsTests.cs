@@ -23,7 +23,7 @@ namespace Tests.Odin.Email
                 Provider = provider
             };
 
-            Outcome result = sut.Validate();
+            Result result = sut.Validate();
             
             Assert.That(result.Success, Is.EqualTo(isValidConfig));
         }

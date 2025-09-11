@@ -12,5 +12,5 @@ public interface IRemoteFileSessionFactory
     /// </summary>
     /// <param name="connectionName"></param>
     /// <returns></returns>
-    Outcome<IRemoteFileSession> CreateRemoteFileSession(string connectionName);
+    ResultValue<IRemoteFileSession> CreateRemoteFileSession(string connectionName);
 }

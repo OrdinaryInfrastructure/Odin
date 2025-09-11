@@ -15,7 +15,7 @@ namespace Tests.Odin.System
         [TestCase("Elephant",false  )]
         public void HasValue(string? testValue, bool expectedResult)
         {
-            Outcome sut = FourValsStringEnum.HasValue(testValue);
+            Result sut = FourValsStringEnum.HasValue(testValue);
 
             Assert.That(sut.Success, Is.EqualTo(expectedResult), sut.MessagesToString());
         }

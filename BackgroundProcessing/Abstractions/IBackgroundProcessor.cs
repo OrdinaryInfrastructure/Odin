@@ -15,7 +15,7 @@ namespace Odin.BackgroundProcessing
         /// <param name="enqueueAt"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        Outcome<JobDetails> ScheduleJob<T>(Expression<Func<T, Task>> taskExpression, DateTimeOffset enqueueAt);
+        ResultValue<JobDetails> ScheduleJob<T>(Expression<Func<T, Task>> taskExpression, DateTimeOffset enqueueAt);
 
         /// <summary>
         /// Schedules a once-off job
@@ -24,7 +24,7 @@ namespace Odin.BackgroundProcessing
         /// <param name="enqueueIn"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        Outcome<JobDetails>  ScheduleJob<T>(Expression<Action<T>> taskExpression, TimeSpan enqueueIn);
+        ResultValue<JobDetails>  ScheduleJob<T>(Expression<Action<T>> taskExpression, TimeSpan enqueueIn);
         
         /// <summary>
         /// Schedules a once-off job
@@ -33,7 +33,7 @@ namespace Odin.BackgroundProcessing
         /// <param name="enqueueAt"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        Outcome<JobDetails> ScheduleJob<T>(Expression<Action<T>> taskExpression, DateTimeOffset enqueueAt);
+        ResultValue<JobDetails> ScheduleJob<T>(Expression<Action<T>> taskExpression, DateTimeOffset enqueueAt);
 
         /// <summary>
         /// Schedules a once-off job
@@ -42,7 +42,7 @@ namespace Odin.BackgroundProcessing
         /// <param name="enqueueIn"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        Outcome<JobDetails>  ScheduleJob<T>(Expression<Func<T, Task>> taskExpression, TimeSpan enqueueIn);
+        ResultValue<JobDetails>  ScheduleJob<T>(Expression<Func<T, Task>> taskExpression, TimeSpan enqueueIn);
 
         /// <summary>
         /// Ensures a recurring job is registered.
@@ -54,14 +54,14 @@ namespace Odin.BackgroundProcessing
         /// <param name="queueName"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        Outcome AddOrUpdateRecurringJob<T>(Expression<Action<T>> methodCall, string recurringJobName, string cronExpression, TimeZoneInfo timeZoneInfo, string queueName = "default");
+        Result AddOrUpdateRecurringJob<T>(Expression<Action<T>> methodCall, string recurringJobName, string cronExpression, TimeZoneInfo timeZoneInfo, string queueName = "default");
         
         /// <summary>
         /// Ensures a recurring job is deleted, if it exists...
         /// </summary>
         /// <param name="recurringJobName"></param>
         /// <returns></returns>
-        Outcome RemoveRecurringJob(string recurringJobName);
+        Result RemoveRecurringJob(string recurringJobName);
 
     }
 }

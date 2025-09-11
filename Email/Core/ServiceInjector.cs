@@ -44,7 +44,7 @@ namespace Odin.Email
 
             EmailSendingOptions emailOptions = new EmailSendingOptions();
             configurationSection.Bind(emailOptions);
-            Outcome emailValidationResult = emailOptions.Validate();
+            Result emailValidationResult = emailOptions.Validate();
             if (!emailValidationResult.Success)
             {
                 throw new ApplicationException(
@@ -63,7 +63,7 @@ namespace Odin.Email
 
             ClassFactory activator = new ClassFactory();
             string providerAssemblyName = $"Odin.Email.{emailOptions.Provider}";
-            Outcome<IEmailSenderServiceInjector> serviceInjectorCreation =
+            ResultValue<IEmailSenderServiceInjector> serviceInjectorCreation =
                 activator.TryCreate<IEmailSenderServiceInjector>(
                     $"{providerAssemblyName}ServiceInjector", providerAssemblyName);
 

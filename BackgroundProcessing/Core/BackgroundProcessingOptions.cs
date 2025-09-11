@@ -28,7 +28,7 @@ namespace Odin.BackgroundProcessing
         /// Validates the settings instance
         /// </summary>
         /// <returns></returns>
-        public Outcome Validate()
+        public Result Validate()
         {
             List<string> errors = new List<string>();
             List<string> providers = BackgroundProcessingProviders.GetBuiltInProviders();
@@ -40,7 +40,7 @@ namespace Odin.BackgroundProcessing
             {
                 errors.Add($"The {nameof(Provider)} specified ({Provider}) is not one of the supported providers: {string.Join(" | ",providers)}");
             }
-            return new Outcome(!errors.Any(), errors);
+            return new Result(!errors.Any(), errors);
         }
     }
 }

@@ -15,26 +15,26 @@ public class ClassFactory
     /// <param name="fullTypeName"></param>
     /// <param name="assemblyToLoadFrom"></param>
     /// <returns></returns>
-    public Outcome<T> TryCreate<T>(string fullTypeName, string assemblyToLoadFrom) where T : class
+    public ResultValue<T> TryCreate<T>(string fullTypeName, string assemblyToLoadFrom) where T : class
     {
         PreCondition.RequiresNotNullOrWhitespace(fullTypeName);
         PreCondition.RequiresNotNullOrWhitespace(assemblyToLoadFrom);
 
         AssemblyName assemblyToLoad = new AssemblyName(assemblyToLoadFrom);
         Assembly? assembly = AssemblyLoadContext.Default.LoadFromAssemblyName(assemblyToLoad);
-        if (assembly == null!) return Outcome.Fail<T>($"Unable to load assembly {assemblyToLoadFrom}");
+        if (assembly == null!) return ResultValue<T>.Fail($"Unable to load assembly {assemblyToLoadFrom}");
         
         Type? type = assembly.GetType(fullTypeName);
-        if (type == null) return Outcome.Fail<T>($"Unable to create type {fullTypeName} from assembly {assemblyToLoadFrom}");
+        if (type == null) return ResultValue<T>.Fail($"Unable to create type {fullTypeName} from assembly {assemblyToLoadFrom}");
 
         object? instance = Activator.CreateInstance(type);
-        if (instance == null) return Outcome.Fail<T>($"Could not create instance of type {type.Name}");
+        if (instance == null) return ResultValue<T>.Fail($"Could not create instance of type {type.Name}");
         if (instance is T objT)
         {
-            return Outcome.Succeed<T>(objT);
+            return ResultValue<T>.Succeed(objT);
         }
 
-        return Outcome.Fail<T>($"Type {type.FullName} is not of type {nameof(T)}");
+        return ResultValue<T>.Fail($"Type {type.FullName} is not of type {nameof(T)}");
     }
 
 
@@ -43,7 +43,7 @@ public class ClassFactory
     /// </summary>
     /// <param name="fullTypeName"></param>
     /// <returns></returns>
-    public Outcome<T> TryCreate<T>(string fullTypeName) where T : class
+    public ResultValue<T> TryCreate<T>(string fullTypeName) where T : class
     {
         PreCondition.RequiresNotNullOrWhitespace(fullTypeName);
         Type? typeToCreate = Type.GetType(fullTypeName);
@@ -60,7 +60,7 @@ public class ClassFactory
                 return TryCreate<T>(typeToCreate);
         }
 
-        return Outcome.Fail<T>($"No assembly contains {fullTypeName}");
+        return ResultValue<T>.Fail($"No assembly contains {fullTypeName}");
     }
 
     /// <summary>
@@ -68,23 +68,23 @@ public class ClassFactory
     /// </summary>
     /// <param name="typeToCreate"></param>
     /// <returns></returns>
-    public Outcome<T> TryCreate<T>(Type typeToCreate) where T : class
+    public ResultValue<T> TryCreate<T>(Type typeToCreate) where T : class
     {
         PreCondition.RequiresNotNull(typeToCreate);
         try
         {
             object? obj = Activator.CreateInstance(typeToCreate);
-            if (obj == null) return Outcome.Fail<T>($"Could not create instance of type {typeToCreate.Name}");
+            if (obj == null) return ResultValue<T>.Fail($"Could not create instance of type {typeToCreate.Name}");
             if (obj is T objT)
             {
-                return Outcome.Succeed(objT);
+                return ResultValue<T>.Succeed(objT);
             }
 
-            return Outcome.Fail<T>($"Type {typeToCreate.FullName} is not of type {nameof(T)}");
+            return ResultValue<T>.Fail($"Type {typeToCreate.FullName} is not of type {nameof(T)}");
         }
         catch (Exception e)
         {
-            return Outcome.Fail<T>($"Type {typeToCreate.FullName} could not be created. {e.Message}");
+            return ResultValue<T>.Fail($"Type {typeToCreate.FullName} could not be created. {e.Message}");
         }
     }
 }

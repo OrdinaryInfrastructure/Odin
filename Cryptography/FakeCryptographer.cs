@@ -14,11 +14,16 @@ namespace Odin.Cryptography
         /// </summary>
         /// <param name="protectedString"></param>
         /// <returns></returns>
-        public Outcome<string?> TryDecrypt(string protectedString)
+        public ResultValue<string?> TryDecrypt(string protectedString)
         {
-            return Outcome.Succeed<string?>(protectedString);
+            return ResultValue<string?>.Succeed(protectedString);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="protectedString"></param>
+        /// <returns></returns>
         public string Decrypt(string protectedString)
         {
             return protectedString;
@@ -29,11 +34,16 @@ namespace Odin.Cryptography
         /// </summary>
         /// <param name="unProtectedString"></param>
         /// <returns></returns>
-        public Outcome<string?> TryEncrypt(string unProtectedString)
+        public ResultValue<string?> TryEncrypt(string unProtectedString)
         {
-            return Outcome.Succeed<string?>(unProtectedString);
+            return ResultValue<string?>.Succeed(unProtectedString);
         }
 
+        /// <summary>
+        /// Returns unprotected
+        /// </summary>
+        /// <param name="unProtectedString"></param>
+        /// <returns></returns>
         public string Encrypt(string unProtectedString)
         {
             return unProtectedString;

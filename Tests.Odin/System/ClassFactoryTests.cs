@@ -12,7 +12,7 @@ namespace Tests.Odin.System
         public void TryCreate_by_type()
         {
             ClassFactory activator = new ClassFactory();
-            Outcome<IEmailSenderServiceInjector> result = activator.TryCreate<IEmailSenderServiceInjector>(typeof(MailgunServiceInjector));
+            ResultValue<IEmailSenderServiceInjector> result = activator.TryCreate<IEmailSenderServiceInjector>(typeof(MailgunServiceInjector));
 
             Assert.That(result, Is.Not.Null);
             Assert.That(result.Success, Is.True);
@@ -24,7 +24,7 @@ namespace Tests.Odin.System
         public void TryCreate_by_typename()
         {
             ClassFactory activator = new ClassFactory();
-            Outcome<IEmailSenderServiceInjector> result = activator.TryCreate<IEmailSenderServiceInjector>("Odin.Email.MailgunServiceInjector");
+            ResultValue<IEmailSenderServiceInjector> result = activator.TryCreate<IEmailSenderServiceInjector>("Odin.Email.MailgunServiceInjector");
 
             Assert.That(result, Is.Not.Null);
             Assert.That(result.Success, Is.True);

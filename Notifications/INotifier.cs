@@ -13,6 +13,6 @@ namespace Odin.Notifications
         /// <param name="subject"></param>
         /// <param name="dataToSerialize"></param>
         /// <returns></returns>
-        Task<Outcome> SendNotification(string subject, params object[] dataToSerialize);
+        Task<Result> SendNotification(string subject, params object[] dataToSerialize);
     }
 }

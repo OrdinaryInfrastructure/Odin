@@ -63,7 +63,7 @@ namespace Odin.Email
         /// Validates the settings instance
         /// </summary>
         /// <returns></returns>
-        public Outcome Validate()
+        public Result Validate()
         {
             List<string> errors = new List<string>();
             if (!EmailSendingProviders.IsProviderSupported(Provider))
@@ -71,7 +71,7 @@ namespace Odin.Email
                 errors.Add(
                     $"{nameof(Provider)}: {Provider} is not supported. Supported providers are {string.Join(",", EmailSendingProviders.GetAllProviders())}");
             }
-            return new Outcome(!errors.Any(), errors);
+            return new Result(!errors.Any(), errors);
         }
         
     }

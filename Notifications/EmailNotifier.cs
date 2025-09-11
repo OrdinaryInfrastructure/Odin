@@ -33,12 +33,12 @@ namespace Odin.Notifications
         /// <param name="subject"></param>
         /// <param name="dataToSerialize"></param>
         /// <returns></returns>
-        public async Task<Outcome> SendNotification(string subject, params object[] dataToSerialize)
+        public async Task<Result> SendNotification(string subject, params object[] dataToSerialize)
         {
             PreCondition.Requires<ArgumentNullException>(!string.IsNullOrWhiteSpace(subject),
                 $"{nameof(subject)} is required");
             List<EmailAddress> emails = _options.GetToEmails();
-            if (emails == null! || emails.Count==0) return Outcome.Fail($"{nameof(EmailNotifierOptions)} has no ToEmails configured.");
+            if (emails == null! || emails.Count==0) return Result.Fail($"{nameof(EmailNotifierOptions)} has no ToEmails configured.");
 
             EmailMessage email = new EmailMessage();
             if (!string.IsNullOrWhiteSpace(_options.FromEmail))
@@ -90,12 +90,12 @@ namespace Odin.Notifications
             try
             {
                 var sendResult = await _emailSender.SendEmail(email);
-                if (sendResult.Success) return Outcome.Succeed();
-                return Outcome.Fail($"EmailNotifier failed to send notification: {sendResult.MessagesToString()}");
+                if (sendResult.Success) return Result.Succeed();
+                return Result.Fail($"EmailNotifier failed to send notification: {sendResult.MessagesToString()}");
             }
             catch (Exception err)// swallow
             {
-                return Outcome.Fail($"EmailNotifier failed to send notification: {err.Message}");
+                return Result.Fail($"EmailNotifier failed to send notification: {err.Message}");
             }
         }
     }

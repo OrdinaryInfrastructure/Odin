@@ -26,7 +26,7 @@ public class StringEnumMemberAttribute<TStringEnum> : ValidationAttribute where 
             return new ValidationResult($"{validationContext.DisplayName} must be a string.");
         }
 
-        Outcome valid = StringEnum<TStringEnum>.HasValue(str);
+        Result valid = StringEnum<TStringEnum>.HasValue(str);
         if (!valid.Success)
         {
             return new ValidationResult(valid.MessagesToString());

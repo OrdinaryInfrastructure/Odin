@@ -92,11 +92,11 @@ namespace Odin.BackgroundProcessing
             BackgroundProcessingOptions options = new BackgroundProcessingOptions();
             configurationSection.Bind(options);
 
-            Outcome configOutcome = options.Validate();
-            if (!configOutcome.Success)
+            Result configResult = options.Validate();
+            if (!configResult.Success)
             {
                 throw new ApplicationException(
-                    $"{nameof(AddBackgroundProcessing)}: Invalid BackgroundProcessing configuration. Errors are: {configOutcome.MessagesToString()}");
+                    $"{nameof(AddBackgroundProcessing)}: Invalid BackgroundProcessing configuration. Errors are: {configResult.MessagesToString()}");
             }
 
             serviceCollection.TryAddSingleton(options);
@@ -114,7 +114,7 @@ namespace Odin.BackgroundProcessing
             string providerName = $"Odin.BackgroundProcessing.{options.Provider}BackgroundProcessor";
 
             ClassFactory activator = new ClassFactory();
-            Outcome<IBackgroundProcessorServiceInjector> serviceInjectorCreation =
+            ResultValue<IBackgroundProcessorServiceInjector> serviceInjectorCreation =
                 activator.TryCreate<IBackgroundProcessorServiceInjector>(
                     $"{providerAssemblyName}ServiceInjector", providerAssemblyName);
 
@@ -150,7 +150,7 @@ namespace Odin.BackgroundProcessing
 
             ClassFactory activator = new ClassFactory();
             string providerAssemblyName = $"Odin.BackgroundProcessing.{options.Provider}";
-            Outcome<IBackgroundProcessorServiceInjector> serviceInjectorCreation =
+            ResultValue<IBackgroundProcessorServiceInjector> serviceInjectorCreation =
                 activator.TryCreate<IBackgroundProcessorServiceInjector>(
                     $"{providerAssemblyName}ServiceInjector", providerAssemblyName);
 

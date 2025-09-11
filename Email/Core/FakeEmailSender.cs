@@ -12,9 +12,9 @@ namespace Odin.Email
         /// </summary>
         /// <param name="email"></param>
         /// <returns></returns>
-        public async Task<Outcome<string?>> SendEmail(IEmailMessage email)
+        public async Task<ResultValue<string?>> SendEmail(IEmailMessage email)
         {
-            return await Task.FromResult(Outcome.Succeed<string?>("12345"));
+            return await Task.FromResult(ResultValue<string?>.Succeed("12345"));
         }
     }
 }

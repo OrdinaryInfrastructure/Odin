@@ -39,16 +39,16 @@ public class RazorLightTemplateRenderer : IRazorTemplateRenderer
     }
 
     /// <inheritdoc />
-    public async Task<Outcome<string>> RenderAsync<TModel>(string templateKey, TModel viewModel)
+    public async Task<ResultValue<string>> RenderAsync<TModel>(string templateKey, TModel viewModel)
     {
         try
         {
             string result = await _razorLightEngine.CompileRenderAsync<TModel>(templateKey, viewModel);
-            return Outcome.Succeed<string>(result);
+            return ResultValue<string>.Succeed(result);
         }
         catch (Exception err)
         {
-            return Outcome.Fail<string>(err.Message);
+            return ResultValue<string>.Fail(err.Message);
         }
     }
 }

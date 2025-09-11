@@ -30,7 +30,7 @@ public class RemoteFileSessionFactoryTests
         };
         RemoteFileSessionFactory sut = new RemoteFileSessionFactory(remoteFileConfig);
         
-        Outcome<IRemoteFileSession> result = sut.CreateRemoteFileSession("test.connection.co.za");
+        ResultValue<IRemoteFileSession> result = sut.CreateRemoteFileSession("test.connection.co.za");
         
         Assert.That(result.Success, Is.False);
         Assert.That(result.MessagesToString(), Contains.Substring("Connection name not supported or configured: test.connection.co.za"));
@@ -48,7 +48,7 @@ public class RemoteFileSessionFactoryTests
         };
         RemoteFileSessionFactory sut = new RemoteFileSessionFactory(remoteFileConfig);
         
-        Outcome<IRemoteFileSession> result = sut.CreateRemoteFileSession("test.connection.co.za");
+        ResultValue<IRemoteFileSession> result = sut.CreateRemoteFileSession("test.connection.co.za");
         
         Assert.That(result.Success, Is.False);    
         Assert.That(result.MessagesToString(), Is.EqualTo("Unable to determine protocol from connection string. Connection: test.connection.co.za"));
@@ -68,7 +68,7 @@ public class RemoteFileSessionFactoryTests
         };
         RemoteFileSessionFactory sut = new RemoteFileSessionFactory(remoteFileConfig);
         
-        Outcome<IRemoteFileSession> result = sut.CreateRemoteFileSession("test.connection.co.za");
+        ResultValue<IRemoteFileSession> result = sut.CreateRemoteFileSession("test.connection.co.za");
         
         Assert.That(result.Success, Is.False);   
         Assert.That(result.MessagesToString(), Is.EqualTo("Unable to determine protocol from connection string. Connection: test.connection.co.za"));
@@ -86,7 +86,7 @@ public class RemoteFileSessionFactoryTests
         };
         RemoteFileSessionFactory sut = new RemoteFileSessionFactory(remoteFileConfig);
         
-        Outcome<IRemoteFileSession> result = sut.CreateRemoteFileSession("test.connection.co.za");
+        ResultValue<IRemoteFileSession> result = sut.CreateRemoteFileSession("test.connection.co.za");
         
         Assert.That( result.Success, Is.False);          
         Assert.That(result.MessagesToString(), Is.EqualTo($"Protocol is not supported: {ConnectionProtocol.Https}"));
@@ -105,7 +105,7 @@ public class RemoteFileSessionFactoryTests
         };
         RemoteFileSessionFactory sut = new RemoteFileSessionFactory(remoteFileConfig);
         
-        Outcome<IRemoteFileSession> result = sut.CreateRemoteFileSession("test.connection.co.za");
+        ResultValue<IRemoteFileSession> result = sut.CreateRemoteFileSession("test.connection.co.za");
         
         Assert.That(result.Success, Is.True);
         Assert.That(result.Value.GetType(), Is.EqualTo(resultType));
