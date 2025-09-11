@@ -73,6 +73,7 @@ namespace Odin.Cryptography
             }
         }
 
+        /// <inheritdoc />
         public string Encrypt(string unProtectedString)
         {
             return _protector.Protect(unProtectedString);

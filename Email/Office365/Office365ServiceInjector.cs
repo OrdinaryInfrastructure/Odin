@@ -5,8 +5,10 @@ using Odin.DesignContracts;
 
 namespace Odin.Email;
 
+/// <inheritdoc />
 public class Office365ServiceInjector : IEmailSenderServiceInjector
 {
+    /// <inheritdoc />
     public void TryAddEmailSender(IServiceCollection serviceCollection, IConfigurationSection emailConfigurationSection)
     {
         PreCondition.RequiresNotNull(emailConfigurationSection);
