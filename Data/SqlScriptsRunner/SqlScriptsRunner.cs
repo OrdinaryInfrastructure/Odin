@@ -60,7 +60,7 @@ namespace Odin.Data
             };
             if (string.IsNullOrWhiteSpace(runner.ConnectionString))
             {
-                return Result.Fail<SqlScriptsRunner>(
+                return ResultValue<SqlScriptsRunner>.Fail(
                     $"No ConnectionString named {connectionStringName} exists in application configuration.");
             }
 
@@ -70,10 +70,10 @@ namespace Odin.Data
             }
             catch (Exception err)
             {
-                return Result.Fail<SqlScriptsRunner>($"Unable to build connectionString. {err.Message}");
+                return ResultValue<SqlScriptsRunner>.Fail($"Unable to build connectionString. {err.Message}");
             }
 
-            return Result.Succeed(runner);
+            return ResultValue<SqlScriptsRunner>.Succeed(runner);
         }
 
         public static ResultValue<SqlScriptsRunner> CreateFromConnectionString(string connectionString, Assembly assemblyWithEmbeddedScripts)
@@ -90,10 +90,10 @@ namespace Odin.Data
             }
             catch (Exception err)
             {
-                return Result.Fail<SqlScriptsRunner>($"Unable to build connectionString. {err.Message}");
+                return ResultValue<SqlScriptsRunner>.Fail($"Unable to build connectionString. {err.Message}");
             }
 
-            return Result.Succeed(runner);
+            return ResultValue<SqlScriptsRunner>.Succeed(runner);
         }
 
 

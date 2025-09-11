@@ -44,11 +44,11 @@ public class RazorLightTemplateRenderer : IRazorTemplateRenderer
         try
         {
             string result = await _razorLightEngine.CompileRenderAsync<TModel>(templateKey, viewModel);
-            return Result.Succeed<string>(result);
+            return ResultValue<string>.Succeed(result);
         }
         catch (Exception err)
         {
-            return Result.Fail<string>(err.Message);
+            return ResultValue<string>.Fail(err.Message);
         }
     }
 }

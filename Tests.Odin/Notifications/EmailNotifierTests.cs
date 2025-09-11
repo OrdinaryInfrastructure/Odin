@@ -60,7 +60,7 @@ namespace Tests.Odin.Notifications
                 .WithNotifierOptionsFromConfiguration(AppFactory.GetConfiguration());
             
             scenario.EmailSenderMock.Setup(c => c.SendEmail(It.IsAny<IEmailMessage>()))
-                .ReturnsAsync(Result.Succeed<string>("12345"));
+                .ReturnsAsync(ResultValue<string>.Succeed("12345"));
             EmailNotifier sut = scenario.Build();
 
             Result outcome1 = await sut.SendNotification("Subject");

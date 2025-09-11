@@ -36,15 +36,15 @@ namespace Odin.BackgroundProcessing
             switch (Behaviour)
             {
                 case FakeBackgroundJobProviderBehaviour.ReturnSuccessfulOutcome:
-                    return Result.Succeed(new JobDetails("1", enqueueAt));
+                    return ResultValue<JobDetails>.Succeed(new JobDetails("1", enqueueAt));
                 case FakeBackgroundJobProviderBehaviour.ReturnFailedOutcome:
-                    return Result.Fail<JobDetails>("FakeBackgroundJobProvider faking an error");
+                    return ResultValue<JobDetails>.Fail("FakeBackgroundJobProvider faking an error");
                 case FakeBackgroundJobProviderBehaviour.ReturnNull:
                     return null!;
                 case FakeBackgroundJobProviderBehaviour.ThrowException:
                     throw new ApplicationException("FakeBackgroundJobProvider throwing an exception");
                 default:
-                    return Result.Fail<JobDetails>($"Unknown Behaviour - {Behaviour}");
+                    return ResultValue<JobDetails>.Fail($"Unknown Behaviour - {Behaviour}");
             }
         }
 
@@ -73,15 +73,15 @@ namespace Odin.BackgroundProcessing
             switch (Behaviour)
             {
                 case FakeBackgroundJobProviderBehaviour.ReturnSuccessfulOutcome:
-                    return Result.Succeed(new JobDetails("1", enqueueAt));
+                    return ResultValue<JobDetails>.Succeed(new JobDetails("1", enqueueAt));
                 case FakeBackgroundJobProviderBehaviour.ReturnFailedOutcome:
-                    return Result.Fail<JobDetails>("FakeBackgroundJobProvider faking an error");
+                    return ResultValue<JobDetails>.Fail("FakeBackgroundJobProvider faking an error");
                 case FakeBackgroundJobProviderBehaviour.ReturnNull:
                     return null!;
                 case FakeBackgroundJobProviderBehaviour.ThrowException:
                     throw new ApplicationException("FakeBackgroundJobProvider throwing an exception");
                 default:
-                    return Result.Fail<JobDetails>($"Unknown Behaviour - {Behaviour}");
+                    return ResultValue<JobDetails>.Fail($"Unknown Behaviour - {Behaviour}");
             }
         }
 

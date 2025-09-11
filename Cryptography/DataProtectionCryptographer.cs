@@ -34,7 +34,7 @@ namespace Odin.Cryptography
             try
             {
                 string decrypted = _protector.Unprotect(protectedString);
-                return Result.Succeed<string?>(decrypted);
+                return ResultValue<string?>.Succeed(decrypted);
             }
             catch (Exception err)
             {
@@ -43,6 +43,11 @@ namespace Odin.Cryptography
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="protectedString"></param>
+        /// <returns></returns>
         public string Decrypt(string protectedString)
         {
             return _protector.Unprotect(protectedString);
@@ -55,16 +60,16 @@ namespace Odin.Cryptography
         /// <returns></returns>
         public ResultValue<string?> TryEncrypt(string unProtectedString)
         {
-            if (string.IsNullOrWhiteSpace(unProtectedString)) return Result.Fail<string?>($"{nameof(unProtectedString)} is null");
+            if (string.IsNullOrWhiteSpace(unProtectedString)) return ResultValue<string?>.Fail($"{nameof(unProtectedString)} is null");
             try
             {
                 string encrypted = _protector.Protect(unProtectedString);
-                return Result.Succeed<string?>(encrypted);
+                return ResultValue<string?>.Succeed(encrypted);
             }
             catch (Exception err)
             {
                 _logger.LogError($"{nameof(TryEncrypt)} error",err);
-                return Result.Fail<string?>(err.Message);
+                return ResultValue<string?>.Fail(err.Message);
             }
         }
 

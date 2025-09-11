@@ -45,13 +45,13 @@ namespace Odin.BackgroundProcessing
             try
             {
                 string jobId = _jobClient.Schedule<T>(methodCall, enqueueAt);
-                return Result.Succeed(new JobDetails(jobId, enqueueAt));
+                return ResultValue<JobDetails>.Succeed(new JobDetails(jobId, enqueueAt));
             }
             catch (Exception err)
             {
                 string message = $"Exception scheduling {methodCall.Name} for {enqueueAt}. {err.Message}";
                 _logger.LogError($"{nameof(ScheduleJob)}: {message}", err);
-                return Result.Fail<JobDetails>(message);
+                return ResultValue<JobDetails>.Fail(message);
             }
         }
         
@@ -67,13 +67,13 @@ namespace Odin.BackgroundProcessing
             try
             {
                 string jobId = _jobClient.Schedule<T>(methodCall, enqueueAt);
-                return Result.Succeed(new JobDetails(jobId, enqueueAt));
+                return ResultValue<JobDetails>.Succeed(new JobDetails(jobId, enqueueAt));
             }
             catch (Exception err)
             {
                 string message = $"Exception scheduling {methodCall.Name} for {enqueueAt}. {err.Message}";
                 _logger.LogError($"{nameof(ScheduleJob)}: {message}", err);
-                return Result.Fail<JobDetails>(message);
+                return ResultValue<JobDetails>.Fail(message);
             }
         }
 
