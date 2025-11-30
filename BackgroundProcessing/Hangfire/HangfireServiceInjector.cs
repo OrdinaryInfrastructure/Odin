@@ -66,7 +66,7 @@ namespace Odin.BackgroundProcessing
                 return GetSqlServerOptions(opts);
             }
 
-            serviceCollection.AddLoggerAdapter();
+            serviceCollection.AddLogger2();
             serviceCollection.AddTransient<IBackgroundProcessor, HangfireBackgroundProcessor>();
             
             serviceCollection.AddHangfire((sp, c) => c

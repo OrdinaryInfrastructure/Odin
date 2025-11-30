@@ -10,14 +10,14 @@ namespace Odin.Cryptography
     public sealed class DataProtectionCryptographer : ICryptographer
     {
         IDataProtector _protector;
-        private ILoggerAdapter<DataProtectionCryptographer> _logger;
+        private ILogger2<DataProtectionCryptographer> _logger;
 
         /// <summary>
         /// Default constructor
         /// </summary>
         /// <param name="provider"></param>
         /// <param name="logger"></param>
-        public DataProtectionCryptographer(IDataProtectionProvider provider, ILoggerAdapter<DataProtectionCryptographer> logger)
+        public DataProtectionCryptographer(IDataProtectionProvider provider, ILogger2<DataProtectionCryptographer> logger)
         {
             _logger = logger;
             _protector = provider.CreateProtector("Default");

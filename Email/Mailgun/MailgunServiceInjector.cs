@@ -25,7 +25,7 @@ namespace Odin.Email
             {
                 throw new ApplicationException($"Invalid {nameof(MailgunOptions)}: {validationResult.MessagesToString()}");
             }
-            serviceCollection.AddLoggerAdapter();
+            serviceCollection.AddLogger2();
             serviceCollection.TryAddSingleton(mailGunSenderSettings);
             serviceCollection.TryAddTransient<IEmailSender, MailgunEmailSender>();
         }

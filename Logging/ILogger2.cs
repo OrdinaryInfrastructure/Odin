@@ -3,18 +3,21 @@
 namespace Odin.Logging
 {
     /// <summary>
-    /// Logging adapter interface to wrap ILogger mainly to ease mocking in tests...
+    /// Provides an expanded ILogger and ILogger of T interface for LogXXX(a, b, c, ...) calls 
+    /// on the same basis as the .NET LoggerExtensions extension methods,
+    /// that is much more convenient for asserting logger calls compared to mocking ILogger, 
+    /// and asserting ILogger -> Log(LogLevel logLevel, EventId eventId, TState state, Exception? exception, etc...
+    /// Odin = OrDinary INfrastructure.
     /// </summary>
     /// <typeparam name="TCategoryName"></typeparam>
-    public interface ILoggerAdapter<out TCategoryName> : ILoggerAdapter
+    public interface ILogger2<out TCategoryName> : ILogger2
     {
-
     }
 
     /// <summary>
     /// Logging adapter interface to wrap ILogger mainly to ease mocking in tests
     /// </summary>
-    public interface ILoggerAdapter : ILogger
+    public interface ILogger2 : ILogger
     {
         /// <summary>
         /// Log
@@ -37,7 +40,7 @@ namespace Odin.Logging
             Exception? exception,
             string? message,
             params object?[] args);
-        
+
         /// <summary>
         /// Log
         /// </summary>
@@ -51,57 +54,55 @@ namespace Odin.Logging
         /// <param name="level"></param>
         /// <param name="argsToLogAsJson"></param>
         void LogToJson(LogLevel level, params object[] argsToLogAsJson);
-        
+
         /// <summary>
         /// LogTrace
         /// </summary>
         /// <param name="message"></param>
         void LogTrace(string message);
-        
+
         /// <summary>
         /// LogDebug
         /// </summary>
         /// <param name="message"></param>
         void LogDebug(string message);
-        
+
         /// <summary>
         /// LogInformation
         /// </summary>
         /// <param name="message"></param>
         void LogInformation(string message);
-        
+
         /// <summary>
         /// LogWarning
         /// </summary>
         /// <param name="message"></param>
         void LogWarning(string message);
-        
+
         /// <summary>
         /// LogError
         /// </summary>
         /// <param name="message"></param>
         /// <param name="err"></param>
         void LogError(string message, Exception? err = null);
-        
+
         /// <summary>
         /// LogError
         /// </summary>
         /// <param name="err"></param>
         void LogError(Exception err);
-        
+
         /// <summary>
         /// LogCritical
         /// </summary>
         /// <param name="message"></param>
         /// <param name="err"></param>
         void LogCritical(string message, Exception? err = null);
-        
+
         /// <summary>
         /// LogCritical
         /// </summary>
         /// <param name="err"></param>
         void LogCritical(Exception err);
-
-
     }
-}  
+}

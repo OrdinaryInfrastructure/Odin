@@ -12,7 +12,7 @@ namespace Odin.BackgroundProcessing
     /// </summary>
     public sealed class HangfireBackgroundProcessor : IBackgroundProcessor
     {
-        private readonly ILoggerAdapter<HangfireBackgroundProcessor> _logger;
+        private readonly ILogger2<HangfireBackgroundProcessor> _logger;
         private readonly IRecurringJobManagerV2 _recurringJobManager;
         private readonly IBackgroundJobClient _jobClient;
 
@@ -22,7 +22,7 @@ namespace Odin.BackgroundProcessing
         /// <param name="recurringJobManager"></param>
         /// <param name="jobClient"></param>
         /// <param name="logger"></param>
-        public HangfireBackgroundProcessor(IRecurringJobManagerV2 recurringJobManager, IBackgroundJobClient jobClient, ILoggerAdapter<HangfireBackgroundProcessor> logger)
+        public HangfireBackgroundProcessor(IRecurringJobManagerV2 recurringJobManager, IBackgroundJobClient jobClient, ILogger2<HangfireBackgroundProcessor> logger)
         {
             PreCondition.RequiresNotNull(recurringJobManager);
             PreCondition.RequiresNotNull(jobClient);
