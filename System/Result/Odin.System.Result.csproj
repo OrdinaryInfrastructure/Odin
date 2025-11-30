@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net9.0;net10.0</TargetFrameworks>
+    <RootNamespace>Odin.System</RootNamespace>
+    <ImplicitUsings>true</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <Description>Common elements used in the OrdinaryInfrastructure libraries, including logging, design contract elements, and various other elements. 
+            
+Odin = OrDinary INfrastructure.
+        </Description>
+    <WarningsAsErrors>1591;1573;</WarningsAsErrors> <!-- Not to be removed. Documentation is required. -->
+  </PropertyGroup>
+  <ItemGroup>
+  </ItemGroup>
+</Project>
