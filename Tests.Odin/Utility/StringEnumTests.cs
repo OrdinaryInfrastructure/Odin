@@ -4,7 +4,7 @@ using NUnit.Framework;
 using Odin;
 using Odin.Utility;
 
-namespace Tests.Odin.System
+namespace Tests.Odin.Utility
 {
     [TestFixture]
     public sealed class StringEnumTests
