@@ -10,8 +10,8 @@ namespace Tests.Odin.Email.Mailgun
 {
     public sealed class MailgunEmailSenderTestBuilder: IBuilder<MailgunEmailSender>
     {
-        public ILoggerAdapter<MailgunEmailSender> Logger = null!;
-        public Mock<ILoggerAdapter<MailgunEmailSender>>? LoggerMock;
+        public ILogger2<MailgunEmailSender> Logger = null!;
+        public Mock<ILogger2<MailgunEmailSender>>? LoggerMock;
         public EmailSendingOptions EmailSendingOptions = null!;
         public Mock<EmailSendingOptions>? EmailSendingOptionsMock;
         public MailgunOptions MailgunOptions = null!;
@@ -32,7 +32,7 @@ namespace Tests.Odin.Email.Mailgun
             }
             if (Logger is null)
             {
-                LoggerMock = new Mock<ILoggerAdapter<MailgunEmailSender>>();
+                LoggerMock = new Mock<ILogger2<MailgunEmailSender>>();
                 Logger = LoggerMock.Object;
             }
             if (EmailSendingOptions is null)

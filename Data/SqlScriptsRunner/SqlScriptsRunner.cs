@@ -18,7 +18,7 @@ namespace Odin.Data
     /// </summary>
     public class SqlScriptsRunner
     {
-        // private readonly ILoggerAdapter<T> _logger;
+        // private readonly ILogger2<T> _logger;
 
         private readonly Assembly _assemblyWithEmbeddedScripts;
         private SqlConnectionStringBuilder _connectionStringBuilder = null!;

@@ -5,18 +5,18 @@ using Odin.Logging;
 namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>
-    /// Dependency injection methods to support ILoggerAdapter of T 
+    /// Dependency injection methods to support ILogger2 of T 
     /// </summary>
-    public static class LoggerAdapterExtensions
+    public static class Logger2Extensions
     {
         /// <summary>
-        /// Sets up ILoggerAdapter of T in dependency injection
+        /// Sets up ILogger2 of T in dependency injection
         /// </summary>
         /// <param name="serviceCollection"></param>
         /// <returns></returns>
-        public static void AddLoggerAdapter(this IServiceCollection serviceCollection)
+        public static void AddLogger2(this IServiceCollection serviceCollection)
         {
-            serviceCollection.TryAddSingleton(typeof(ILoggerAdapter<>), typeof(LoggerAdapter<>));
+            serviceCollection.TryAddSingleton(typeof(ILogger2<>), typeof(Logger2<>));
         }
     }
 }
