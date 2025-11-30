@@ -2,7 +2,7 @@ using System.Reflection;
 using System.Runtime.Loader;
 using Odin.DesignContracts;
 
-namespace Odin.System;
+namespace Odin.Utility;
 
 /// <summary>
 /// 

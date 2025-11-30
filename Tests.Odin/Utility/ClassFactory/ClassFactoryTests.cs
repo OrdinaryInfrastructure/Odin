@@ -11,7 +11,7 @@ namespace Tests.Odin.Utility.ClassFactory
         [Test]
         public void TryCreate_by_type()
         {
-            global::Odin.System.ClassFactory activator = new global::Odin.System.ClassFactory();
+            global::Odin.Utility.ClassFactory activator = new global::Odin.Utility.ClassFactory();
             ResultValue<IEmailSenderServiceInjector> result = activator.TryCreate<IEmailSenderServiceInjector>(typeof(MailgunServiceInjector));
 
             Assert.That(result, Is.Not.Null);
@@ -23,7 +23,7 @@ namespace Tests.Odin.Utility.ClassFactory
         [Test]
         public void TryCreate_by_typename()
         {
-            global::Odin.System.ClassFactory activator = new global::Odin.System.ClassFactory();
+            global::Odin.Utility.ClassFactory activator = new global::Odin.Utility.ClassFactory();
             ResultValue<IEmailSenderServiceInjector> result = activator.TryCreate<IEmailSenderServiceInjector>("Odin.Email.MailgunServiceInjector");
 
             Assert.That(result, Is.Not.Null);

@@ -65,8 +65,7 @@ jobs:
         dotnet pack ./RemoteFiles/Abstractions/Odin.RemoteFiles.Abstractions.csproj --configuration $CONFIGURATION --output $PACKAGE_DIR
         dotnet pack ./RemoteFiles/SFTP/Odin.RemoteFiles.SFTP.csproj --configuration $CONFIGURATION --output $PACKAGE_DIR
         dotnet pack ./RemoteFiles/Core/Odin.RemoteFiles.csproj --configuration $CONFIGURATION --output $PACKAGE_DIR
-        dotnet pack ./System/Core/Odin.System.csproj --configuration $CONFIGURATION --output $PACKAGE_DIR
-        dotnet pack ./Result/Odin.System.Result.csproj --configuration $CONFIGURATION --output $PACKAGE_DIR
+        dotnet pack ./Result/Odin.Result.csproj --configuration $CONFIGURATION --output $PACKAGE_DIR
         dotnet pack ./Templating/Razor.Abstractions/Odin.Templating.Razor.Abstractions.csproj --configuration $CONFIGURATION --output $PACKAGE_DIR
         dotnet pack ./Templating/Razor/Odin.Templating.Razor.csproj --configuration $CONFIGURATION --output $PACKAGE_DIR
         dotnet pack ./Utility/VaryingValues/Odin.Utility.VaryingValues.csproj --configuration $CONFIGURATION --output $PACKAGE_DIR
