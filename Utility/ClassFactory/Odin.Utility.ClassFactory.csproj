@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
-    <RootNamespace>Odin.System</RootNamespace>
+    <RootNamespace>Odin.Utility</RootNamespace>
     <ImplicitUsings>true</ImplicitUsings>
     <Nullable>enable</Nullable>
     <Description>Leftover elements used in the OrdinaryInfrastructure libraries that don't really have a home. 
