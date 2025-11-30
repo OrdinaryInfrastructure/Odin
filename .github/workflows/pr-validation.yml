@@ -18,6 +18,8 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 10.x.x
+    - name: Test on .Net 8
+      run: dotnet test Tests.Odin/Tests.Odin.csproj -f net8.0 --verbosity quiet --filter "FullyQualifiedName!~Odin.Email.Mailgun&FullyQualifiedName!~Odin.Email.Office365"
     - name: Test on .Net 9
       run: dotnet test Tests.Odin/Tests.Odin.csproj -f net9.0 --verbosity quiet --filter "FullyQualifiedName!~Odin.Email.Mailgun&FullyQualifiedName!~Odin.Email.Office365"
     - name: Test on .Net 10
