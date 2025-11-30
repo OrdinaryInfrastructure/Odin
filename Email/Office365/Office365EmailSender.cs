@@ -17,7 +17,7 @@ public class Office365EmailSender : IEmailSender
     private readonly GraphServiceClient _graphClient;
     private readonly string _senderUserId;
     private readonly EmailSendingOptions _emailSettings;
-    private readonly ILoggerAdapter<Office365EmailSender> _logger;
+    private readonly ILogger2<Office365EmailSender> _logger;
 
     /// <summary>
     /// Sends email via Office365 GraphClient
@@ -25,7 +25,7 @@ public class Office365EmailSender : IEmailSender
     /// <param name="office365Options"></param>
     /// <param name="emailSettings"></param>
     /// <param name="logger">Microsoft UserId</param>
-    public Office365EmailSender(Office365Options office365Options, EmailSendingOptions emailSettings , ILoggerAdapter<Office365EmailSender> logger)
+    public Office365EmailSender(Office365Options office365Options, EmailSendingOptions emailSettings , ILogger2<Office365EmailSender> logger)
     {
         PreCondition.RequiresNotNull(office365Options);
         PreCondition.RequiresNotNull(emailSettings);

@@ -4,18 +4,18 @@ using Odin.Logging;
 
 namespace Tests.Odin.Logging
 {
-    public sealed class LoggerAdapterTestBuilder<T>
+    public sealed class Logger2TestBuilder<T>
     {
-        public LoggerAdapterTestBuilder()
+        public Logger2TestBuilder()
         {
             LoggerMock = new Mock<ILogger<T>>();
         }
 
         public Mock<ILogger<T>> LoggerMock { get; }
 
-        public LoggerAdapter<T> CreateLogger()
+        public Logger2<T> CreateLogger()
         {
-            return new LoggerAdapter<T>(LoggerMock.Object);
+            return new Logger2<T>(LoggerMock.Object);
         }
 
         /// <summary>

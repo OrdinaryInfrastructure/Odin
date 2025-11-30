@@ -22,7 +22,7 @@ namespace Tests.Odin
                 opts.ListenLocalhost(Random.Shared.Next(5000, 5100));
             });
             
-            builder.Services.AddLoggerAdapter();
+            builder.Services.AddLogger2();
             
             WebApplication app = builder.Build();
 

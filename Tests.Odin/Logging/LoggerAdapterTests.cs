@@ -6,13 +6,13 @@ using NUnit.Framework;
 namespace Tests.Odin.Logging
 {
     [TestFixture]
-    public sealed class LoggerAdapterTests
+    public sealed class Logger2Tests
     {
         [Test][Ignore("Verifying ILogger.Log needs to be worked out...")]
         public void LogCritical_logs_critical_with_message()
         {
-            LoggerAdapterTestBuilder<string> loggerTestBuilder = new LoggerAdapterTestBuilder<string>();
-            LoggerAdapter<string> underTest = loggerTestBuilder.CreateLogger();
+            Logger2TestBuilder<string> loggerTestBuilder = new Logger2TestBuilder<string>();
+            Logger2<string> underTest = loggerTestBuilder.CreateLogger();
 
             underTest.LogCritical("message");
 
@@ -22,8 +22,8 @@ namespace Tests.Odin.Logging
         [Test][Ignore("Verifying ILogger.Log needs to be worked out...")]
         public void LogCritical_logs_critical_with_exception()
         {
-            LoggerAdapterTestBuilder<string> loggerTestBuilder = new LoggerAdapterTestBuilder<string>();
-            LoggerAdapter<string> underTest = loggerTestBuilder.CreateLogger();
+            Logger2TestBuilder<string> loggerTestBuilder = new Logger2TestBuilder<string>();
+            Logger2<string> underTest = loggerTestBuilder.CreateLogger();
             Exception ex = new Exception("strange_love");
 
             underTest.LogCritical("message", ex);

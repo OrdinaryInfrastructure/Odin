@@ -18,7 +18,7 @@ namespace Odin.Email
     {
         private readonly MailgunOptions _mailgunSettings;
         private readonly EmailSendingOptions _emailSettings;
-        private readonly ILoggerAdapter<MailgunEmailSender> _logger;
+        private readonly ILogger2<MailgunEmailSender> _logger;
         private HttpClient _httpClient;
         
         private static ResiliencePipeline _resiliencePipeline = new ResiliencePipelineBuilder()
@@ -39,7 +39,7 @@ namespace Odin.Email
         /// <param name="emailSettings"></param>
         /// <param name="logger"></param>
         public MailgunEmailSender(MailgunOptions mailgunSettings,
-            EmailSendingOptions emailSettings, ILoggerAdapter<MailgunEmailSender> logger)
+            EmailSendingOptions emailSettings, ILogger2<MailgunEmailSender> logger)
         {
             PreCondition.RequiresNotNull(mailgunSettings);
             PreCondition.RequiresNotNull(emailSettings);
