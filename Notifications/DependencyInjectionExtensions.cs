@@ -1,8 +1,8 @@
 ﻿using Odin.Notifications;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Odin;
 using Odin.Email;
-using Odin.System;
 using Providers = Odin.Notifications.Providers;
 
 namespace Microsoft.Extensions.DependencyInjection

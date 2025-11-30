@@ -1,7 +1,8 @@
 ﻿using Odin.Notifications;
 
 using NUnit.Framework;
-using Odin.System;
+using Odin;
+
 
 namespace Tests.Odin.Notifications
 {

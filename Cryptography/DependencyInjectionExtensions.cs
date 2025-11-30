@@ -2,7 +2,7 @@
 
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Extensions.Configuration;
-using Odin.System;
+using Odin;
 
 
 namespace Microsoft.Extensions.DependencyInjection

@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Odin.DesignContracts;
 using Odin.System;
 
+
 namespace Odin.Email
 {
     /// <summary>

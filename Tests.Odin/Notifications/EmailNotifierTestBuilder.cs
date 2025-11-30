@@ -3,7 +3,7 @@ using Moq;
 using Odin.DesignContracts;
 using Odin.Email;
 using Odin.Notifications;
-using Odin.System;
+using Odin.Utility;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
 namespace Tests.Odin.Notifications;

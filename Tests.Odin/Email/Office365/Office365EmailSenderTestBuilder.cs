@@ -4,7 +4,7 @@ using Moq;
 using Odin.DesignContracts;
 using Odin.Email;
 using Odin.Logging;
-using Odin.System;
+using Odin.Utility;
 
 namespace Tests.Odin.Email.Office365
 {

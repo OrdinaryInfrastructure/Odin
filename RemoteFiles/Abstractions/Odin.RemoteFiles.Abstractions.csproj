@@ -6,6 +6,6 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\DesignContracts\Odin.DesignContracts.csproj" />
-    <ProjectReference Include="..\..\System\Result\Odin.System.Result.csproj" />
+    <ProjectReference Include="..\..\Result\Odin.Result.csproj" />
   </ItemGroup>
 </Project>

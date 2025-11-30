@@ -1,4 +1,4 @@
-﻿namespace Odin.System
+﻿namespace Odin
 {
     /// <summary>
     /// Represents the success or failure of an operation that returns a Value\Result on success,

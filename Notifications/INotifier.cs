@@ -1,6 +1,4 @@
-﻿using Odin.System;
-
-namespace Odin.Notifications
+﻿namespace Odin.Notifications
 {
     /// <summary>
     /// Abstracts sending system notifications... Frees up the possibility for email, Team, Slack, SMS, etc....

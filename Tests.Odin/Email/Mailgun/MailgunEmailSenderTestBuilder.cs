@@ -1,10 +1,11 @@
 ﻿#nullable enable
 using Microsoft.Extensions.Configuration;
 using Moq;
+using Odin;
 using Odin.DesignContracts;
 using Odin.Email;
 using Odin.Logging;
-using Odin.System;
+using Odin.Utility;
 
 namespace Tests.Odin.Email.Mailgun
 {

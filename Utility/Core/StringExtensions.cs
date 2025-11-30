@@ -1,6 +1,6 @@
 ﻿using Odin.DesignContracts;
 
-namespace Odin.System
+namespace Odin.Utility
 {
     /// <summary>
     /// Common string extension utilities

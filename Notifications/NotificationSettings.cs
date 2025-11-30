@@ -1,7 +1,4 @@
-﻿using Odin.System;
-
-
-namespace Odin.Notifications
+﻿namespace Odin.Notifications
 {
     /// <summary>
     /// Notifications settings for loading from configuration 

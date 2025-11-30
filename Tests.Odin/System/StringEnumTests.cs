@@ -1,7 +1,8 @@
 ﻿#nullable enable
 using System.Collections.Immutable;
 using NUnit.Framework;
-using Odin.System;
+using Odin;
+using Odin.Utility;
 
 namespace Tests.Odin.System
 {
