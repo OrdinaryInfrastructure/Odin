@@ -2,10 +2,8 @@
 using NUnit.Framework;
 using Odin;
 using Odin.Email;
-using Odin.System;
 
-
-namespace Tests.Odin.System
+namespace Tests.Odin.Utility.ClassFactory
 {
     [TestFixture]
     public sealed class ClassFactoryTests
@@ -13,7 +11,7 @@ namespace Tests.Odin.System
         [Test]
         public void TryCreate_by_type()
         {
-            ClassFactory activator = new ClassFactory();
+            global::Odin.System.ClassFactory activator = new global::Odin.System.ClassFactory();
             ResultValue<IEmailSenderServiceInjector> result = activator.TryCreate<IEmailSenderServiceInjector>(typeof(MailgunServiceInjector));
 
             Assert.That(result, Is.Not.Null);
@@ -25,7 +23,7 @@ namespace Tests.Odin.System
         [Test]
         public void TryCreate_by_typename()
         {
-            ClassFactory activator = new ClassFactory();
+            global::Odin.System.ClassFactory activator = new global::Odin.System.ClassFactory();
             ResultValue<IEmailSenderServiceInjector> result = activator.TryCreate<IEmailSenderServiceInjector>("Odin.Email.MailgunServiceInjector");
 
             Assert.That(result, Is.Not.Null);
