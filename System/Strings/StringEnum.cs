@@ -19,7 +19,7 @@ public abstract class StringEnum<TEnum> where TEnum: StringEnum<TEnum>
     private static ImmutableHashSet<string>? _values;
     
     // ReSharper disable once StaticMemberInGenericType
-    private static readonly Lock ValuesReflectionLock = new Lock();
+    private static readonly object ValuesReflectionLock = new();
 
     /// <summary>
     /// Returns the set of string values
