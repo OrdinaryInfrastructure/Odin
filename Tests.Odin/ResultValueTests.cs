@@ -3,7 +3,7 @@
 using System.Text.Json;
 using Odin;
 
-namespace Tests.Odin.System
+namespace Tests.Odin
 {
     [TestFixture]
     public sealed class ResultValueTests
