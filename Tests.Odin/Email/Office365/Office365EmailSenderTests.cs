@@ -2,8 +2,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
+using Odin;
 using Odin.Email;
-using Odin.System;
+
 
 namespace Tests.Odin.Email.Office365;
 

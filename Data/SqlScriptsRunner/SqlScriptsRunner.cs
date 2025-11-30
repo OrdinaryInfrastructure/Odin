@@ -7,9 +7,7 @@ using DbUp.Engine.Transactions;
 using DbUp.Helpers;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using Odin.DesignContracts;
-using Odin.System;
 
 namespace Odin.Data
 {

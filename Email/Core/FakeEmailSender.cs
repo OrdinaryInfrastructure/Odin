@@ -1,6 +1,4 @@
-﻿using Odin.System;
-
-namespace Odin.Email
+﻿namespace Odin.Email
 {
     /// <summary>
     /// Fake IEmailSender for unit testing..

@@ -1,6 +1,5 @@
 using System.Runtime.ExceptionServices;
 using Azure;
-using Azure.Storage;
 using Azure.Storage.Blobs;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Json;

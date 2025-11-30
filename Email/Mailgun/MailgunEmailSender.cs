@@ -5,7 +5,6 @@ using System.Text;
 using Microsoft.Extensions.Logging;
 using Odin.DesignContracts;
 using Odin.Logging;
-using Odin.System;
 using Polly;
 using Polly.Retry;
 
@@ -109,7 +108,7 @@ namespace Odin.Email
         /// <param name="email"></param>
         /// <returns>An Outcome containing the Mailgun messageId.</returns>
         /// <exception cref="HttpRequestException"></exception>
-        public async Task<System.ResultValue<string?>> SendEmail(IEmailMessage email)
+        public async Task<ResultValue<string?>> SendEmail(IEmailMessage email)
         {
             PreCondition.RequiresNotNull(email);
             PreCondition.Requires(email.To.Any(), "Mailgun requires one or more to addresses.");

@@ -17,8 +17,9 @@
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\..\DesignContracts\Odin.DesignContracts.csproj" />
-      <ProjectReference Include="..\..\System\Core\Odin.System.csproj" />
-      <ProjectReference Include="..\..\System\Result\Odin.System.Result.csproj" />
+      <ProjectReference Include="..\..\System\Core\Odin.Utility.ClassFactory.csproj" />
+      <ProjectReference Include="..\..\Result\Odin.Result.csproj" />
+      <ProjectReference Include="..\..\Utility\ClassFactory\Odin.Utility.ClassFactory.csproj" />
       <ProjectReference Include="..\Abstractions\Odin.BackgroundProcessing.Abstractions.csproj" />
     </ItemGroup>
 </Project>

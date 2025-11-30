@@ -17,6 +17,6 @@ Odin = OrDinary INfrastructure.
   <ItemGroup>
     <ProjectReference Include="..\..\DesignContracts\Odin.DesignContracts.csproj" />
     <ProjectReference Include="..\..\Logging\Odin.Logging.csproj" />
-    <ProjectReference Include="..\..\System\Result\Odin.System.Result.csproj" />
+    <ProjectReference Include="..\..\Result\Odin.Result.csproj" />
   </ItemGroup>
 </Project>

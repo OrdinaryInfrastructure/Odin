@@ -1,87 +1,8 @@
-﻿namespace Odin.System
+﻿namespace Odin
 {
     /// <summary>
-    /// Represents the outcome of an operation that can succeed or fail, with a list of string Messages.
-    /// </summary>
-    /// <remarks>Previously named Outcome</remarks>
-    /// <remarks>To be renamed to Result</remarks>
-    public record Result : Result<string>
-    {
-        /// <inheritdoc />
-        public Result() 
-        {
-        }
-        
-        /// <summary>
-        /// Default constructor. Use Outcome.Succeed() for a successful Outcome with no message.
-        /// </summary>
-        /// <param name="success"></param>
-        /// <param name="message"></param>
-        public Result(bool success, string? message = null) : base(success, message)
-        {
-        }
-
-        /// <inheritdoc />
-        public Result(bool success, IEnumerable<string>? messages = null) : base(success, messages)
-        {
-        }
-
-        /// <summary>
-        /// Failure
-        /// </summary>
-        /// <param name="message"></param>
-        /// <returns></returns>
-        public new static Result Fail(string? message)
-        {
-            return new Result(false, message);
-        }
-        
-        /// <summary>
-        /// Failure
-        /// </summary>
-        /// <param name="messages"></param>
-        /// <returns></returns>
-        public new static Result Fail(IEnumerable<string> messages)
-        {
-            return new Result(false, messages);
-        }
-
-        /// <summary>
-        /// Success
-        /// </summary>
-        /// <param name="message"></param>
-        /// <returns></returns>
-        public new static Result Succeed(string? message = null)
-        {
-            return new Result(true, message);
-        }
-        
-        /// <summary>
-        /// Success
-        /// </summary>
-        /// <param name="messages"></param>
-        /// <returns></returns>
-        public new static Result Succeed(IEnumerable<string> messages)
-        {
-            return new Result(true, messages);
-        }
-
-        /// <summary>
-        /// All messages flattened into 1 message.
-        /// </summary>
-        public string MessagesToString(string separator = " | ")
-        {
-            if (_messages == null || _messages.Count == 0)
-            {
-                return string.Empty;
-            }
-
-            return string.Join(separator, Messages);
-        }
-    }
-
-    /// <summary>
-    /// Represents the result of an operation that can succeed or fail, with a list of messages\errors of type TMessage.
+    /// Represents the result of an operation that can succeed or fail,
+    /// with a list of messages\errors of type TMessage.
     /// </summary>
     /// <typeparam name="TMessage"></typeparam>
     public record Result<TMessage> where TMessage : class
@@ -195,6 +116,86 @@
             }
 
             return Succeed();
+        }
+    }
+
+    /// <summary>
+    /// Represents the outcome of an operation that can succeed or fail, with a list of string Messages.
+    /// </summary>
+    /// <remarks>Previously named Outcome</remarks>
+    /// <remarks>To be renamed to Result</remarks>
+    public record Result : Result<string>
+    {
+        /// <inheritdoc />
+        public Result() 
+        {
+        }
+        
+        /// <summary>
+        /// Default constructor. Use Outcome.Succeed() for a successful Outcome with no message.
+        /// </summary>
+        /// <param name="success"></param>
+        /// <param name="message"></param>
+        public Result(bool success, string? message = null) : base(success, message)
+        {
+        }
+
+        /// <inheritdoc />
+        public Result(bool success, IEnumerable<string>? messages = null) : base(success, messages)
+        {
+        }
+
+        /// <summary>
+        /// Failure
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        public new static Result Fail(string? message)
+        {
+            return new Result(false, message);
+        }
+        
+        /// <summary>
+        /// Failure
+        /// </summary>
+        /// <param name="messages"></param>
+        /// <returns></returns>
+        public new static Result Fail(IEnumerable<string> messages)
+        {
+            return new Result(false, messages);
+        }
+
+        /// <summary>
+        /// Success
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        public new static Result Succeed(string? message = null)
+        {
+            return new Result(true, message);
+        }
+        
+        /// <summary>
+        /// Success
+        /// </summary>
+        /// <param name="messages"></param>
+        /// <returns></returns>
+        public new static Result Succeed(IEnumerable<string> messages)
+        {
+            return new Result(true, messages);
+        }
+
+        /// <summary>
+        /// All messages flattened into 1 message.
+        /// </summary>
+        public string MessagesToString(string separator = " | ")
+        {
+            if (_messages == null || _messages.Count == 0)
+            {
+                return string.Empty;
+            }
+
+            return string.Join(separator, Messages);
         }
     }
 

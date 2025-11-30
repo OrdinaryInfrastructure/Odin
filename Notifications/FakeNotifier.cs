@@ -1,6 +1,4 @@
-﻿using Odin.System;
-
-namespace Odin.Notifications
+﻿namespace Odin.Notifications
 {
     /// <summary>
     /// Dummy INotifier for unit testing, development, etc.

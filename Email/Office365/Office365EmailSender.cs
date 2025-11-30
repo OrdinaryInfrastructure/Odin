@@ -5,7 +5,6 @@ using Microsoft.Graph.Models;
 using Microsoft.Graph.Users.Item.SendMail;
 using Odin.DesignContracts;
 using Odin.Logging;
-using Odin.System;
 
 namespace Odin.Email;
 

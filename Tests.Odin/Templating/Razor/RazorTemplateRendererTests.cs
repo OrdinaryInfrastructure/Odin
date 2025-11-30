@@ -1,11 +1,7 @@
 ﻿using System.Reflection;
-using System.Text;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using Moq;
 using NUnit.Framework;
-using Odin.Email;
-using Odin.System;
+using Odin;
 using Odin.Templating.Razor;
 
 namespace Tests.Odin.Templating.Razor
