@@ -127,7 +127,7 @@ namespace Odin.Data
             // Validation...
             // if (!EmbeddedScriptPaths.Any()) OK if this is not specified we use all *.sql embedded resources in the assembly.
             // {
-            //     return Outcome.Fail($"No (. separated) paths specified in {nameof(EmbeddedScriptPaths)} ");
+            //     return ResultValue.Fail($"No (. separated) paths specified in {nameof(EmbeddedScriptPaths)} ");
             // }
             
             if (EnsureDatabaseCreated)

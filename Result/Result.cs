@@ -132,7 +132,7 @@
         }
         
         /// <summary>
-        /// Default constructor. Use Outcome.Succeed() for a successful Outcome with no message.
+        /// Default constructor. Use ResultValue.Succeed() for a successful Outcome with no message.
         /// </summary>
         /// <param name="success"></param>
         /// <param name="message"></param>

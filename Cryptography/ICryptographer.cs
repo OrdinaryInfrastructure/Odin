@@ -8,7 +8,7 @@ namespace Odin.Cryptography
     public interface ICryptographer
     {
         /// <summary>
-        /// Attempts decryption of a string, returning the decrypted string if successful in the Outcome.Value
+        /// Attempts decryption of a string, returning the decrypted string if successful in the ResultValue.Value
         /// </summary>
         /// <param name="protectedString"></param>
         /// <returns></returns>
@@ -23,7 +23,7 @@ namespace Odin.Cryptography
         string Decrypt(string protectedString);
 
         /// <summary>
-        /// Attempts encryption of a string, returning the encrypted string if successful in the Outcome.Value
+        /// Attempts encryption of a string, returning the encrypted string if successful in the ResultValue.Value
         /// </summary>
         /// <param name="unProtectedString"></param>
         /// <returns></returns>
