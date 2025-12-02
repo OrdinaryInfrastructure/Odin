@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
+        <ImplicitUsings>true</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>Odin.Utility</RootNamespace>
+        <WarningsAsErrors>1591;1573;</WarningsAsErrors> <!-- Not to be removed. Documentation is required. -->
+    </PropertyGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\VaryingValues\Odin.Utility.VaryingValues.csproj" />
+    </ItemGroup>
+</Project>

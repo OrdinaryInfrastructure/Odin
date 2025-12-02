@@ -1,0 +1,15 @@
+<!-- Directory.Build.props file at the root of the solution-->
+<Project>
+    <PropertyGroup>
+        <Authors>Mark Derman</Authors>
+        <Company>Soulv Software (Pty) Ltd</Company>
+        <Copyright>Copyright (c) Soulv Software 2024</Copyright>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <PackageProjectUrl>https://github.com/OrdinaryInfrastructure/Odin</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/OrdinaryInfrastructure/Odin</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <WarningsAsErrors>8625;8600;8601;8603</WarningsAsErrors>
+<!--     Todo: Add these ones in...   <WarningsAsErrors>8625;8613;8618</WarningsAsErrors>-->
+        <NoWarn>1701;1702;5104;8602;8604;8618;8619</NoWarn>
+    </PropertyGroup>
+</Project>

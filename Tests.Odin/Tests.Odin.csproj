@@ -1,0 +1,44 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
+    <Nullable>disable</Nullable>
+    <GenerateProgramFile>false</GenerateProgramFile>
+    <UserSecretsId>Tests.Odin</UserSecretsId>
+    <ImplicitUsings>true</ImplicitUsings>
+    <NoWarn>1591;</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.22" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.9" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.9" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.9" />
+    <PackageReference Include="nunit" Version="4.4.0" />
+    <PackageReference Include="Moq" Version="4.20.72" />
+    <PackageReference Include="NUnit3TestAdapter" Version="5.1.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" /> 
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Messaging\RabbitMq\Odin.Messaging.RabbitMq.csproj" />
+    <ProjectReference Include="..\Email\Core\Odin.Email.csproj" />
+    <ProjectReference Include="..\Email\Mailgun\Odin.Email.Mailgun.csproj" />
+    <ProjectReference Include="..\Email\Office365\Odin.Email.Office365.csproj" />
+    <ProjectReference Include="..\BackgroundProcessing\Core\Odin.BackgroundProcessing.csproj" />
+    <ProjectReference Include="..\BackgroundProcessing\Hangfire\Odin.BackgroundProcessing.Hangfire.csproj" />
+    <ProjectReference Include="..\Notifications\Odin.Notifications.csproj" />
+    <ProjectReference Include="..\RemoteFiles\Core\Odin.RemoteFiles.csproj" />
+    <ProjectReference Include="..\System\StringEnum\Odin.StringEnum.csproj" />
+    <ProjectReference Include="..\Templating\Razor\Odin.Templating.Razor.csproj" />
+    <ProjectReference Include="..\Utility\RecordEnum\Odin.Utility.RecordEnum.csproj" />
+    <ProjectReference Include="..\Utility\Tax\Odin.Utility.Tax.csproj" />
+    <ProjectReference Include="..\Utility\VaryingValues\Odin.Utility.VaryingValues.csproj" />
+   </ItemGroup>
+  <ItemGroup>
+    <None Remove="Templating\Razor\TestTemplate1.cshtml" />
+    <EmbeddedResource Include="Templating\Razor\TestTemplate1.cshtml" />
+    <None Update="appSettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+</Project>

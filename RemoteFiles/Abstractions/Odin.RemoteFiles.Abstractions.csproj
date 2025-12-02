@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>true</ImplicitUsings>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\DesignContracts\Odin.DesignContracts.csproj" />
+    <ProjectReference Include="..\..\System\Result\Odin.Result.csproj" />
+  </ItemGroup>
+</Project>
