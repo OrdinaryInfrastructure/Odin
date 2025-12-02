@@ -2,10 +2,9 @@
 using System.Text;
 using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
-using Odin.Utility.Tax;
-using Odin.Utility.VaryingValues;
+using Odin.Utility;
 
-namespace Tests.Odin.Utility.Tax
+namespace Tests.Odin.Utility
 {
     [TestFixture]
     public class TaxUtilityTests

@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Configuration;
 using Odin.DesignContracts;
 
-namespace Odin.Utility.VaryingValues;
+namespace Odin.Utility;
 
 /// <summary>
 /// Stores a list of Values over time to implement IVaryingValueProvider.

@@ -3,7 +3,7 @@ using NUnit.Framework;
 using Odin;
 using Odin.Email;
 
-namespace Tests.Odin.Utility.ClassFactory
+namespace Tests.Odin.Utility
 {
     [TestFixture]
     public sealed class ClassFactoryTests

@@ -3,6 +3,7 @@
     <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
     <RootNamespace>Odin.Utility</RootNamespace>
     <ImplicitUsings>true</ImplicitUsings>
+    <RootNamespace>Odin.Utility</RootNamespace>
     <Nullable>enable</Nullable>
     <Description>Leftover elements used in the OrdinaryInfrastructure libraries that don't really have a home. 
             

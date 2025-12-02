@@ -1,4 +1,4 @@
-namespace Odin.Utility.VaryingValues;
+namespace Odin.Utility;
 
 /// <summary>
 /// Supports the returning of a Value that may change based on another varying Dimension (eg DateOnly)

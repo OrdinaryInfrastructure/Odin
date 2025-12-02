@@ -1,9 +1,9 @@
 using System.Text;
 using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
-using Odin.Utility.VaryingValues;
+using Odin.Utility;
 
-namespace Tests.Odin.Utility.VaryingValues;
+namespace Tests.Odin.Utility;
 
 [TestFixture]
 public sealed class ValueChangesListProviderTests

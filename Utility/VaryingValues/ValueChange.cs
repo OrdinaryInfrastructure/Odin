@@ -1,4 +1,4 @@
-namespace Odin.Utility.VaryingValues;
+namespace Odin.Utility;
 
 /// <summary>
 /// Represents a list of changes in the value of Value, at points along  a 1 dimensional axis of type TVaryingDimensionType.

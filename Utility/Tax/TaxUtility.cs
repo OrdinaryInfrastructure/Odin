@@ -1,8 +1,7 @@
 using Microsoft.Extensions.Configuration;
 using Odin.DesignContracts;
-using Odin.Utility.VaryingValues;
 
-namespace Odin.Utility.Tax;
+namespace Odin.Utility;
 
 /// <inheritdoc />
 public class TaxUtility : ITaxUtility

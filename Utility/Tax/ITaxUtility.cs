@@ -1,5 +1,5 @@
 
-namespace Odin.Utility.Tax;
+namespace Odin.Utility;
 
 /// <summary>
 /// Supports convenience tax operations and a date-aware knowledge of historical tax rate changes.
