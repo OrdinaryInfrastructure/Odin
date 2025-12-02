@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using Odin.DesignContracts;
+﻿using Odin.DesignContracts;
 using Odin.Logging;
 
 namespace Odin.Email
