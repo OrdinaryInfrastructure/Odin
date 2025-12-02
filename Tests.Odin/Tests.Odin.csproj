@@ -29,6 +29,7 @@
     <ProjectReference Include="..\Notifications\Odin.Notifications.csproj" />
     <ProjectReference Include="..\RemoteFiles\Core\Odin.RemoteFiles.csproj" />
     <ProjectReference Include="..\Templating\Razor\Odin.Templating.Razor.csproj" />
+    <ProjectReference Include="..\Utility\RecordEnum\Odin.Utility.RecordEnum.csproj" />
     <ProjectReference Include="..\Utility\Tax\Odin.Utility.Tax.csproj" />
     <ProjectReference Include="..\Utility\VaryingValues\Odin.Utility.VaryingValues.csproj" />
    </ItemGroup>
