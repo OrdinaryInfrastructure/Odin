@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
+    <RootNamespace>Odin</RootNamespace>
+    <ImplicitUsings>true</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <Description>Provides an expanded ILogger of T interface for LogXXX(...) calls 
+      on the same basis as the .NET LoggerExtensions extension methods,
+      that is much more convenient for asserting logger calls compared to mocking ILogger, 
+      and asserting ILogger -> Log(LogLevel logLevel, EventId eventId, TState state, Exception? exception, etc...
+      Odin = OrDinary INfrastructure.
+        </Description>
+    <WarningsAsErrors>1591;1573;</WarningsAsErrors> <!-- Not to be removed. Documentation is required. -->
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.9" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.9" />
+  </ItemGroup>
+</Project>

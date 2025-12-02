@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
+    <RootNamespace>Odin.Utility</RootNamespace>
+    <ImplicitUsings>true</ImplicitUsings>
+    <RootNamespace>Odin.Utility</RootNamespace>
+    <Nullable>enable</Nullable>
+    <Description>Leftover elements used in the OrdinaryInfrastructure libraries that don't really have a home. 
+            
+Odin = OrDinary INfrastructure.
+        </Description>
+    <WarningsAsErrors>1591;1573;</WarningsAsErrors> <!-- Not to be removed. Documentation is required. -->
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.9" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.9" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\DesignContracts\Odin.DesignContracts.csproj" />
+    <ProjectReference Include="..\..\Logging\Odin.Logging.csproj" />
+    <ProjectReference Include="..\..\Result\Odin.Result.csproj" />
+  </ItemGroup>
+</Project>
