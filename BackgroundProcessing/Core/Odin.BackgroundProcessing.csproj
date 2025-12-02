@@ -3,8 +3,8 @@
         <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
         <ImplicitUsings>true</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <Description>Abstracts access to background processing via an IBackgroundProcessor service interface,
-            together with a Hangfire and fake implementations.
+        <Description>Abstracts background processing related use cases via 
+            an IBackgroundProcessor interface. Concrete support for Hangfire.
         </Description>
         <WarningsAsErrors>1591;1573;</WarningsAsErrors> <!-- Not to be removed. Documentation is required. -->
     </PropertyGroup>

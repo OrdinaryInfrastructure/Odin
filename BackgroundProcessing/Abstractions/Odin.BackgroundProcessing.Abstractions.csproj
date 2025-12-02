@@ -5,8 +5,8 @@
         <ImplicitUsings>true</ImplicitUsings>
         <PackageId>Odin.BackgroundProcessing.Abstractions</PackageId>
         <RootNamespace>Odin.BackgroundProcessing</RootNamespace>
-        <Description>Abstracts access to background processing via an IBackgroundProcessor service interface,
-            together with a Hangfire and fake implementations.
+        <Description>Abstracts background processing related use cases via
+            an IBackgroundProcessor interface. Concrete support for Hangfire.
         </Description>
         <WarningsAsErrors>1591;1573;</WarningsAsErrors> <!-- Not to be removed. Documentation is required. -->
     </PropertyGroup>
