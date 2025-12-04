@@ -11,7 +11,7 @@ namespace Odin.Configuration;
 /// </summary>
 public class AzureBlobJsonConfigurationProvider : JsonConfigurationProvider
 {
-    private readonly Timer _timer;
+    private readonly Timer? _timer;
     private readonly bool _isDisabled;
     
     public AzureBlobJsonConfigurationProvider(AzureBlobJsonConfigurationSource source) : base(source)
