@@ -4,7 +4,11 @@
     <RootNamespace>Odin</RootNamespace>
     <ImplicitUsings>true</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Description>
+    <Description>Provides enum-like behaviour for a set of string values.
+      Usage: Inherit from StringEnum and add only public const string members.
+      Use the Values static property to work with a list of all the string values.
+      Use HasValue(string value) to find out whether a particular string value is a member of Values.
+      
 Odin = OrDinary INfrastructure.
         </Description>
     <WarningsAsErrors>1591;1573;</WarningsAsErrors> <!-- Not to be removed. Documentation is required. -->

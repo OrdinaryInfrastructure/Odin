@@ -2,7 +2,6 @@
 using System.Collections.Immutable;
 using NUnit.Framework;
 using Odin;
-using Odin.Utility;
 
 namespace Tests.Odin.Utility
 {

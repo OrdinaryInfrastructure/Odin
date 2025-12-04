@@ -2,7 +2,7 @@
 {
     /// <summary>
     /// Represents the result of an operation that can succeed or fail,
-    /// with a list of messages\errors of type TMessage.
+    /// with a list of msessages of type TMessage.
     /// </summary>
     /// <typeparam name="TMessage"></typeparam>
     public record Result<TMessage> where TMessage : class
@@ -34,11 +34,20 @@
         }
 
         /// <summary>
-        /// Result constructor. Default Success value is false. 
+        /// Needed to serialization.
+        /// Success defaults to false.
+        /// </summary>
+        protected Result()
+        {
+            Success = false;
+        }
+        
+        /// <summary>
+        /// Result constructor.
         /// </summary>
         /// <param name="success">True or False</param>
         /// <param name="message">Optional message. Best practice is to include at least 1 message for failed operations however.</param>
-        protected Result(bool success = false, TMessage? message = null)
+        protected Result(bool success, TMessage? message = null)
         {
             Success = success;
             if (message != null)

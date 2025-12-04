@@ -4,7 +4,9 @@ using System.Reflection;
 namespace Odin;
 
 /// <summary>
-/// Provides enum-like behaviour for a set of string values.
+/// Provides enum-like behaviour for a set of string values via StringEnum, as well as a useful
+/// StringEnumMemberAttribute for used to validate an attribute as being a valid member\value of a
+/// set of StringEnum values (a class derived from StringEnum).
 /// Usage: Inherit from StringEnum and add ONLY public const string members.
 /// Use the Values static property to work with a list of all the string values.
 /// Use HasValue(string value) to find out whether a particular string value is a member of Values.

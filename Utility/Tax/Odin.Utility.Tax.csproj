@@ -4,6 +4,9 @@
         <ImplicitUsings>true</ImplicitUsings>
         <Nullable>enable</Nullable>
         <RootNamespace>Odin.Utility</RootNamespace>
+        <Description>Simple support for storing tax rate changes over time in application configuration, 
+            and then getting tax rates as at any date.
+        </Description>
         <WarningsAsErrors>1591;1573;</WarningsAsErrors> <!-- Not to be removed. Documentation is required. -->
     </PropertyGroup>
     <ItemGroup>
