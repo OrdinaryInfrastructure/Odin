@@ -4,22 +4,32 @@ using Azure.Storage.Blobs;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Json;
 
-namespace Odin.Configuration.AzureBlobJson;
+namespace Odin.Configuration;
 
-public class BlobJsonConfigurationProvider : JsonConfigurationProvider
+/// <summary>
+/// Provides configuration key-value pairs that are obtained from a JSON file located in Azure Blob storage.
+/// </summary>
+public class AzureBlobJsonConfigurationProvider : JsonConfigurationProvider
 {
-    private Timer _timer;
-    public BlobJsonConfigurationProvider(BlobJsonConfigurationSource source) : base(source)
+    private readonly Timer _timer;
+    private readonly bool _isDisabled;
+    
+    public AzureBlobJsonConfigurationProvider(AzureBlobJsonConfigurationSource source) : base(source)
     {
-        TimeSpan period = TimeSpan.FromSeconds(source.Options.ReloadPeriodSeconds);
-        _timer = new Timer(AutoReload, null, period, period);
+        _isDisabled = source.Options.IsDisabled;
+        if (_isDisabled) return;
+        if (source.Options.ReloadPeriodSeconds.HasValue && source.Options.ReloadPeriodSeconds.Value > 0)
+        {
+            TimeSpan period = TimeSpan.FromSeconds(source.Options.ReloadPeriodSeconds.Value);
+            _timer = new Timer(AutoReload, null, period, period);
+        }
     }
 
     private BlobClient GetBlobClient()
     {
-        if (Source is not BlobJsonConfigurationSource blobSource)
+        if (Source is not AzureBlobJsonConfigurationSource blobSource)
         {
-            throw new ApplicationException($"{nameof(BlobJsonConfigurationProvider)}.{nameof(Source)} is {Source.GetType()}, not {nameof(BlobJsonConfigurationSource)}");
+            throw new ApplicationException($"{nameof(AzureBlobJsonConfigurationProvider)}.{nameof(Source)} is {Source.GetType()}, not {nameof(AzureBlobJsonConfigurationSource)}");
         }
 
         return blobSource.GetBlobClient();
@@ -46,6 +56,7 @@ public class BlobJsonConfigurationProvider : JsonConfigurationProvider
 
     public override void Load()
     {
+        if (_isDisabled) return;
         try
         {
             LoadAsync().GetAwaiter().GetResult();

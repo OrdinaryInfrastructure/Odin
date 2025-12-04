@@ -5,6 +5,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <NoWarn>CS1591</NoWarn>
+        <RootNamespace>Odin.Configuration</RootNamespace>
         <Description>Provides support for Azure Blob located json configuration sources.
         </Description>
     </PropertyGroup>

@@ -3,31 +3,32 @@ using Azure.Storage.Blobs;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Json;
 
-namespace Odin.Configuration.AzureBlobJson;
+namespace Odin.Configuration;
 
-public class BlobJsonConfigurationSource : JsonConfigurationSource
+
+public class AzureBlobJsonConfigurationSource : JsonConfigurationSource
 {
-    public BlobJsonConfigurationSource(BlobJsonConfigurationOptions options, Action<FileLoadExceptionContext>? onLoadException)
+    public AzureBlobJsonConfigurationSource(AzureBlobJsonConfigurationOptions options, Action<FileLoadExceptionContext>? onLoadException)
     {
         Options = options;
         OnLoadException = onLoadException;
     }
 
-    public BlobJsonConfigurationSource(BlobJsonConfigurationOptions options, TokenCredential credential, Action<FileLoadExceptionContext>? onLoadException)
+    public AzureBlobJsonConfigurationSource(AzureBlobJsonConfigurationOptions options, TokenCredential credential, Action<FileLoadExceptionContext>? onLoadException)
     {
         Options = options;
         TokenCredentialOverride = credential;
         OnLoadException = onLoadException;
     }
 
-    public BlobJsonConfigurationSource(BlobJsonConfigurationOptions options, BlobClient blobClient, Action<FileLoadExceptionContext>? onLoadException)
+    public AzureBlobJsonConfigurationSource(AzureBlobJsonConfigurationOptions options, BlobClient blobClient, Action<FileLoadExceptionContext>? onLoadException)
     {
         Options = options;
         BlobClientOverride = blobClient;
         OnLoadException = onLoadException;
     }
 
-    internal BlobJsonConfigurationOptions Options { get; }
+    internal AzureBlobJsonConfigurationOptions Options { get; }
 
     internal TokenCredential? TokenCredentialOverride { get; }
 
@@ -35,7 +36,7 @@ public class BlobJsonConfigurationSource : JsonConfigurationSource
 
     public override IConfigurationProvider Build(IConfigurationBuilder builder)
     {
-        return new BlobJsonConfigurationProvider(this);
+        return new AzureBlobJsonConfigurationProvider(this);
     }
 
     internal BlobClient GetBlobClient()
@@ -47,7 +48,7 @@ public class BlobJsonConfigurationSource : JsonConfigurationSource
 
         if (Options.BlobUri is null)
         {
-            throw new ApplicationException("Cannot construct BlobClient: No BlobUri configured.");
+            throw new ApplicationException("Cannot construct BlobClient. No BlobUri configured.");
         }
 
         if (TokenCredentialOverride is not null)

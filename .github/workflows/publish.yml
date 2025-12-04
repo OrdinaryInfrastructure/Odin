@@ -1,9 +1,12 @@
 name: Publish to Nuget
 
-on: 
+on:
+  push:
+    branches:
+      - master
   pull_request:
     branches:
-    - master
+      - master
     types: [closed]
   workflow_dispatch:
 
@@ -53,7 +56,6 @@ jobs:
         dotnet pack ./BackgroundProcessing/Hangfire/Odin.BackgroundProcessing.Hangfire.csproj --configuration $CONFIGURATION --output $PACKAGE_DIR 
         dotnet pack ./BackgroundProcessing/Core/Odin.BackgroundProcessing.csproj --configuration $CONFIGURATION --output $PACKAGE_DIR
         dotnet pack ./Configuration/AzureBlobJson/Odin.Configuration.AzureBlobJson.csproj --configuration $CONFIGURATION --output $PACKAGE_DIR
-        dotnet pack ./Cryptography/Odin.Cryptography.csproj --configuration $CONFIGURATION --output $PACKAGE_DIR
         dotnet pack ./Data/SqlScriptsRunner/Odin.Data.SqlScriptsRunner.csproj --configuration $CONFIGURATION --output $PACKAGE_DIR
         dotnet pack ./DesignContracts/Odin.DesignContracts.csproj --configuration $CONFIGURATION --output $PACKAGE_DIR
         dotnet pack ./Email/Mailgun/Odin.Email.Mailgun.csproj --configuration $CONFIGURATION --output $PACKAGE_DIR

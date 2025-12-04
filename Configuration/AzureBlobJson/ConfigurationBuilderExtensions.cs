@@ -1,23 +1,27 @@
 using Azure.Core;
 using Azure.Storage.Blobs;
-using Microsoft.Extensions.Configuration;
+using Odin.Configuration;
 
-namespace Odin.Configuration.AzureBlobJson;
+// ReSharper disable once CheckNamespace
+namespace Microsoft.Extensions.Configuration;
 
 public static class ConfigurationBuilderExtensions
 {
-    public static IConfigurationBuilder AddAzureBlobJsonConfiguration(this IConfigurationBuilder configBuilder, BlobJsonConfigurationOptions options, Action<FileLoadExceptionContext>? onLoadException)
+    public static IConfigurationBuilder AddAzureBlobJsonConfiguration(this IConfigurationBuilder configBuilder, 
+        AzureBlobJsonConfigurationOptions options, Action<FileLoadExceptionContext>? onLoadException)
     {
-        return configBuilder.Add(new BlobJsonConfigurationSource(options, onLoadException));
+        return configBuilder.Add(new AzureBlobJsonConfigurationSource(options, onLoadException));
     }
     
-    public static IConfigurationBuilder AddAzureBlobJsonConfiguration(this IConfigurationBuilder configBuilder, BlobJsonConfigurationOptions options, TokenCredential tokenCredential, Action<FileLoadExceptionContext>? onLoadException)
+    public static IConfigurationBuilder AddAzureBlobJsonConfiguration(this IConfigurationBuilder configBuilder, 
+        AzureBlobJsonConfigurationOptions options, TokenCredential tokenCredential, Action<FileLoadExceptionContext>? onLoadException)
     {
-        return configBuilder.Add(new BlobJsonConfigurationSource(options, tokenCredential, onLoadException));
+        return configBuilder.Add(new AzureBlobJsonConfigurationSource(options, tokenCredential, onLoadException));
     }
     
-    public static IConfigurationBuilder AddAzureBlobJsonConfiguration(this IConfigurationBuilder configBuilder, BlobJsonConfigurationOptions options, BlobClient blobClient, Action<FileLoadExceptionContext>? onLoadException)
+    public static IConfigurationBuilder AddAzureBlobJsonConfiguration(this IConfigurationBuilder configBuilder, 
+        AzureBlobJsonConfigurationOptions options, BlobClient blobClient, Action<FileLoadExceptionContext>? onLoadException)
     {
-        return configBuilder.Add(new BlobJsonConfigurationSource(options, blobClient, onLoadException));
+        return configBuilder.Add(new AzureBlobJsonConfigurationSource(options, blobClient, onLoadException));
     }
 }
