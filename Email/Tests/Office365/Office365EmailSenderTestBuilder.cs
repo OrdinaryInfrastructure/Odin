@@ -1,5 +1,4 @@
-﻿#nullable enable
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Moq;
 using Odin.DesignContracts;
 using Odin.Email;

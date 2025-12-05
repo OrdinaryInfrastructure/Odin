@@ -1,5 +1,4 @@
-﻿#nullable enable
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using Odin.Utility;
 
 namespace Tests.Odin.Utility
