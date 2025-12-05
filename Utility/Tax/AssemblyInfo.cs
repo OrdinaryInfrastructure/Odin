@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("Tests.Odin")]
+[assembly: InternalsVisibleTo("Tests.Odin.Utility")]
+
 

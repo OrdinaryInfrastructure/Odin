@@ -37,6 +37,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Templating\" />
+    <Folder Include="Utility\" />
   </ItemGroup>
 </Project>
