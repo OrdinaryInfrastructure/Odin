@@ -21,10 +21,10 @@ public class Office365EmailSenderTests : IntegrationTest
         IConfiguration config = AppFactory.GetConfiguration();
         IConfigurationSection office365Options = config.GetRequiredSection("Email-Office365");
 
-        _toTestEmail = config["Email-TestToAddress"];
+        _toTestEmail = config["Email-TestToAddress"]!;
         Office365Options options = new Office365Options();
         office365Options.Bind(options);
-        _fromTestEmail = options.SenderUserId;
+        _fromTestEmail = options.SenderUserId!;
         
     }
 

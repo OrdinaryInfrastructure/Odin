@@ -1,13 +1,10 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Moq;
 using NUnit.Framework;
-using Odin;
 using Odin.Email;
 using Odin.Logging;
 using Odin.Notifications;
 using Odin.System;
-using Tests.Odin.Email;
-using Tests.Odin.Email.Mailgun;
 
 namespace Tests.Odin.Notifications
 {

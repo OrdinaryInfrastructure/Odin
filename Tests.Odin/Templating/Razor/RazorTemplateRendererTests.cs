@@ -1,26 +1,13 @@
 ﻿using System.Reflection;
-using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
-using Odin;
 using Odin.System;
 using Odin.Templating.Razor;
 
 namespace Tests.Odin.Templating.Razor
 {
     [TestFixture]
-    public sealed class RazorTemplateRendererTests : IntegrationTest
+    public sealed class RazorTemplateRendererTests
     {
-        private string _toTestEmail;
-        private string _fromTestEmail;
-
-        [SetUp]
-        public void Setup()
-        {
-            IConfiguration config = AppFactory.GetConfiguration();
-            _toTestEmail = config["Email-TestToAddress"];
-            _fromTestEmail = config["Email-TestFromAddress"];
-        }
-
 
         [Test]
         [TestCase("Tests.Odin.Templating.Razor", "TestTemplate1", true, Description = "Without a period")]

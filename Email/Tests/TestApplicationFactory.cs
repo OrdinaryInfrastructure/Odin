@@ -2,9 +2,9 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Tests.Odin;
+namespace Tests.Odin.Email;
 
-public class TestApplicationFactory : WebApplicationFactory<TestProgram>
+public class TestApplicationFactory : WebApplicationFactory<Program>
 {
     public IConfiguration GetConfiguration()
     {

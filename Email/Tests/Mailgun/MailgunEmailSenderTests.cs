@@ -20,8 +20,8 @@ namespace Tests.Odin.Email.Mailgun
         public void Setup()
         {
             IConfiguration config = AppFactory.GetConfiguration();
-            _toTestEmail = config["Email-TestToAddress"];
-            _fromTestEmail = config["Email-TestFromAddress"];
+            _toTestEmail = config["Email-TestToAddress"]!;
+            _fromTestEmail = config["Email-TestFromAddress"]!;
         }
 
 

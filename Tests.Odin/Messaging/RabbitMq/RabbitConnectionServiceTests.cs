@@ -7,7 +7,7 @@ using Odin.Messaging.RabbitMq;
 
 namespace Tests.Odin.Messaging.RabbitMq;
 
-public class RabbitConnectionServiceTests : IntegrationTest
+public class RabbitConnectionServiceTests
 {
     public record TestMessage
     {

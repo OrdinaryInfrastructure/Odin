@@ -19,8 +19,8 @@ namespace Tests.Odin.Email
             Builder.Services.AddEmailSending(Builder.Configuration);
             WebApplication sut = Builder.Build();
             
-            IEmailSender mailSender = sut.Services.GetService<IEmailSender>();
-            EmailSendingOptions config = sut.Services.GetService<EmailSendingOptions>();
+            IEmailSender? mailSender = sut.Services.GetService<IEmailSender>();
+            EmailSendingOptions? config = sut.Services.GetService<EmailSendingOptions>();
             
             Assert.That(mailSender, Is.Not.Null);
             Assert.That(mailSender, Is.InstanceOf<FakeEmailSender>());
@@ -31,14 +31,14 @@ namespace Tests.Odin.Email
         [TestCaseSource(nameof(GetMailgunSenderConfigs))]
         public void AddEmailSending_adds_MailgunEmailSender_to_application_from_configuration(string json)
         {
-            WebApplicationBuilder Builder = WebApplication.CreateBuilder();
-            Builder.Configuration.AddJsonStream(Stream(json));
-            Builder.Services.AddEmailSending(Builder.Configuration);
-            WebApplication sut = Builder.Build();
+            WebApplicationBuilder builder = WebApplication.CreateBuilder();
+            builder.Configuration.AddJsonStream(Stream(json));
+            builder.Services.AddEmailSending(builder.Configuration);
+            WebApplication sut = builder.Build();
             
-            IEmailSender provider = sut.Services.GetService<IEmailSender>();
-            EmailSendingOptions config = sut.Services.GetService<EmailSendingOptions>();
-            MailgunOptions mailgunConfig = sut.Services.GetService<MailgunOptions>();
+            IEmailSender? provider = sut.Services.GetService<IEmailSender>();
+            EmailSendingOptions? config = sut.Services.GetService<EmailSendingOptions>();
+            MailgunOptions? mailgunConfig = sut.Services.GetService<MailgunOptions>();
             
             Assert.That(provider, Is.Not.Null);
             Assert.That(provider, Is.InstanceOf<MailgunEmailSender>());
