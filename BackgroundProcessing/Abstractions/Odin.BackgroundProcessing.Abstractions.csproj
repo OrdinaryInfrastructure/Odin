@@ -5,15 +5,16 @@
         <ImplicitUsings>true</ImplicitUsings>
         <PackageId>Odin.BackgroundProcessing.Abstractions</PackageId>
         <RootNamespace>Odin.BackgroundProcessing</RootNamespace>
-        <Description>Abstracts background processing related use cases via
+        <Description>A now redundant abstraction of Hangfire's job processing functionality 
+            for the original purpose of mocking Hangfire. Abstracts background processing related use cases via
             an IBackgroundProcessor interface, required in the days that Hangfire still 
-            has static entry points to its functionality, but is now a redundant requirement.
+            has static entry points to its functionality.
         </Description>
         <WarningsAsErrors>1591;1573;</WarningsAsErrors> <!-- Not to be removed. Documentation is required. -->
     </PropertyGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\..\DesignContracts\Odin.DesignContracts.csproj" />
-      <ProjectReference Include="..\..\System\Result\Odin.Result.csproj" />
+      <ProjectReference Include="..\..\System\Result\Odin.System.Result.csproj" />
     </ItemGroup>
 </Project>

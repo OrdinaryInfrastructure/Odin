@@ -1,4 +1,6 @@
-﻿namespace Odin.Email
+﻿using Odin.System;
+
+namespace Odin.Email
 {
     /// <summary>
     /// MailgunSettings for loading from configuration 

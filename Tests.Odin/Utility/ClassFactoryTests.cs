@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using Odin;
 using Odin.Email;
+using Odin.System;
 
 namespace Tests.Odin.Utility
 {

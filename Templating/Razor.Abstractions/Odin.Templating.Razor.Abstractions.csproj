@@ -11,6 +11,6 @@
     <WarningsAsErrors>1591;1573;</WarningsAsErrors> <!-- Not to be removed. Documentation is required. -->
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\System\Result\Odin.Result.csproj" />
+    <ProjectReference Include="..\..\System\Result\Odin.System.Result.csproj" />
   </ItemGroup>
 </Project>

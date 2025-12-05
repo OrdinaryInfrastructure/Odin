@@ -1,4 +1,6 @@
-﻿namespace Odin.Email
+﻿using Odin.System;
+
+namespace Odin.Email
 {
     /// <summary>
     /// Provides email sending services

@@ -8,6 +8,7 @@ using DbUp.Helpers;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Odin.DesignContracts;
+using Odin.System;
 
 namespace Odin.Data
 {

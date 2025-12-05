@@ -10,7 +10,6 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.22" />
-    <PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.9" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.9" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.9" />
@@ -24,11 +23,9 @@
     <ProjectReference Include="..\Email\Core\Odin.Email.csproj" />
     <ProjectReference Include="..\Email\Mailgun\Odin.Email.Mailgun.csproj" />
     <ProjectReference Include="..\Email\Office365\Odin.Email.Office365.csproj" />
-    <ProjectReference Include="..\BackgroundProcessing\Core\Odin.BackgroundProcessing.csproj" />
-    <ProjectReference Include="..\BackgroundProcessing\Hangfire\Odin.BackgroundProcessing.Hangfire.csproj" />
     <ProjectReference Include="..\Notifications\Odin.Notifications.csproj" />
     <ProjectReference Include="..\RemoteFiles\Core\Odin.RemoteFiles.csproj" />
-    <ProjectReference Include="..\System\StringEnum\Odin.StringEnum.csproj" />
+    <ProjectReference Include="..\System\StringEnum\Odin.System.StringEnum.csproj" />
     <ProjectReference Include="..\Templating\Razor\Odin.Templating.Razor.csproj" />
     <ProjectReference Include="..\Utility\Tax\Odin.Utility.Tax.csproj" />
     <ProjectReference Include="..\Utility\VaryingValues\Odin.Utility.VaryingValues.csproj" />

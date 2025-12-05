@@ -1,7 +1,7 @@
 using System.Collections.Immutable;
 using System.Reflection;
 
-namespace Odin;
+namespace Odin.System;
 
 /// <summary>
 /// Provides enum-like behaviour for a set of string values via StringEnum, as well as a useful
