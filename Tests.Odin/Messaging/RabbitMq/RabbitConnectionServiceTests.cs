@@ -50,7 +50,7 @@ public class RabbitConnectionServiceTests : IntegrationTest
 
         JsonSerializerOptions jsonOptions = new JsonSerializerOptions { WriteIndented = true };
 
-        var sendingTasks = threadIdentifiersIndexes.Select(i => Task.Run(async () =>
+        IEnumerable<Task> sendingTasks = threadIdentifiersIndexes.Select(i => Task.Run(async () =>
         {
             string s = threadIdentifiers[i];
 

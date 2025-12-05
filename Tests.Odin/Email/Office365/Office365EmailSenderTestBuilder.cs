@@ -8,7 +8,7 @@ using Odin.Utility;
 
 namespace Tests.Odin.Email.Office365
 {
-    public sealed class Office365EmailSenderTestBuilder: IBuilder<Office365EmailSender>
+    public sealed class Office365EmailSenderTestBuilder
     {
         public ILogger2<Office365EmailSender> Logger = null!;
         public Mock<ILogger2<Office365EmailSender>>? LoggerMock;

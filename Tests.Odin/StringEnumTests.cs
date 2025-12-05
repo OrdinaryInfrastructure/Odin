@@ -61,7 +61,7 @@ namespace Tests.Odin.Utility
         [Test]
         public void Values_with_duplicates_by_case_only_are_supported()
         {
-            Assert.DoesNotThrow(() => { var _ = DuplicateValsByCaseOnlyStringEnum.Values; });
+            Assert.DoesNotThrow(() => { ImmutableHashSet<string> _ = DuplicateValsByCaseOnlyStringEnum.Values; });
         }
         
         [Test]

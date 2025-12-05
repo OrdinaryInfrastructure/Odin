@@ -9,7 +9,7 @@ using Odin.Utility;
 
 namespace Tests.Odin.Email.Mailgun
 {
-    public sealed class MailgunEmailSenderTestBuilder: IBuilder<MailgunEmailSender>
+    public sealed class MailgunEmailSenderTestBuilder
     {
         public ILogger2<MailgunEmailSender> Logger = null!;
         public Mock<ILogger2<MailgunEmailSender>>? LoggerMock;

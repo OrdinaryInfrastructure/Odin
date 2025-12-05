@@ -88,7 +88,7 @@ namespace Odin.Notifications
 
             try
             {
-                var sendResult = await _emailSender.SendEmail(email);
+                ResultValue<string?> sendResult = await _emailSender.SendEmail(email);
                 if (sendResult.Success) return Result.Succeed();
                 return Result.Fail($"EmailNotifier failed to send notification: {sendResult.MessagesToString()}");
             }

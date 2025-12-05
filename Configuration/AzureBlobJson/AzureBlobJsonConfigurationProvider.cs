@@ -1,6 +1,7 @@
 using System.Runtime.ExceptionServices;
 using Azure;
 using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Json;
 
@@ -78,7 +79,7 @@ public class AzureBlobJsonConfigurationProvider : JsonConfigurationProvider
         {
             BlobClient client = GetBlobClient();
             
-            var attributes = await client.GetPropertiesAsync();
+            Response<BlobProperties>? attributes = await client.GetPropertiesAsync();
 
             if (attributes.HasValue && attributes.Value.ETag == _mostRecentEtag)
             {

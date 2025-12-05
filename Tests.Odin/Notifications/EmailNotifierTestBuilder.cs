@@ -8,7 +8,7 @@ using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
 namespace Tests.Odin.Notifications;
 
-internal class EmailNotifierTestBuilder : IBuilder<EmailNotifier>
+internal class EmailNotifierTestBuilder 
 {
     public EmailNotifierTestBuilder(bool mockAllDependencies = true)
     {

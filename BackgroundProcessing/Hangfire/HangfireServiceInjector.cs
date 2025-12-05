@@ -49,7 +49,7 @@ namespace Odin.BackgroundProcessing
                                                    $"no fallback connection string was named.");
                 }
                 
-                var namedConnString = sp.GetRequiredService<IConfiguration>().GetConnectionString(opts.ConnectionStringName);
+                string? namedConnString = sp.GetRequiredService<IConfiguration>().GetConnectionString(opts.ConnectionStringName);
                 
                 if (string.IsNullOrWhiteSpace(namedConnString))
                 {
@@ -152,9 +152,9 @@ namespace Odin.BackgroundProcessing
                 return builder;
             }
 
-            string[] filterStrings =
+            IEnumerable<string> filterStrings =
                 hangfireOptions.DashboardAuthorizationFilters.Split(',', ';')
-                    .Where(c => !string.IsNullOrWhiteSpace(c.TrimIfNotNull())).ToArray();
+                    .Where(c => !string.IsNullOrWhiteSpace(c)).Select(c => c.Trim());
             IEnumerable<IDashboardAuthorizationFilter> filters =
                 filterStrings.Select(TryCreateDashBoardAuthorizationFilter).Where(c => c != null)!;
             DashboardOptions options = new DashboardOptions()

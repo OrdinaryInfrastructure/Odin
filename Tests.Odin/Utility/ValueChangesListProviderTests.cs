@@ -28,7 +28,7 @@ public sealed class ValueChangesListProviderTests
             });
 
         Assert.That(sut, Is.Not.Null);
-        var result = sut.GetValue(testDate);
+        decimal result = sut.GetValue(testDate);
         Assert.That(result, Is.EqualTo(shouldBeValue), $"Expected {shouldBeValue} but was {result}.");
     }
 

@@ -67,7 +67,7 @@ public class ValueChangesListProvider<TRangeType, TValueType> : IVaryingValuePro
     /// <inheritdoc />
     public TValueType? GetValue(TRangeType atPointAlongDimension)
     {
-        var candidates = _valueChangesInOrder.Where(c => c.From.CompareTo(atPointAlongDimension) <= 0);
+        IEnumerable<ValueChange<TRangeType, TValueType>> candidates = _valueChangesInOrder.Where(c => c.From.CompareTo(atPointAlongDimension) <= 0);
         ValueChange<TRangeType, TValueType>? applicableValue = candidates.MaxBy(c => c.From);
         if (applicableValue == null)
         {

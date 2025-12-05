@@ -70,7 +70,6 @@ jobs:
         dotnet pack ./Templating/Razor/Odin.Templating.Razor.csproj --configuration $CONFIGURATION --output $PACKAGE_DIR
         dotnet pack ./Utility/VaryingValues/Odin.Utility.VaryingValues.csproj --configuration $CONFIGURATION --output $PACKAGE_DIR
         dotnet pack ./Utility/Tax/Odin.Utility.Tax.csproj --configuration $CONFIGURATION --output $PACKAGE_DIR
-        dotnet pack ./Utility/Core/Odin.Utility.csproj --configuration $CONFIGURATION --output $PACKAGE_DIR
         dotnet pack ./Utility/ClassFactory/Odin.Utility.ClassFactory.csproj --configuration $CONFIGURATION --output $PACKAGE_DIR
       env:
         CONFIGURATION: ${{env.BUILD_CONFIGURATION}}
