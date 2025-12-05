@@ -4,6 +4,7 @@
     <Nullable>enable</Nullable>
     <UserSecretsId>Tests.Odin.Email</UserSecretsId>
     <RootNamespace>Tests.Odin.Email</RootNamespace>
+    <GenerateProgramFile>false</GenerateProgramFile>
     <ImplicitUsings>true</ImplicitUsings>
     <NoWarn>1591;</NoWarn>
   </PropertyGroup>
