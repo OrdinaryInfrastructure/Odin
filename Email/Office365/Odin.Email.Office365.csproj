@@ -12,8 +12,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Azure.Identity" Version="1.16.0" />
-      <PackageReference Include="Microsoft.Graph" Version="5.92.0" />
+      <PackageReference Include="Azure.Identity" Version="1.17.1" />
+      <PackageReference Include="Microsoft.Graph" Version="5.98.0" />
     </ItemGroup>
     <ItemGroup>
         <None Include="icon.png" Pack="true" PackagePath="" />

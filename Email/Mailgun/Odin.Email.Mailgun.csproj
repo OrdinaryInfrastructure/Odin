@@ -10,7 +10,7 @@
         <ProjectReference Include="..\Core\Odin.Email.csproj" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Polly.Core" Version="8.6.3" />
+        <PackageReference Include="Polly.Core" Version="8.6.5" />
     </ItemGroup>
     <ItemGroup>
         <None Include="icon.png" Pack="true" PackagePath="" />
