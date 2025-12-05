@@ -16,7 +16,7 @@ namespace Tests.Odin.DesignContracts
             string returnValue = "bob";
             
             // Assert
-            Exception ex = Assert.Throws<Exception>(() => returnValue.ReturnAfterPostConditions(delegate(string s)
+            Exception? ex = Assert.Throws<Exception>(() => returnValue.ReturnAfterPostConditions(delegate(string s)
             {
                 PostCondition.Ensures(returnValue=="fred", errorMessage);
             }));
@@ -31,7 +31,7 @@ namespace Tests.Odin.DesignContracts
         public void ReturnAfterCondition_throws_specific_exception_on_postcondition_failure(string message, string exceptionMessage)
         {
             string returnValue = "bob";
-            ArgumentException ex = Assert.Throws<ArgumentException>(() => returnValue.ReturnAfterPostConditions(delegate(string s)
+            ArgumentException? ex = Assert.Throws<ArgumentException>(() => returnValue.ReturnAfterPostConditions(delegate(string s)
             {
                 PostCondition.Ensures<ArgumentException>(returnValue=="fred", message);
             }));

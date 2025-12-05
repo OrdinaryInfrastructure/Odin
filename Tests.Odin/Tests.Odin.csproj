@@ -23,7 +23,6 @@
     <ProjectReference Include="..\Email\Core\Odin.Email.csproj" />
     <ProjectReference Include="..\Email\Mailgun\Odin.Email.Mailgun.csproj" />
     <ProjectReference Include="..\Email\Office365\Odin.Email.Office365.csproj" />
-    <ProjectReference Include="..\Notifications\Odin.Notifications.csproj" />
     <ProjectReference Include="..\RemoteFiles\Core\Odin.RemoteFiles.csproj" />
     <ProjectReference Include="..\System\StringEnum\Odin.System.StringEnum.csproj" />
     <ProjectReference Include="..\Templating\Razor\Odin.Templating.Razor.csproj" />
@@ -35,8 +34,5 @@
     <None Update="appSettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Utility\" />
   </ItemGroup>
 </Project>

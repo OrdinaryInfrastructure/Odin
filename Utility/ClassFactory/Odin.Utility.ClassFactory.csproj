@@ -17,7 +17,7 @@ Odin = OrDinary INfrastructure.
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.9" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\DesignContracts\Odin.DesignContracts.csproj" />
+    <ProjectReference Include="..\..\DesignContracts\Core\Odin.DesignContracts.csproj" />
     <ProjectReference Include="..\..\Logging\Odin.Logging.csproj" />
     <ProjectReference Include="..\..\System\Result\Odin.System.Result.csproj" />
   </ItemGroup>

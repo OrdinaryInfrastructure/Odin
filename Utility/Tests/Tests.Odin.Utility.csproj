@@ -3,7 +3,6 @@
     <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
     <Nullable>enable</Nullable>
     <UserSecretsId>Tests.Odin.Utility</UserSecretsId>
-    <RootNamespace>Tests.Odin.Utility</RootNamespace>
     <GenerateProgramFile>true</GenerateProgramFile>
     <ImplicitUsings>true</ImplicitUsings>
     <NoWarn>1591;</NoWarn>

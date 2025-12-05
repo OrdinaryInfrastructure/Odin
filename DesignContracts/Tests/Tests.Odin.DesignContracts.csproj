@@ -2,27 +2,21 @@
   <PropertyGroup>
     <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
     <Nullable>enable</Nullable>
-    <UserSecretsId>Tests.Odin.Email</UserSecretsId>
-    <GenerateProgramFile>false</GenerateProgramFile>
+    <UserSecretsId>Tests.Odin.DesignContracts</UserSecretsId>
+    <GenerateProgramFile>true</GenerateProgramFile>
     <ImplicitUsings>true</ImplicitUsings>
     <NoWarn>1591;</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.22" />
     <PackageReference Include="NUnit" Version="4.4.0" />
     <PackageReference Include="Moq" Version="4.20.72" />
     <PackageReference Include="NUnit3TestAdapter" Version="5.1.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" /> 
   </ItemGroup>
+
   <ItemGroup>
-    <ProjectReference Include="..\Core\Odin.Email.csproj" />
-    <ProjectReference Include="..\Mailgun\Odin.Email.Mailgun.csproj" />
-    <ProjectReference Include="..\Office365\Odin.Email.Office365.csproj" />
-   </ItemGroup>
-  <ItemGroup>
-    <None Update="appSettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <ProjectReference Include="..\Core\Odin.DesignContracts.csproj" />
   </ItemGroup>
+
 </Project>
