@@ -1,10 +1,8 @@
-﻿using NUnit.Framework;
-
-using System.Text.Json;
-using Odin;
+﻿using System.Text.Json;
+using NUnit.Framework;
 using Odin.System;
 
-namespace Tests.Odin
+namespace Tests.Odin.System
 {
     [TestFixture]
     public sealed class ResultValueTests
@@ -75,7 +73,7 @@ namespace Tests.Odin
         {
             string serialised = "{\"Value\":3,\"Success\":true,\"Messages\":[\"cool man\"]}";
             
-            ResultValue<int> result = JsonSerializer.Deserialize<ResultValue<int>>(serialised);
+            ResultValue<int>? result = JsonSerializer.Deserialize<ResultValue<int>>(serialised);
             
             Assert.That(result, Is.Not.Null);    
             Assert.That(result.Success, Is.True);       

@@ -1,10 +1,9 @@
-﻿#nullable enable
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
 using NUnit.Framework;
 using Odin;
 using Odin.System;
 
-namespace Tests.Odin.Utility
+namespace Tests.Odin.System
 {
     [TestFixture]
     public sealed class StringEnumTests

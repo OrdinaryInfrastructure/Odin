@@ -10,8 +10,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odin.Logging", "Logging\Odi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odin.Messaging.RabbitMq", "Messaging\RabbitMq\Odin.Messaging.RabbitMq.csproj", "{21717156-66D0-2EF7-4728-A1BDEC5395F1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.Odin", "Tests.Odin\Tests.Odin.csproj", "{129E541A-C234-3625-95BF-4283B062F233}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BackgroundProcessing", "BackgroundProcessing", "{BF440C74-E223-3CBF-8FA7-83F7D164F7C3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odin.BackgroundProcessing.Abstractions", "BackgroundProcessing\Abstractions\Odin.BackgroundProcessing.Abstractions.csproj", "{CE323D9C-635B-EFD3-5B3F-7CE371D8A86A}"
@@ -89,6 +87,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.Odin.DesignContracts"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.Odin.Messaging", "Messaging\Tests\Tests.Odin.Messaging.csproj", "{690312C5-1948-4530-832D-6332625D4E9C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.Odin.System", "System\Tests\Tests.Odin.System.csproj", "{957966BC-FE0E-4206-BDD8-F04591AB836E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -115,10 +115,6 @@ Global
 		{21717156-66D0-2EF7-4728-A1BDEC5395F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{21717156-66D0-2EF7-4728-A1BDEC5395F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{21717156-66D0-2EF7-4728-A1BDEC5395F1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{129E541A-C234-3625-95BF-4283B062F233}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{129E541A-C234-3625-95BF-4283B062F233}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{129E541A-C234-3625-95BF-4283B062F233}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{129E541A-C234-3625-95BF-4283B062F233}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CE323D9C-635B-EFD3-5B3F-7CE371D8A86A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CE323D9C-635B-EFD3-5B3F-7CE371D8A86A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE323D9C-635B-EFD3-5B3F-7CE371D8A86A}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -211,6 +207,10 @@ Global
 		{690312C5-1948-4530-832D-6332625D4E9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{690312C5-1948-4530-832D-6332625D4E9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{690312C5-1948-4530-832D-6332625D4E9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{957966BC-FE0E-4206-BDD8-F04591AB836E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{957966BC-FE0E-4206-BDD8-F04591AB836E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{957966BC-FE0E-4206-BDD8-F04591AB836E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{957966BC-FE0E-4206-BDD8-F04591AB836E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{CE323D9C-635B-EFD3-5B3F-7CE371D8A86A} = {BF440C74-E223-3CBF-8FA7-83F7D164F7C3}
@@ -241,5 +241,6 @@ Global
 		{52AF2C63-2247-42FD-B3DD-4AD2AFCE0C6D} = {3610DE71-0841-E98B-B5EB-0B69D343489C}
 		{177EDB52-3174-4037-80DD-235222F9817B} = {9E3E1A13-9A74-4895-98A9-D96F4E0ED4B7}
 		{690312C5-1948-4530-832D-6332625D4E9C} = {4140B1D5-6C97-4F68-8DEA-C0D139BA9FBC}
+		{957966BC-FE0E-4206-BDD8-F04591AB836E} = {73BA62BB-2B41-2DC4-C714-51B3D4C2A215}
 	EndGlobalSection
 EndGlobal
