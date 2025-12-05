@@ -18,8 +18,8 @@ namespace Tests.Odin.Templating.Razor
             builder.Services.AddRazorTemplating(testsAssembly, "Tests.Odin.Templating.Razor");
             WebApplication sut = builder.Build();
             
-            IRazorTemplateRenderer result = sut.Services.GetService<IRazorTemplateRenderer>();
-            IRazorLightEngine dependency = sut.Services.GetService<IRazorLightEngine>();
+            IRazorTemplateRenderer? result = sut.Services.GetService<IRazorTemplateRenderer>();
+            IRazorLightEngine? dependency = sut.Services.GetService<IRazorLightEngine>();
             
             Assert.That(result, Is.Not.Null);
             Assert.That(dependency, Is.Not.Null);

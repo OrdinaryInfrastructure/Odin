@@ -32,9 +32,11 @@
    </ItemGroup>
   <ItemGroup>
     <None Remove="Templating\Razor\TestTemplate1.cshtml" />
-    <EmbeddedResource Include="Templating\Razor\TestTemplate1.cshtml" />
     <None Update="appSettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Templating\" />
   </ItemGroup>
 </Project>
