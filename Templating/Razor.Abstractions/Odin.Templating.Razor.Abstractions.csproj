@@ -4,6 +4,7 @@
     <Nullable>enable</Nullable>
     <RootNamespace>Odin.Templating.Razor</RootNamespace>
     <ImplicitUsings>true</ImplicitUsings>
+    <PackageIcon>icon.png</PackageIcon>
     <Description>Provides OrDINary use case rendering of embedded '.cshtml' templates using Razor syntax outside 
       the context of ASP.Net, via IRazorTemplateRenderer.RenderAsync-TModel(string templateKey, TModel viewModel)
     For example, rendering email body HTML from an HTML template.
@@ -12,5 +13,8 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\System\Result\Odin.System.Result.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="icon.png" Pack="true" PackagePath="" />
   </ItemGroup>
 </Project>

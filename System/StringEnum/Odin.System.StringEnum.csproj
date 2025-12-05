@@ -4,6 +4,7 @@
     <RootNamespace>Odin.System</RootNamespace>
     <ImplicitUsings>true</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <PackageIcon>icon.png</PackageIcon>
     <Description>Provides enum-like behaviour for a set of string values.
       Usage: Inherit from StringEnum and add only public const string members.
       Use the Values static property to work with a list of all the string values.
@@ -15,5 +16,8 @@ Odin = OrDinary INfrastructure.
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Result\Odin.System.Result.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="icon.png" Pack="true" PackagePath="" />
   </ItemGroup>
 </Project>

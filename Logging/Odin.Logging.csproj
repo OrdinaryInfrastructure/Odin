@@ -4,6 +4,7 @@
     <RootNamespace>Odin</RootNamespace>
     <ImplicitUsings>true</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <PackageIcon>icon.png</PackageIcon>
     <Description>Provides an expanded ILogger of T interface for LogXXX(...) calls 
       on the same basis as the .NET LoggerExtensions extension methods,
       that is much more convenient for asserting logger calls compared to mocking ILogger, 
@@ -16,4 +17,8 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.9" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.9" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="icon.png" Pack="true" PackagePath="" />
+  </ItemGroup>
+
 </Project>

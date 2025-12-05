@@ -5,6 +5,7 @@
     <ImplicitUsings>true</ImplicitUsings>
     <RootNamespace>Odin.Utility</RootNamespace>
     <Nullable>enable</Nullable>
+    <PackageIcon>icon.png</PackageIcon>
     <Description>Leftover elements used in the OrdinaryInfrastructure libraries that don't really have a home. 
             
 Odin = OrDinary INfrastructure.
@@ -19,5 +20,8 @@ Odin = OrDinary INfrastructure.
     <ProjectReference Include="..\..\DesignContracts\Odin.DesignContracts.csproj" />
     <ProjectReference Include="..\..\Logging\Odin.Logging.csproj" />
     <ProjectReference Include="..\..\System\Result\Odin.System.Result.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="icon.png" Pack="true" PackagePath="" />
   </ItemGroup>
 </Project>

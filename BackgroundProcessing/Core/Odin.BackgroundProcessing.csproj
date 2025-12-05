@@ -3,6 +3,7 @@
         <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
         <ImplicitUsings>true</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <PackageIcon>icon.png</PackageIcon>
         <Description>A now redundant abstraction of Hangfire's job processing functionality
             for the original purpose of mocking Hangfire. Abstracts background processing related use cases via
             an IBackgroundProcessor interface, required in the days that Hangfire still
@@ -22,5 +23,8 @@
       <ProjectReference Include="..\..\System\Result\Odin.System.Result.csproj" />
       <ProjectReference Include="..\..\Utility\ClassFactory\Odin.Utility.ClassFactory.csproj" />
       <ProjectReference Include="..\Abstractions\Odin.BackgroundProcessing.Abstractions.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="icon.png" Pack="true" PackagePath="" />
     </ItemGroup>
 </Project>

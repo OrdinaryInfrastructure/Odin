@@ -3,6 +3,7 @@
     <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
     <Nullable>enable</Nullable>
     <ImplicitUsings>true</ImplicitUsings>
+    <PackageIcon>icon.png</PackageIcon>
     <RootNamespace>Odin.RemoteFiles</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
@@ -10,5 +11,8 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Abstractions\Odin.RemoteFiles.Abstractions.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="icon.png" Pack="true" PackagePath="" />
   </ItemGroup>
 </Project>

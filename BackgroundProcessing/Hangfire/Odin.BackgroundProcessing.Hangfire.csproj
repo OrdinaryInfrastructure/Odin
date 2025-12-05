@@ -5,6 +5,7 @@
     <ImplicitUsings>true</ImplicitUsings>
     <PackageId>Odin.BackgroundProcessing.Hangfire</PackageId>
     <RootNamespace>Odin.BackgroundProcessing</RootNamespace>
+    <PackageIcon>icon.png</PackageIcon>
     <Description>Concrete implementation of IBackgroundProcessor via Hangfire.
     </Description>
   </PropertyGroup>
@@ -16,5 +17,8 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Odin.BackgroundProcessing.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="icon.png" Pack="true" PackagePath="" />
   </ItemGroup>
 </Project>
