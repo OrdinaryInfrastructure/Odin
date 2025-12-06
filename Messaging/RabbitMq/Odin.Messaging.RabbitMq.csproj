@@ -4,6 +4,12 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>true</ImplicitUsings>
     <PackageIcon>icon.png</PackageIcon>
+    <Description>Provides an IResubscribingRabbitSubscription concept useful for resilient queue consumption 
+      from RabbitMQ, that is not provided by RabbitMQ.Client.
+
+
+      Odin = OrDinary INfrastructure.
+    </Description>
     <NoWarn>CS1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>

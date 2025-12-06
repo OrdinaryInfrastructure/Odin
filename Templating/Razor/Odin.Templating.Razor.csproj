@@ -8,6 +8,9 @@
     <Description>Provides OrDINary use case rendering of embedded '.cshtml' templates using Razor syntax outside
       the context of ASP.Net, via IRazorTemplateRenderer.RenderAsync-TModel(string templateKey, TModel viewModel)
       For example, rendering email body HTML from an HTML template.
+
+
+      Odin = OrDinary INfrastructure.
     </Description>
     <WarningsAsErrors>1591;1573;</WarningsAsErrors> <!-- Not to be removed. Documentation is required. -->
   </PropertyGroup>

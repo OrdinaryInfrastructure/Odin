@@ -23,7 +23,7 @@ namespace Tests.Odin.Email
             EmailSendingOptions? config = sut.Services.GetService<EmailSendingOptions>();
             
             Assert.That(mailSender, Is.Not.Null);
-            Assert.That(mailSender, Is.InstanceOf<FakeEmailSender>());
+            Assert.That(mailSender, Is.InstanceOf<NullEmailSender>());
             Assert.That(config, Is.Not.Null);
         }
 

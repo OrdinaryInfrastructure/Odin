@@ -4,6 +4,12 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>true</ImplicitUsings>
     <PackageIcon>icon.png</PackageIcon>
+    <Description>An exploratory abstraction of SFTP and FTPS file operations.
+      Provides IRemoteFileSession, IRemoteFileSessionFactory and RemoteFileInfo concepts.
+
+
+      Odin = OrDinary INfrastructure.
+    </Description>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\DesignContracts\Core\Odin.DesignContracts.csproj" />

@@ -3,9 +3,9 @@
 namespace Odin.Email
 {
     /// <summary>
-    /// Fake IEmailSender for unit testing..
+    /// Minimalistic IEmailSender that does nothing.
     /// </summary>
-    public sealed class FakeEmailSender : IEmailSender
+    public sealed class NullEmailSender : IEmailSender
     {
         /// <summary>
         /// Does nothing
