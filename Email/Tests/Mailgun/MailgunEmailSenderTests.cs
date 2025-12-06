@@ -3,7 +3,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
-using Odin;
 using Odin.Email;
 using Odin.System;
 
@@ -13,15 +12,15 @@ namespace Tests.Odin.Email.Mailgun
     [Category("IntegrationTest")]
     public sealed class MailgunEmailSenderTests : IntegrationTest
     {
-        private string _toTestEmail;
-        private string _fromTestEmail;
+        private string _toTestEmail = null!;
+        private string _fromTestEmail= null!;
 
         [SetUp]
         public void Setup()
         {
             IConfiguration config = AppFactory.GetConfiguration();
-            _toTestEmail = config["Email-TestToAddress"]!;
-            _fromTestEmail = config["Email-TestFromAddress"]!;
+            _toTestEmail = config["Email-TestToAddress"] ?? throw new Exception("Email-TestToAddress required in configuration");
+            _fromTestEmail = config["Email-TestFromAddress"] ?? throw new Exception("Email-TestFromAddress required in configuration");
         }
 
 
@@ -109,7 +108,7 @@ namespace Tests.Odin.Email.Mailgun
             message.Attachments.Add(txtAttachment);
             MailgunEmailSender mailgunSender = scenario.Build();
 
-            ResultValue<string> result = await mailgunSender.SendEmail(message);
+            ResultValue<string?> result = await mailgunSender.SendEmail(message);
 
             Assert.That(result, Is.Not.Null);
             
@@ -155,7 +154,7 @@ namespace Tests.Odin.Email.Mailgun
             string expectedLogMessage =
                 $"SendEmail to {_toTestEmail} failed. Subject - '{message.Subject}'. Error - Failed to send email with Mailgun. Status code: 401 Unauthorized. Response content: Forbidden";
 
-            ResultValue<string> result = await mailgunSender.SendEmail(message);
+            ResultValue<string?> result = await mailgunSender.SendEmail(message);
 
             // 3 retries
             scenario.LoggerMock!.Verify(c => c.Log(LogLevel.Error, expectedLogMessage), Times.Exactly(4));

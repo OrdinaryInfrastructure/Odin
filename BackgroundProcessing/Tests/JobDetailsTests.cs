@@ -1,5 +1,4 @@
-﻿using NUnit.Framework;
-using Odin.BackgroundProcessing;
+﻿using Odin.BackgroundProcessing;
 
 namespace Tests.Odin.BackgroundProcessing
 {

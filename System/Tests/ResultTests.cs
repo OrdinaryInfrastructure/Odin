@@ -88,8 +88,8 @@ namespace Tests.Odin.System
             Result? result = JsonSerializer.Deserialize<Result>(serialised);
             
             Assert.That(result, Is.Not.Null);    
-            Assert.That(result.Success, Is.True);       
-            Assert.That(result.Messages[0], Is.EqualTo("cool man"));
+            Assert.That(result!.Success, Is.True);       
+            Assert.That(result!.Messages[0], Is.EqualTo("cool man"));
         }
     }
 }

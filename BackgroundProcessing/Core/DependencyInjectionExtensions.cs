@@ -2,18 +2,19 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Odin.BackgroundProcessing;
 using Odin.DesignContracts;
 using Odin.System;
 using Odin.Utility;
 
-
-namespace Odin.BackgroundProcessing
+// ReSharper disable once CheckNamespace
+namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>
     /// Dependency injection methods to support Background Processing services setup by adding an IBackgroundProcessor
     /// from configuration
     /// </summary>
-    public static class ServiceInjector
+    public static class DependencyInjectionExtensions
     {
         /// <summary>
         /// Adds BackgroundProcessing services (such as Hangfire's server) according to the provided ConfigurationSection
@@ -22,7 +23,7 @@ namespace Odin.BackgroundProcessing
         /// <param name="configuration"></param>
         /// <param name="sectionName">Cryptography by default</param>
         /// <param name="sqlServerConnectionString"></param>
-        public static void AddBackgroundProcessing(
+        public static void AddOdinBackgroundProcessing(
             this IServiceCollection serviceCollection, IConfiguration configuration,
             string sectionName = "BackgroundProcessing", string? sqlServerConnectionString = null)
         {
@@ -33,10 +34,10 @@ namespace Odin.BackgroundProcessing
                 if (section == null)
                 {
                     throw new ApplicationException(
-                        $"{nameof(AddBackgroundProcessing)}: Section {sectionName} missing in configuration.");
+                        $"{nameof(AddOdinBackgroundProcessing)}: Section {sectionName} missing in configuration.");
                 }
             }
-            serviceCollection.AddBackgroundProcessing(configuration, section, sqlServerConnectionString);
+            serviceCollection.AddOdinBackgroundProcessing(configuration, section, sqlServerConnectionString);
         }
         
         /// <summary>
@@ -47,7 +48,7 @@ namespace Odin.BackgroundProcessing
         /// <param name="sectionName"></param>
         /// <param name="sqlServerConnectionStringFactory"></param>
         /// <exception cref="ApplicationException"></exception>
-        public static void AddBackgroundProcessing(
+        public static void AddOdinBackgroundProcessing(
             this IServiceCollection serviceCollection, IConfiguration configuration,
             string sectionName, Func<IServiceProvider, string>? sqlServerConnectionStringFactory = null)
         {
@@ -58,10 +59,10 @@ namespace Odin.BackgroundProcessing
                 if (section == null)
                 {
                     throw new ApplicationException(
-                        $"{nameof(AddBackgroundProcessing)}: Section {sectionName} missing in configuration.");
+                        $"{nameof(AddOdinBackgroundProcessing)}: Section {sectionName} missing in configuration.");
                 }
             }
-            serviceCollection.AddBackgroundProcessing(configuration, section, sqlServerConnectionStringFactory);
+            serviceCollection.AddOdinBackgroundProcessing(configuration, section, sqlServerConnectionStringFactory);
         }
 
         /// <summary>
@@ -71,10 +72,10 @@ namespace Odin.BackgroundProcessing
         /// <param name="configuration"></param>
         /// <param name="configurationSection"></param>
         /// <param name="sqlServerConnectionString"></param>
-        public static void AddBackgroundProcessing(this IServiceCollection serviceCollection, IConfiguration configuration, IConfigurationSection configurationSection,
+        public static void AddOdinBackgroundProcessing(this IServiceCollection serviceCollection, IConfiguration configuration, IConfigurationSection configurationSection,
             string? sqlServerConnectionString = null)
         {
-            AddBackgroundProcessing(serviceCollection, configuration, configurationSection, sqlServerConnectionString is null ? null : _ => sqlServerConnectionString);
+            AddOdinBackgroundProcessing(serviceCollection, configuration, configurationSection, sqlServerConnectionString is null ? null : _ => sqlServerConnectionString);
         }
 
         /// <summary>
@@ -85,7 +86,7 @@ namespace Odin.BackgroundProcessing
         /// <param name="configurationSection"></param>
         /// <param name="sqlServerConnectionStringFactory"></param>
         /// <returns></returns>
-        public static void AddBackgroundProcessing(
+        public static void AddOdinBackgroundProcessing(
             this IServiceCollection serviceCollection, IConfiguration configuration,
             IConfigurationSection configurationSection, Func<IServiceProvider, string>? sqlServerConnectionStringFactory = null)
         {
@@ -98,7 +99,7 @@ namespace Odin.BackgroundProcessing
             if (!configResult.Success)
             {
                 throw new ApplicationException(
-                    $"{nameof(AddBackgroundProcessing)}: Invalid BackgroundProcessing configuration. Errors are: {configResult.MessagesToString()}");
+                    $"{nameof(AddOdinBackgroundProcessing)}: Invalid BackgroundProcessing configuration. Errors are: {configResult.MessagesToString()}");
             }
 
             serviceCollection.TryAddSingleton(options);

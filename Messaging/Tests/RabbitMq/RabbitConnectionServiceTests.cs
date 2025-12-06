@@ -6,6 +6,8 @@ using Odin.Messaging.RabbitMq;
 
 namespace Tests.Odin.Messaging.RabbitMq;
 
+[TestFixture]
+[Ignore("So far, RabbitConnectionService is tested manually only.")]
 public class RabbitConnectionServiceTests
 {
     public record TestMessage
@@ -15,11 +17,10 @@ public class RabbitConnectionServiceTests
         public required string ThreadIdentifier { get; init; }
     }
 
-
     [Test]
-    [Ignore("So far, RabbitConnectionService is tested manually only.")]
-    public async Task Publish_Works(CancellationToken cancellationToken)
+    public async Task Publish_Works()
     {
+        CancellationToken cancellationToken = new  CancellationTokenSource().Token;
         RabbitConnectionService box = new RabbitConnectionService(new RabbitConnectionServiceSettings
         {
             Host = "localhost",
@@ -126,6 +127,7 @@ public class RabbitConnectionServiceTests
         await Task.WhenAll(sendingTasks);
     }
 
+    [Test]
     public async Task QueueSubscription_Works(CancellationToken cancellationToken)
     {
         RabbitConnectionService box = new RabbitConnectionService(new RabbitConnectionServiceSettings

@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using NUnit.Framework;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,7 +7,7 @@ using Odin.BackgroundProcessing;
 namespace Tests.Odin.BackgroundProcessing
 {
     [TestFixture]
-    public sealed class ServiceInjectorTests
+    public sealed class DependencyInjectionExtensionsTests
     {
         
         [Test]
@@ -16,7 +15,7 @@ namespace Tests.Odin.BackgroundProcessing
         {
             WebApplicationBuilder builder = WebApplication.CreateBuilder();
             builder.Configuration.AddJsonStream(Stream(GetFakeBackgroundProcessorConfigJson()));
-            builder.Services.AddBackgroundProcessing(builder.Configuration);
+            builder.Services.AddOdinBackgroundProcessing(builder.Configuration);
             WebApplication sut = builder.Build();
             
             IBackgroundProcessor? provider = sut.Services.GetService<IBackgroundProcessor>();
@@ -32,7 +31,7 @@ namespace Tests.Odin.BackgroundProcessing
         {
             WebApplicationBuilder builder = WebApplication.CreateBuilder();
             builder.Configuration.AddJsonStream(Stream(GetHangfireBackgroundProcessorConfigJson()));
-            builder.Services.AddBackgroundProcessing(builder.Configuration);
+            builder.Services.AddOdinBackgroundProcessing(builder.Configuration);
             WebApplication sut = builder.Build();
             
             IBackgroundProcessor? provider = sut.Services.GetService<IBackgroundProcessor>();

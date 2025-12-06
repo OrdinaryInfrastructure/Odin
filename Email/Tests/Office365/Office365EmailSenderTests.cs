@@ -2,7 +2,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
-using Odin;
 using Odin.Email;
 using Odin.System;
 
@@ -13,8 +12,8 @@ namespace Tests.Odin.Email.Office365;
 [Category("IntegrationTest")]
 public class Office365EmailSenderTests : IntegrationTest
 {
-    private string _toTestEmail;
-    private string _fromTestEmail;
+    private string _toTestEmail = null!;
+    private string _fromTestEmail = null!;
 
     [SetUp]
     public void Setup()
@@ -22,7 +21,7 @@ public class Office365EmailSenderTests : IntegrationTest
         IConfiguration config = AppFactory.GetConfiguration();
         IConfigurationSection office365Options = config.GetRequiredSection("Email-Office365");
 
-        _toTestEmail = config["Email-TestToAddress"]!;
+        _toTestEmail = config["Email-TestToAddress"] ?? throw new Exception("Email-TestToAddress required in configuration");
         Office365Options options = new Office365Options();
         office365Options.Bind(options);
         _fromTestEmail = options.SenderUserId!;
@@ -96,7 +95,7 @@ public class Office365EmailSenderTests : IntegrationTest
             .WithEmailSendingOptionsFromTestConfiguration(config);
         Office365EmailSender sut = scenario.Build();
         
-        ResultValue<string> result = await sut.SendEmail(email);
+        ResultValue<string?> result = await sut.SendEmail(email);
 
         VerifySuccessfulSendAndLogging(scenario, email, result);
     }
@@ -161,13 +160,13 @@ public class Office365EmailSenderTests : IntegrationTest
 
         Office365EmailSender sut = scenario.Build();
 
-        ResultValue<string> result = await sut.SendEmail(email);
+        ResultValue<string?> result = await sut.SendEmail(email);
 
         VerifySuccessfulSendAndLogging(scenario, email, result);
     }
 
     private void VerifySuccessfulSendAndLogging(Office365EmailSenderTestBuilder scenario, EmailMessage message,
-        ResultValue<string> result)
+        ResultValue<string?> result)
     {
         // Result
         Assert.That(result.Success, Is.True, result.MessagesToString());

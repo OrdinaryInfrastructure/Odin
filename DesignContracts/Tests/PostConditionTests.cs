@@ -20,7 +20,8 @@ namespace Tests.Odin.DesignContracts
             {
                 PostCondition.Ensures(returnValue=="fred", errorMessage);
             }));
-            Assert.That(ex.Message, Is.EqualTo(exceptionMessage));
+            Assert.That(ex, Is.Not.Null);
+            Assert.That(ex!.Message, Is.EqualTo(exceptionMessage));
         }
         
         [Test]
@@ -35,7 +36,8 @@ namespace Tests.Odin.DesignContracts
             {
                 PostCondition.Ensures<ArgumentException>(returnValue=="fred", message);
             }));
-            Assert.That(ex.Message, Is.EqualTo(exceptionMessage));
+            Assert.That(ex, Is.Not.Null);
+            Assert.That(ex!.Message, Is.EqualTo(exceptionMessage));
         }
 
         [Test]
