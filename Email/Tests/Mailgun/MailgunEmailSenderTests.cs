@@ -7,10 +7,10 @@ using Odin;
 using Odin.Email;
 using Odin.System;
 
-
 namespace Tests.Odin.Email.Mailgun
 {
     [TestFixture]
+    [Category("IntegrationTest")]
     public sealed class MailgunEmailSenderTests : IntegrationTest
     {
         private string _toTestEmail;
@@ -84,7 +84,7 @@ namespace Tests.Odin.Email.Mailgun
             }
             MailgunEmailSender sut = scenario.Build();
 
-            ResultValue<string> result = await sut.SendEmail(email);
+            ResultValue<string?> result = await sut.SendEmail(email);
 
             VerifySuccessfulSendAndLogging(scenario, email, result);
         }
@@ -116,7 +116,7 @@ namespace Tests.Odin.Email.Mailgun
             VerifySuccessfulSendAndLogging(scenario, message, result);
         }
 
-        private void VerifySuccessfulSendAndLogging(MailgunEmailSenderTestBuilder scenario,EmailMessage message, ResultValue<string> result)
+        private void VerifySuccessfulSendAndLogging(MailgunEmailSenderTestBuilder scenario,EmailMessage message, ResultValue<string?> result)
         {
             // Result
             Assert.That(result.Success, Is.True, result.MessagesToString());
@@ -130,7 +130,7 @@ namespace Tests.Odin.Email.Mailgun
             string expectedLogMessage =
                 $"SendEmail to {_toTestEmail} succeeded. Subject - '{message.Subject}'. Sent with Mailgun reference {result.Value}.";
 
-            scenario.LoggerMock!.Verify(c => c.Log(LogLevel.Information, expectedLogMessage, null), Times.Once);
+            scenario.LoggerMock!.Verify(c => c.Log(LogLevel.Information, expectedLogMessage), Times.Once);
 
         }
 
@@ -158,7 +158,7 @@ namespace Tests.Odin.Email.Mailgun
             ResultValue<string> result = await mailgunSender.SendEmail(message);
 
             // 3 retries
-            scenario.LoggerMock!.Verify(c => c.Log(LogLevel.Error, expectedLogMessage, null), Times.Exactly(4));
+            scenario.LoggerMock!.Verify(c => c.Log(LogLevel.Error, expectedLogMessage), Times.Exactly(4));
             Assert.That(result, Is.Not.Null);
             Assert.That(result.Success, Is.False);
             Assert.That(result.Messages[0].Contains("401"), Is.True, result.Messages[0]);

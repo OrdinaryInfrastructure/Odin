@@ -10,6 +10,7 @@ using Odin.System;
 namespace Tests.Odin.Email.Office365;
 
 [TestFixture]
+[Category("IntegrationTest")]
 public class Office365EmailSenderTests : IntegrationTest
 {
     private string _toTestEmail;
@@ -181,6 +182,6 @@ public class Office365EmailSenderTests : IntegrationTest
         string expectedLogMessage =
             $"SendEmail to {_toTestEmail} succeeded. Subject - '{message.Subject}'. Sent with Office365 via user {scenario.Office365Options.SenderUserId}";
 
-        scenario.LoggerMock!.Verify(c => c.Log(LogLevel.Information, expectedLogMessage, null), Times.Once);
+        scenario.LoggerMock!.Verify(c => c.Log(LogLevel.Information, expectedLogMessage), Times.Once);
     }
 }
