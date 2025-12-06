@@ -7,10 +7,10 @@ using Odin;
 using Odin.Email;
 using Odin.System;
 
-
 namespace Tests.Odin.Email.Mailgun
 {
     [TestFixture]
+    [Category("IntegrationTest")]
     public sealed class MailgunEmailSenderTests : IntegrationTest
     {
         private string _toTestEmail;
@@ -84,7 +84,7 @@ namespace Tests.Odin.Email.Mailgun
             }
             MailgunEmailSender sut = scenario.Build();
 
-            ResultValue<string> result = await sut.SendEmail(email);
+            ResultValue<string?> result = await sut.SendEmail(email);
 
             VerifySuccessfulSendAndLogging(scenario, email, result);
         }
@@ -116,7 +116,7 @@ namespace Tests.Odin.Email.Mailgun
             VerifySuccessfulSendAndLogging(scenario, message, result);
         }
 
-        private void VerifySuccessfulSendAndLogging(MailgunEmailSenderTestBuilder scenario,EmailMessage message, ResultValue<string> result)
+        private void VerifySuccessfulSendAndLogging(MailgunEmailSenderTestBuilder scenario,EmailMessage message, ResultValue<string?> result)
         {
             // Result
             Assert.That(result.Success, Is.True, result.MessagesToString());

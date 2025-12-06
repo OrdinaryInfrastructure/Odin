@@ -10,6 +10,7 @@ using Odin.System;
 namespace Tests.Odin.Email.Office365;
 
 [TestFixture]
+[Category("IntegrationTest")]
 public class Office365EmailSenderTests : IntegrationTest
 {
     private string _toTestEmail;

@@ -12,7 +12,7 @@ namespace Tests.Odin.Email
             EmailMessage sut = new EmailMessage("to@d.com", "from@d.com", "subj", "bod", isHtml);
          
             Assert.That("to@d.com", Is.EqualTo(sut.To[0].Address));        
-            Assert.That("from@d.com", Is.EqualTo(sut.From.Address));         
+            Assert.That("from@d.com", Is.EqualTo(sut.From!.Address));         
             Assert.That("subj", Is.EqualTo(sut.Subject));       
             Assert.That("bod", Is.EqualTo(sut.Body));         
             Assert.That(isHtml, Is.EqualTo(sut.IsHtml));        
