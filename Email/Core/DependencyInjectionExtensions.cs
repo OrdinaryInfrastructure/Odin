@@ -59,7 +59,7 @@ namespace Microsoft.Extensions.DependencyInjection
             if (emailOptions.Provider == EmailSendingProviders.Fake)
             {
                 // Fake sender is built in...
-                serviceCollection.TryAddTransient<IEmailSender, FakeEmailSender>();
+                serviceCollection.TryAddTransient<IEmailSender, NullEmailSender>();
                 return;
             }
 

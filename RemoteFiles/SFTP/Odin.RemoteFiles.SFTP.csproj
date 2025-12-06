@@ -5,6 +5,8 @@
     <ImplicitUsings>true</ImplicitUsings>
     <PackageIcon>icon.png</PackageIcon>
     <RootNamespace>Odin.RemoteFiles</RootNamespace>
+    <Description>Provides SFTP remote file session support.
+    </Description>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="SSH.NET" Version="2025.1.0" />

@@ -1,8 +1,10 @@
 namespace Odin.Messaging.RabbitMq;
 
-public class FakeRabbitConnectionService: IRabbitConnectionService
+/// <summary>
+/// Minimalistic implementation that does nothing.
+/// </summary>
+public class NullRabbitConnectionService: IRabbitConnectionService
 {
-
     public async Task SendAsync(string exchangeName, string routingKey, Dictionary<string, object> headers, string contentType, byte[] body, bool persistentDelivery = true,
         bool mandatoryRouting = false)
     {

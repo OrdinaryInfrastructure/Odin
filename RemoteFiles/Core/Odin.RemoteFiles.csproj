@@ -4,6 +4,9 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>true</ImplicitUsings>
     <PackageIcon>icon.png</PackageIcon>
+    <Description>An exploratory abstraction of SFTP and FTPS file operations. 
+      Provides IRemoteFileSession, IRemoteFileSessionFactory and RemoteFileInfo concepts.
+    </Description>
     <WarningsAsErrors>1591;1573;</WarningsAsErrors> <!-- Not to be removed. Documentation is required. -->    
   </PropertyGroup>
   <ItemGroup>
