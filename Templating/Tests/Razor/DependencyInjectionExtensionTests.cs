@@ -15,7 +15,7 @@ namespace Tests.Odin.Templating.Razor
         {
             WebApplicationBuilder builder = WebApplication.CreateBuilder();
             Assembly testsAssembly = typeof(RazorTemplateRendererTests).Assembly;
-            builder.Services.AddRazorTemplating(testsAssembly, "Tests.Odin.Templating.Razor");
+            builder.Services.AddOdinRazorTemplating(testsAssembly, "Tests.Odin.Templating.Razor");
             WebApplication sut = builder.Build();
             
             IRazorTemplateRenderer? result = sut.Services.GetService<IRazorTemplateRenderer>();

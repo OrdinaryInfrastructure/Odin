@@ -8,7 +8,7 @@ using Odin.Email;
 namespace Tests.Odin.Email
 {
     [TestFixture]
-    public sealed class ServiceInjectorTests
+    public sealed class DependencyInjectionExtensionsTests
     {
         [Test]
         [TestCaseSource(nameof(GetFakeSenderConfigs))]
@@ -16,7 +16,7 @@ namespace Tests.Odin.Email
         {
             WebApplicationBuilder Builder = WebApplication.CreateBuilder();
             Builder.Configuration.AddJsonStream(Stream(json));
-            Builder.Services.AddEmailSending(Builder.Configuration);
+            Builder.Services.AddOdinEmailSending(Builder.Configuration);
             WebApplication sut = Builder.Build();
             
             IEmailSender? mailSender = sut.Services.GetService<IEmailSender>();
@@ -33,7 +33,7 @@ namespace Tests.Odin.Email
         {
             WebApplicationBuilder builder = WebApplication.CreateBuilder();
             builder.Configuration.AddJsonStream(Stream(json));
-            builder.Services.AddEmailSending(builder.Configuration);
+            builder.Services.AddOdinEmailSending(builder.Configuration);
             WebApplication sut = builder.Build();
             
             IEmailSender? provider = sut.Services.GetService<IEmailSender>();

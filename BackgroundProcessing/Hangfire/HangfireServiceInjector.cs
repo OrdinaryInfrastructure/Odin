@@ -6,7 +6,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Odin.DesignContracts;
-using Odin.Utility;
 
 namespace Odin.BackgroundProcessing
 {
@@ -66,7 +65,7 @@ namespace Odin.BackgroundProcessing
                 return GetSqlServerOptions(opts);
             }
 
-            serviceCollection.AddLogger2();
+            serviceCollection.AddOdinLoggerWrapper();
             serviceCollection.AddTransient<IBackgroundProcessor, HangfireBackgroundProcessor>();
             
             serviceCollection.AddHangfire((sp, c) => c

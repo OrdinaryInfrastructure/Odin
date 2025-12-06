@@ -13,14 +13,14 @@ public class Office365ServiceInjector : IEmailSenderServiceInjector
     {
         PreCondition.RequiresNotNull(emailConfigurationSection);
 
-        EmailSendingOptions emailOptions = new EmailSendingOptions();
+        EmailSendingOptions emailOptions = new();
         emailConfigurationSection.Bind(emailOptions);
 
-        Office365Options office365Options = new Office365Options();
+        Office365Options office365Options = new();
         emailConfigurationSection.Bind(EmailSendingProviders.Office365, office365Options);
         office365Options.Validate();
 
-        serviceCollection.AddLogger2();
+        serviceCollection.AddOdinLoggerWrapper();
         serviceCollection.TryAddSingleton(office365Options);
         serviceCollection.TryAddTransient<IEmailSender, Office365EmailSender>();
         

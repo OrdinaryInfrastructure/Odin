@@ -1,17 +1,17 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.DependencyInjection;
 using Odin.DesignContracts;
+using Odin.Email;
 using Odin.System;
 using Odin.Utility;
 
-
-namespace Odin.Email
+// ReSharper disable once CheckNamespace
+namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>
     /// Dependency injection extension methods to support EmailSending
     /// </summary>
-    public static class ServiceInjector
+    public static class DependencyInjectionExtensions
     {
         /// <summary>
         /// Sets up EmailSending from Configuration, using the EmailSending section by default.
@@ -20,7 +20,7 @@ namespace Odin.Email
         /// <param name="configuration"></param>
         /// <param name="sectionName"></param>
         /// <returns></returns>
-        public static void AddEmailSending(
+        public static void AddOdinEmailSending(
             this IServiceCollection serviceCollection, IConfiguration configuration,
             string sectionName = EmailSendingOptions.DefaultConfigurationSectionName)
         {
@@ -28,9 +28,9 @@ namespace Odin.Email
             if (section == null)
             {
                 throw new ApplicationException(
-                    $"{nameof(AddEmailSending)}: Configuration section {sectionName} does not exist.");
+                    $"{nameof(AddOdinEmailSending)}: Configuration section {sectionName} does not exist.");
             }
-            serviceCollection.AddEmailSending(section);
+            serviceCollection.AddOdinEmailSending(section);
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace Odin.Email
         /// <param name="serviceCollection"></param>
         /// <param name="configurationSection"></param>
         /// <returns></returns>
-        public static void AddEmailSending(
+        public static void AddOdinEmailSending(
             this IServiceCollection serviceCollection, IConfigurationSection configurationSection)
         {
             PreCondition.RequiresNotNull(configurationSection);

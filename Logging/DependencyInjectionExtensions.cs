@@ -14,7 +14,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         /// <param name="serviceCollection"></param>
         /// <returns></returns>
-        public static void AddLogger2(this IServiceCollection serviceCollection)
+        public static void AddOdinLoggerWrapper(this IServiceCollection serviceCollection)
         {
             serviceCollection.TryAddSingleton(typeof(ILoggerWrapper<>), typeof(LoggerWrapper<>));
         }
