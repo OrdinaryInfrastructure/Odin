@@ -4,7 +4,10 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>true</ImplicitUsings>
         <PackageIcon>icon.png</PackageIcon>
-        <Description>Office365 support for IEmailSender via Microsoft Graph (not SMTP).</Description>
+        <Description>Office365 support for IEmailSender via Microsoft Graph (not SMTP).
+
+
+            Odin = OrDinary INfrastructure.</Description>
         <RootNamespace>Odin.Email</RootNamespace>
     </PropertyGroup>
 

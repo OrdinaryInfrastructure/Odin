@@ -6,8 +6,9 @@
     <RootNamespace>Odin.Utility</RootNamespace>
     <Nullable>enable</Nullable>
     <PackageIcon>icon.png</PackageIcon>
-    <Description>Leftover elements used in the OrdinaryInfrastructure libraries that don't really have a home. 
+    <Description>Provides ClassFactory, a utility class for creating types by name.
             
+      
 Odin = OrDinary INfrastructure.
         </Description>
     <WarningsAsErrors>1591;1573;</WarningsAsErrors> <!-- Not to be removed. Documentation is required. -->

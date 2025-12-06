@@ -8,6 +8,9 @@
       Provides a simple EmailMessage object model and IEmailSender interface for out of the box sending 
       of email through any email sending service. 
       Mailgun, Office365 (via MS Graph) and SMTP currently supported.
+
+
+      Odin = OrDinary INfrastructure.
     </Description>
     <WarningsAsErrors>1591;1573;</WarningsAsErrors> <!-- Not to be removed. Documentation is required. -->    
   </PropertyGroup>

@@ -10,6 +10,9 @@
             for the original purpose of mocking Hangfire. Abstracts background processing related use cases via
             an IBackgroundProcessor interface, required in the days that Hangfire still 
             has static entry points to its functionality.
+
+
+            Odin = OrDinary INfrastructure.
         </Description>
         <WarningsAsErrors>1591;1573;</WarningsAsErrors> <!-- Not to be removed. Documentation is required. -->
     </PropertyGroup>
