@@ -8,7 +8,7 @@
     <Description>Provides SFTP remote file session support.
 
 
-      Odin = OrDinary INfrastructure.
+      
     </Description>
   </PropertyGroup>
   <ItemGroup>

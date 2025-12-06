@@ -8,7 +8,7 @@
       from RabbitMQ, that is not provided by RabbitMQ.Client.
 
 
-      Odin = OrDinary INfrastructure.
+      
     </Description>
     <NoWarn>CS1591</NoWarn>
   </PropertyGroup>

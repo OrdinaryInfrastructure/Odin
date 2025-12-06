@@ -7,7 +7,7 @@
       Useful for running database migration scripts at application deployment time.
 
 
-      Odin = OrDinary INfrastructure.
+      
     </Description>
     <NoWarn>CS1591</NoWarn>
   </PropertyGroup>

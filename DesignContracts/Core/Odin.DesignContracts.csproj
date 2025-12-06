@@ -9,7 +9,7 @@
             As at Q4 2025, only pre-conditions are supported.
             
             
-            Odin = OrDinary INfrastructure.
+            
         </Description>
         <WarningsAsErrors>1591;1573;</WarningsAsErrors> <!-- Not to be removed. Documentation is required. -->
     </PropertyGroup>

@@ -10,7 +10,7 @@
       Mailgun, Office365 (via MS Graph) and SMTP currently supported.
 
 
-      Odin = OrDinary INfrastructure.
+      
     </Description>
     <WarningsAsErrors>1591;1573;</WarningsAsErrors> <!-- Not to be removed. Documentation is required. -->    
   </PropertyGroup>

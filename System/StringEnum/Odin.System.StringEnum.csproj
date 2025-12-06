@@ -11,7 +11,7 @@
       Use HasValue(string value) to find out whether a particular string value is a member of Values.
       
       
-Odin = OrDinary INfrastructure.
+
         </Description>
     <WarningsAsErrors>1591;1573;</WarningsAsErrors> <!-- Not to be removed. Documentation is required. -->
   </PropertyGroup>

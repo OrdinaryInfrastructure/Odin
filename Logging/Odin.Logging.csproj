@@ -11,7 +11,7 @@
       and asserting ILogger -&gt; Log(LogLevel logLevel, EventId eventId, TState state, Exception? exception, etc...
       
       
-      Odin = OrDinary INfrastructure.
+      
         </Description>
     <WarningsAsErrors>1591;1573;</WarningsAsErrors> <!-- Not to be removed. Documentation is required. -->
   </PropertyGroup>

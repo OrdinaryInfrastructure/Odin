@@ -10,7 +10,7 @@
       Result, Result of TMessage, ResultValue of TValue, and ResultValue of TValue and TMessage.
       
       
-Odin = OrDinary INfrastructure.
+
         </Description>
     <WarningsAsErrors>1591;1573;</WarningsAsErrors> <!-- Not to be removed. Documentation is required. -->
   </PropertyGroup>

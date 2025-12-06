@@ -7,7 +7,7 @@
         <Description>Mailgun support for IEmailSender.
 
 
-            Odin = OrDinary INfrastructure.</Description>
+            </Description>
         <WarningsAsErrors>1591;1573;</WarningsAsErrors> <!-- Not to be removed. Documentation is required. -->
     </PropertyGroup>
     <ItemGroup>

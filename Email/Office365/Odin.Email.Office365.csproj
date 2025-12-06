@@ -7,7 +7,7 @@
         <Description>Office365 support for IEmailSender via Microsoft Graph (not SMTP).
 
 
-            Odin = OrDinary INfrastructure.</Description>
+            </Description>
         <RootNamespace>Odin.Email</RootNamespace>
     </PropertyGroup>
 

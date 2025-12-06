@@ -9,7 +9,7 @@
     <Description>Concrete implementation of IBackgroundProcessor via Hangfire.
 
 
-      Odin = OrDinary INfrastructure.
+      
     </Description>
   </PropertyGroup>
   <ItemGroup>

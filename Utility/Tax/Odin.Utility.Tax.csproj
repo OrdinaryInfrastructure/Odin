@@ -9,7 +9,7 @@
             and then getting tax rates as at any date.
 
 
-            Odin = OrDinary INfrastructure.
+            
         </Description>
         <WarningsAsErrors>1591;1573;</WarningsAsErrors> <!-- Not to be removed. Documentation is required. -->
     </PropertyGroup>

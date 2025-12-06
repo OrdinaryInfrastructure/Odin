@@ -8,7 +8,7 @@
       Provides IRemoteFileSession, IRemoteFileSessionFactory and RemoteFileInfo concepts.
 
 
-      Odin = OrDinary INfrastructure.
+      
     </Description>
     <WarningsAsErrors>1591;1573;</WarningsAsErrors> <!-- Not to be removed. Documentation is required. -->    
   </PropertyGroup>

@@ -8,7 +8,7 @@
       Provides IRemoteFileSession, IRemoteFileSessionFactory and RemoteFileInfo concepts.
 
 
-      Odin = OrDinary INfrastructure.
+      
     </Description>
   </PropertyGroup>
   <ItemGroup>
