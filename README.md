@@ -28,25 +28,35 @@ I hope you find something useful!
 
 ### Email
 
-### Logging (more...)
+### Logging (more...[more...](Logging/README.md))
 
-Provides ILoggerWrapper that extends .NET's ILogger of T with all the LogXXX(...) calls as provided by the .NET LoggerExtensions extension methods, for easier logging call assertions.
+Odin.Logging provides an ILoggerWrapper that extends .NET's ILogger of T with all the LogXXX(...) calls as provided by the .NET LoggerExtensions extension methods, for easier logging call assertions.~~~~
 
 ```csharp
-    // In startup code...
+    // 1. Add to DI in your startup code...
     builder.Services.AddOdinLoggerWrapper();
 
-    // Log as you always do in your app...
+    // 2. Log as you always do in your app...
     catch (Exception err)
     {
         _logger.LogError("Ford Prefect is missing!");
     }
 
-    // Assert logging calls more easily in your tests...    
+    // 3. Assert logging calls MUCH more easily in your tests...    
     _loggerWrapperMock.Verify(x => x.LogError(It.Is<string>(c => 
         c.Contains("Ford Prefect"))), Times.Once);
+    
     // as opposed to this with ILogger
     _iLoggerMock.Verify(
+        x => x.Log(
+            LogLevel.Error,
+            It.IsAny<EventId>(),
+            It.Is<It.IsAnyType>((state, _) =>
+                state.ToString() == "Ford Prefect is missing!"),
+            It.IsAny<Exception?>(),
+            It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
+        Times.Once);
+
 ```
 
 | Package                                                                                                        |                                                 Version                                                  |                       Downloads                        |
