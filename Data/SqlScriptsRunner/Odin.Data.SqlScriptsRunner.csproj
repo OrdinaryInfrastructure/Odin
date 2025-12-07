@@ -3,6 +3,7 @@
     <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
     <Nullable>enable</Nullable>
     <ImplicitUsings>true</ImplicitUsings>
+    <PackageIcon>icon.png</PackageIcon>
     <Description>Provides a SqlScriptsRunner that supports journalled and unjournalled execution of SQL database change and other scripts. 
       Useful for running database migration scripts at application deployment time.
 
@@ -20,5 +21,8 @@
     <ProjectReference Include="..\..\DesignContracts\Core\Odin.DesignContracts.csproj" />
     <ProjectReference Include="..\..\Logging\Odin.Logging.csproj" />
     <ProjectReference Include="..\..\System\Result\Odin.System.Result.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="icon.png" Pack="true" PackagePath="" />
   </ItemGroup>
 </Project>
