@@ -19,6 +19,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Logging\Core\Odin.Logging.csproj" />
     <ProjectReference Include="..\Core\Odin.BackgroundProcessing.csproj" />
   </ItemGroup>
   <ItemGroup>

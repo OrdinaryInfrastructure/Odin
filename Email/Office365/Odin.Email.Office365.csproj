@@ -12,6 +12,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\..\Logging\Core\Odin.Logging.csproj" />
         <ProjectReference Include="..\Core\Odin.Email.csproj" />
     </ItemGroup>
 
