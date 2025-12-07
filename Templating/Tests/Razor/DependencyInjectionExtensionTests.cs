@@ -2,7 +2,7 @@
 using NUnit.Framework;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using Odin.Templating.Razor;
+using Odin.Templating;
 using RazorLight;
 
 namespace Tests.Odin.Templating.Razor
@@ -23,7 +23,7 @@ namespace Tests.Odin.Templating.Razor
             
             Assert.That(result, Is.Not.Null);
             Assert.That(dependency, Is.Not.Null);
-            Assert.That(result, Is.InstanceOf<RazorLightTemplateRenderer>());
+            Assert.That(result, Is.InstanceOf<RazorTemplateRenderer>());
         }
         
     }

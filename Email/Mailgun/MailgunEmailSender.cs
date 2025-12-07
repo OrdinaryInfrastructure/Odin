@@ -12,8 +12,9 @@ using Polly.Retry;
 namespace Odin.Email
 {
     /// <summary>
-    /// Fake IEmailSender for unit testing..
+    /// Sends email via Mailgun.
     /// </summary>
+    /// <see href="https://mailgun.com"/>
     public sealed class MailgunEmailSender : IEmailSender
     {
         private readonly MailgunOptions _mailgunSettings;

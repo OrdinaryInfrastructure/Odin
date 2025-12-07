@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Odin.Templating.Razor;
+using Odin.Templating;
 using RazorLight;
 
 // ReSharper disable once CheckNamespace
@@ -22,8 +22,8 @@ public static class DependencyInjectionExtensions
     {
         services.AddOdinLoggerWrapper();
         // Take advantage of the compiled templates cache in RazorLight. Add it as a singleton.
-        services.TryAddSingleton<IRazorLightEngine>(_ => RazorLightTemplateRenderer.BuildRazorLightEngine(embeddedResourcesAssembly, rootNamespace));
-        services.TryAddTransient<IRazorTemplateRenderer, RazorLightTemplateRenderer>();
+        services.TryAddSingleton<IRazorLightEngine>(_ => RazorTemplateRenderer.BuildRazorLightEngine(embeddedResourcesAssembly, rootNamespace));
+        services.TryAddTransient<IRazorTemplateRenderer, RazorTemplateRenderer>();
         return services;
     }
 
