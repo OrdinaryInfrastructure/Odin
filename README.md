@@ -20,6 +20,11 @@ As at Dec 2025, the library is a hodge-podge of miscellaneous useful bits and bo
 
 Coming soon, a Design Contracts library with support for PreConditions, PostConditions, and ClassInvariants.
 
+
+
+
+
+
 ## :pencil2: Design Contracts
 
 
