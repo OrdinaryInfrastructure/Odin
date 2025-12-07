@@ -21,6 +21,7 @@ public static class DependencyInjectionExtensions
     public static IServiceCollection AddOdinRazorTemplating(this IServiceCollection services, Assembly embeddedResourcesAssembly, string rootNamespace)
     {
         services.AddOdinLoggerWrapper();
+        services.AddMemoryCache();
         // Take advantage of the compiled templates cache in RazorLight. Add it as a singleton.
         services.TryAddSingleton<IRazorLightEngine>(_ => RazorTemplateRenderer.BuildRazorLightEngine(embeddedResourcesAssembly, rootNamespace));
         services.TryAddTransient<IRazorTemplateRenderer, RazorTemplateRenderer>();
