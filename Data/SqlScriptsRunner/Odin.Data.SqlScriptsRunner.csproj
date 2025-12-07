@@ -4,6 +4,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>true</ImplicitUsings>
     <PackageIcon>icon.png</PackageIcon>
+    <RootNamespace>Odin.Data</RootNamespace>
     <Description>Provides a SqlScriptsRunner that supports journalled and unjournalled execution of SQL database change and other scripts. 
       Useful for running database migration scripts at application deployment time.
 

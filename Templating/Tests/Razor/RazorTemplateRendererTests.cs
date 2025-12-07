@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using NUnit.Framework;
 using Odin.System;
-using Odin.Templating.Razor;
+using Odin.Templating;
 
 namespace Tests.Odin.Templating.Razor
 {
@@ -22,7 +22,7 @@ namespace Tests.Odin.Templating.Razor
         public async Task Create_with_different_templateKeys_and_namespaces(string rootNamespace, string templateKey, bool shouldSucceed)
         {
             Assembly testsAssembly = typeof(RazorTemplateRendererTests).Assembly;
-            RazorLightTemplateRenderer sut = new RazorLightTemplateRenderer(testsAssembly, rootNamespace);
+            RazorTemplateRenderer sut = new RazorTemplateRenderer(testsAssembly, rootNamespace);
             
             ResultValue<string> result = await sut.RenderAsync(templateKey, new TestViewModel(){ Title = "World"});
 

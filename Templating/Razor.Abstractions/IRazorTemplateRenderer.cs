@@ -1,6 +1,6 @@
 using Odin.System;
 
-namespace Odin.Templating.Razor;
+namespace Odin.Templating;
 
 /// <summary>
 /// Provides OrdINary use case rendering of embedded '.cshtml' templates using Razor syntax.

@@ -2,12 +2,12 @@ using System.Reflection;
 using Odin.System;
 using RazorLight;
 
-namespace Odin.Templating.Razor;
+namespace Odin.Templating;
 
 /// <summary>
-/// RazorLight implementation of IRazorTemplateRenderer
+/// Implementation of IRazorTemplateRenderer using IRazorLightEngine
 /// </summary>
-public class RazorLightTemplateRenderer : IRazorTemplateRenderer
+public class RazorTemplateRenderer : IRazorTemplateRenderer
 {
     private readonly IRazorLightEngine _razorLightEngine;
 
@@ -15,7 +15,7 @@ public class RazorLightTemplateRenderer : IRazorTemplateRenderer
     /// Constructor used in DI.
     /// </summary>
     /// <param name="razorLightEngine"></param>
-    public RazorLightTemplateRenderer(IRazorLightEngine razorLightEngine)
+    public RazorTemplateRenderer(IRazorLightEngine razorLightEngine)
     {
         _razorLightEngine = razorLightEngine;
     }
@@ -25,7 +25,7 @@ public class RazorLightTemplateRenderer : IRazorTemplateRenderer
     /// </summary>
     /// <param name="embeddedResourcesAssembly">Assembly containing</param>
     /// <param name="rootNamespace">The (period separated) case-sensitive root namespace where the template cshtml files are embedded. With or without a trailing period.</param>
-    public RazorLightTemplateRenderer(Assembly embeddedResourcesAssembly, string rootNamespace)
+    public RazorTemplateRenderer(Assembly embeddedResourcesAssembly, string rootNamespace)
     {
         _razorLightEngine = BuildRazorLightEngine(embeddedResourcesAssembly, rootNamespace);
     }

@@ -4,6 +4,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>true</ImplicitUsings>
         <PackageIcon>icon.png</PackageIcon>
+        <RootNamespace>Odin.Email</RootNamespace>
         <Description>Mailgun support for IEmailSender.
 
 
