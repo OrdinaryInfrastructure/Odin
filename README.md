@@ -1,6 +1,6 @@
 <div align="center">
 
-![Odin logo](Assets/logo-256x256.png)
+![Odin logo](Assets/icon256.png)
 
 # OrDinary INfrastructure
 
@@ -9,7 +9,6 @@
 <div align="center">
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![NuGet](https://img.shields.io/nuget/dt/Odin.Email)](https://www.nuget.org/packages/Odin.Email)
 
 </div>
 
@@ -27,11 +26,9 @@ I hope you find something useful!
 
 ## Design by Contract
 
-## Email
+### Email
 
-[![NuGet](https://img.shields.io/nuget/dt/Odin.Email)](https://www.nuget.org/packages/Odin.Email)
-
-## Logging
+### Logging
 
 ## Background Jobs
 
@@ -41,7 +38,7 @@ I hope you find something useful!
 
 ## SQL Scripts Execution
 
-## SFTP\FTP\FTPS Fie Sessions
+## SFTP\FTP\FTPS File Sessions
 
 ## Configuration
 
@@ -49,9 +46,9 @@ I hope you find something useful!
 
 # Package Listing
 
-| Package Name                              |                                               Version                                               |                      Downloads                       |
-|--------------------------------------------|:---------------------------------------------------------------------------------------------------:|:----------------------------------------------------:|
-| [Odin.Email](https://www.nuget.org/packages/Odin.Email/) <br/> Email description   | [![NuGet](https://img.shields.io/nuget/v/Odin.Emil.svg)](https://www.nuget.org/packages/Odin.Emil/) | ![Nuget](https://img.shields.io/nuget/dt/Odin.Email) |
+| Package Name                              |                                               Version                                                |                      Downloads                       |
+|--------------------------------------------|:----------------------------------------------------------------------------------------------------:|:----------------------------------------------------:|
+| [Odin.Email](https://www.nuget.org/packages/Odin.Email) <br/> Email description   | [![NuGet](https://img.shields.io/nuget/v/Odin.Email.svg)](https://www.nuget.org/packages/Odin.Email) | ![Nuget](https://img.shields.io/nuget/dt/Odin.Email) |
 
 
 
