@@ -42,6 +42,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{4F52FD
 		Directory.Build.props = Directory.Build.props
 		.github\workflows\pr-validation.yml = .github\workflows\pr-validation.yml
 		LICENSE.TXT = LICENSE.TXT
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "System", "System", "{73BA62BB-2B41-2DC4-C714-51B3D4C2A215}"
@@ -67,6 +68,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DesignContracts", "DesignContracts", "{9E3E1A13-9A74-4895-98A9-D96F4E0ED4B7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Logging", "Logging", "{6D4C8AB9-F597-49BD-91D3-081FA1845584}"
+	ProjectSection(SolutionItems) = preProject
+		Logging\README.md = Logging\README.md
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Messaging", "Messaging", "{4140B1D5-6C97-4F68-8DEA-C0D139BA9FBC}"
 EndProject
