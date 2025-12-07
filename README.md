@@ -20,7 +20,7 @@ As at Dec 2025, the library is a hodge-podge of miscellaneous useful bits and bo
 
 Coming soon, a Design Contracts library with support for PreConditions, PostConditions, and ClassInvariants.
 
-## Design Contracts
+## :pencil2: Design Contracts
 
 
 
@@ -34,7 +34,7 @@ Flexibility in the type of the Messages is included, with implementations for Re
 |:----------------------------------------------------------------------------|:---------------------------------------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
 | [Odin.System.Result](https://www.nuget.org/packages/Odin.System.Result)                          | Result and ResultValue<TValue>                 |           [![NuGet](https://img.shields.io/nuget/v/Odin.System.Result.svg)](https://www.nuget.org/packages/Odin.System.Result)            ![Nuget](https://img.shields.io/nuget/dt/Odin.System.Result)           |
 
-## Email Sending
+## :email: Email Sending
 
 [Odin.Email](https://www.nuget.org/packages/Odin.Email) provides an IEmailSender with email sending support currently for Mailgun and Office365.
 
@@ -81,7 +81,7 @@ Flexibility in the type of the Messages is included, with implementations for Re
 | [Odin.Email.Mailgun](https://www.nuget.org/packages/Odin.Email.Mailgun)     | Mailgun email sending support                            |   [![NuGet](https://img.shields.io/nuget/v/Odin.Email.Mailgun.svg)](https://www.nuget.org/packages/Odin.Email.Mailgun)   ![Nuget](https://img.shields.io/nuget/dt/Odin.Email.Mailgun)    |
 | [Odin.Email.Office365](https://www.nuget.org/packages/Odin.Email.Office365) | Microsoft Office365 email sending support (via MS Graph) | [![NuGet](https://img.shields.io/nuget/v/Odin.Email.Office365.svg)](https://www.nuget.org/packages/Odin.Email.Office365)  ![Nuget](https://img.shields.io/nuget/dt/Odin.Email.Office365) |
 
-## A Mockable ILogger Wrapper
+## :clipboard:  Mockable ILogger Wrapper
 
 [Odin.Logging](https://www.nuget.org/packages/Odin.Logging) provides a ILoggerWrapper that extends .NET's ILogger of T with all the LogXXX(...) calls as provided by the .NET LoggerExtensions extension methods, for simpler logging assertion verifications.
 
@@ -123,6 +123,7 @@ Flexibility in the type of the Messages is included, with implementations for Re
 |:--------------------------------------------------------------------------------------------|:------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
 | [Odin.Templating.Razor](https://www.nuget.org/packages/Odin.Templating.Razor)               |             |              [![NuGet](https://img.shields.io/nuget/v/Odin.Templating.Razor.svg)](https://www.nuget.org/packages/Odin.Templating.Razor)            ![Nuget](https://img.shields.io/nuget/dt/Odin.Templating.Razor)               |
 | [Odin.Templating.Razor.Abstractions](https://www.nuget.org/packages/Odin.Templating.Razor.Abstractions) | Exposes I   | [![NuGet](https://img.shields.io/nuget/v/Odin.Templating.Razor.Abstractions.svg)](https://www.nuget.org/packages/Odin.Templating.Razor.Abstractions)            ![Nuget](https://img.shields.io/nuget/dt/Odin.Templating.Razor.Abstractions) |
+
 
 
 ## SQL Scripts Execution
