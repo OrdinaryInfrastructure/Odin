@@ -28,7 +28,27 @@ I hope you find something useful!
 
 ### Email
 
-### Logging
+### Logging (more...)
+
+Provides ILoggerWrapper that extends .NET's ILogger of T with all the LogXXX(...) calls as provided by the .NET LoggerExtensions extension methods, for easier logging call assertions.
+
+```csharp
+    // In startup code...
+    builder.Services.AddOdinLoggerWrapper();
+
+    // Log as you always do in your app...
+    catch (Exception err)
+    {
+        _logger.LogError("Product {ProductId} is corrupted", err, productId);
+    }
+
+    // Assert logging calls more easily in your tests...    
+    _loggerWrapperMock.Verify(x => x.LogError(It.Is<string>(c => c.Contains("is corrupted"))), It.IsAny<Exception>(), Times.Once);~~~~
+```
+
+| Package                                                                                                        |                                                 Version                                                  |                       Downloads                        |
+|----------------------------------------------------------------------------------------------------------------|:--------------------------------------------------------------------------------------------------------:|:------------------------------------------------------:|
+| [Odin.Logging](https://www.nuget.org/packages/Odin.Logging) <br/> Provides ILoggerWrapper<T> around ILogger<T> | [![NuGet](https://img.shields.io/nuget/v/Odin.Logging.svg)](https://www.nuget.org/packages/Odin.Logging) | ![Nuget](https://img.shields.io/nuget/dt/Odin.Logging) |
 
 ## Background Jobs
 
