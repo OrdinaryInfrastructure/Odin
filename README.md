@@ -39,11 +39,14 @@ Provides ILoggerWrapper that extends .NET's ILogger of T with all the LogXXX(...
     // Log as you always do in your app...
     catch (Exception err)
     {
-        _logger.LogError("Product {ProductId} is corrupted", err, productId);
+        _logger.LogError("Ford Prefect is missing!");
     }
 
     // Assert logging calls more easily in your tests...    
-    _loggerWrapperMock.Verify(x => x.LogError(It.Is<string>(c => c.Contains("is corrupted"))), It.IsAny<Exception>(), Times.Once);~~~~
+    _loggerWrapperMock.Verify(x => x.LogError(It.Is<string>(c => 
+        c.Contains("Ford Prefect"))), Times.Once);
+    // as opposed to this with ILogger
+    _iLoggerMock.Verify(
 ```
 
 | Package                                                                                                        |                                                 Version                                                  |                       Downloads                        |
