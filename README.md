@@ -12,25 +12,61 @@
 
 </div>
 
-## The Odin libraries collection  
+## The Odin components  
 
-It was born after years of building many many line-of-business applications on .NET, and the need to componentise recurring ordinary use-cases for which no existing componentry seemed to exist in the .NET ecosystem (at the time).
+... are a collection born after years of building many many line-of-business applications on .NET, and the result of componentising various recurring ordinary use-cases for which no existing componentry seemed to exist in the .NET ecosystem at the time.
 
-At this time, Dec 2025, the library is a hodge-podge of miscellaneous useful bits and bobs.
+As at Dec 2025, the library is a hodge-podge of miscellaneous useful bits and bobs. I hope you find something useful!
 
-Below is a headline of each item's use case, with links to read further...
+Since the advent of .Net Core some years back, I have always really missed not having Code Contracts which existed from the .NET Framework days. So I am turning my attention to re-creating something these lines and hope to have them in Odin before 2025 is out.
 
-I hope you find something useful!
+In no particular order...
+
+## Design Contracts (coming soon)
 
 ## Result and ResultValue
 
-## Design by Contract
+## Email Sending
 
-### Email
+[Odin.Email](https://www.nuget.org/packages/Odin.Email) provides an IEmailSender with email sending support currently for Mailgun and Office365.
 
-### Logging (more...[more...](Logging/README.md))
+```json
+  "EmailSending": {
+    "Provider": "Mailgun",
+    "DefaultFromAddress": "team@domain.com",
+    "DefaultFromName": "MyTeam",
+    "DefaultTags": [
+      "QA",
+      "MyApp"
+    ],
+    "SubjectPrefix": "QA: "
+    "Mailgun": {
+        "ApiKey": "________",
+        "Domain": "mailgun.domain.com",
+        "Region": "EU"
+        },
+    },
+  }
+```
 
-Odin.Logging provides an ILoggerWrapper that extends .NET's ILogger of T with all the LogXXX(...) calls as provided by the .NET LoggerExtensions extension methods, for easier logging call assertions.~~~~
+```csharp
+    // 1. Add to DI in your startup code...
+    builder.Services.AddOdinEmailSending();
+
+    // 2. Send email
+    IEmailMessage email = new EmailMessage(to, from, subject, htmlBody);
+    Result<string?> sendResult = await _emailSender.SendEmail(email);
+```
+
+| Package                                                                                                                         |                                                 Version                                                  |                       Downloads                        |
+|---------------------------------------------------------------------------------------------------------------------------------|:--------------------------------------------------------------------------------------------------------:|:------------------------------------------------------:|
+| [Odin.Email](https://www.nuget.org/packages/Odin.Email) <br/> TBA...                                                            | [![NuGet](https://img.shields.io/nuget/v/Odin.Email.svg)](https://www.nuget.org/packages/Odin.Email) | ![Nuget](https://img.shields.io/nuget/dt/Odin.Email) |
+| [Odin.Email](https://www.nuget.org/packages/Odin.Email.Mailgun) <br/> Mailgun email sending support                             | [![NuGet](https://img.shields.io/nuget/v/Odin.Email.Mailgun.svg)](https://www.nuget.org/packages/Odin.Email.Mailgun) | ![Nuget](https://img.shields.io/nuget/dt/Odin.Email.Mailgun) |
+| [Odin.Email](https://www.nuget.org/packages/Odin.Email.Office365) <br/> Microsoft Office365 email sending support (vi MS Graph) | [![NuGet](https://img.shields.io/nuget/v/Odin.Email.Office365.svg)](https://www.nuget.org/packages/Odin.Email.Office365) | ![Nuget](https://img.shields.io/nuget/dt/Odin.Email.Office365) |
+
+## A Mockable ILogger Wrapper
+
+[Odin.Logging](https://www.nuget.org/packages/Odin.Logging) provides an ILoggerWrapper that extends .NET's ILogger of T with all the LogXXX(...) calls as provided by the .NET LoggerExtensions extension methods, for simpler logging call assertions.
 
 ```csharp
     // 1. Add to DI in your startup code...
@@ -56,7 +92,6 @@ Odin.Logging provides an ILoggerWrapper that extends .NET's ILogger of T with al
             It.IsAny<Exception?>(),
             It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
         Times.Once);
-
 ```
 
 | Package                                                                                                        |                                                 Version                                                  |                       Downloads                        |

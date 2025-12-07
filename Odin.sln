@@ -68,6 +68,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DesignContracts", "DesignContracts", "{9E3E1A13-9A74-4895-98A9-D96F4E0ED4B7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Logging", "Logging", "{6D4C8AB9-F597-49BD-91D3-081FA1845584}"
+	ProjectSection(SolutionItems) = preProject
+		Logging\README.md = Logging\README.md
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Messaging", "Messaging", "{4140B1D5-6C97-4F68-8DEA-C0D139BA9FBC}"
 EndProject
