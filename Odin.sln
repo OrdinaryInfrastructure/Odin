@@ -6,7 +6,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odin.Data.SqlScriptsRunner"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odin.DesignContracts", "DesignContracts\Core\Odin.DesignContracts.csproj", "{2B952295-4016-E1DA-8A6A-A0084F2049DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odin.Logging", "Logging\Odin.Logging.csproj", "{957731CC-1C44-4D0C-58F8-9B67862EF843}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odin.Logging", "Logging\Core\Odin.Logging.csproj", "{957731CC-1C44-4D0C-58F8-9B67862EF843}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odin.Messaging.RabbitMq", "Messaging\RabbitMq\Odin.Messaging.RabbitMq.csproj", "{21717156-66D0-2EF7-4728-A1BDEC5395F1}"
 EndProject

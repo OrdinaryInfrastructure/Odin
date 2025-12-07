@@ -18,7 +18,7 @@
     <PackageReference Include="RazorLight" Version="2.3.1" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Logging\Odin.Logging.csproj" />
+    <ProjectReference Include="..\..\Logging\Core\Odin.Logging.csproj" />
     <ProjectReference Include="..\Razor.Abstractions\Odin.Templating.Razor.Abstractions.csproj" />
   </ItemGroup>
   <ItemGroup>

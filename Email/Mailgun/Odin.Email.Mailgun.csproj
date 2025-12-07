@@ -11,6 +11,7 @@
         <WarningsAsErrors>1591;1573;</WarningsAsErrors> <!-- Not to be removed. Documentation is required. -->
     </PropertyGroup>
     <ItemGroup>
+        <ProjectReference Include="..\..\Logging\Core\Odin.Logging.csproj" />
         <ProjectReference Include="..\Core\Odin.Email.csproj" />
     </ItemGroup>
     <ItemGroup>
