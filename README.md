@@ -30,9 +30,9 @@ Coming soon, a Design Contracts library with support for PreConditions, PostCond
 
 Flexibility in the type of the Messages is included, with implementations for Result<TMessage> and ResultValue<TValue, TMessage>.
 
-| Package                                                                     | Description                                              |                                                      Latest Version                                                      |                           Downloads                            |
-|:----------------------------------------------------------------------------|:---------------------------------------------------------|:------------------------------------------------------------------------------------------------------------------------:|:--------------------------------------------------------------:|
-| [Odin.System.Result](https://www.nuget.org/packages/Odin.System.Result)                     | IEmailSender and IEmailMessage concepts                  | [![NuGet](https://img.shields.io/nuget/v/Odin.System.Result.svg)](https://www.nuget.org/packages/Odin.System.Result)                     |      ![Nuget](https://img.shields.io/nuget/dt/Odin.System.Result)      |
+| Package                                                                     | Description                                              |                                                                                      Latest Version                                                                                      |
+|:----------------------------------------------------------------------------|:---------------------------------------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
+| [Odin.System.Result](https://www.nuget.org/packages/Odin.System.Result)                          | Result and ResultValue<TValue>                 |           [![NuGet](https://img.shields.io/nuget/v/Odin.System.Result.svg)](https://www.nuget.org/packages/Odin.System.Result)            ![Nuget](https://img.shields.io/nuget/dt/Odin.System.Result)           |
 
 ## Email Sending
 
@@ -75,7 +75,7 @@ Flexibility in the type of the Messages is included, with implementations for Re
     Result<string?> sendResult = await _emailSender.SendEmail(email);
 ```
 
-| Package                                                                     | Description                                              |                                                    Nuget                                                                                                                                 |
+| Package                                                                     | Description                                              |                                                                                      Latest Version                                                                                      |
 |:----------------------------------------------------------------------------|:---------------------------------------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
 | [Odin.Email](https://www.nuget.org/packages/Odin.Email)                     | IEmailSender and IEmailMessage concepts                  |           [![NuGet](https://img.shields.io/nuget/v/Odin.Email.svg)](https://www.nuget.org/packages/Odin.Email)            ![Nuget](https://img.shields.io/nuget/dt/Odin.Email)           |
 | [Odin.Email.Mailgun](https://www.nuget.org/packages/Odin.Email.Mailgun)     | Mailgun email sending support                            |   [![NuGet](https://img.shields.io/nuget/v/Odin.Email.Mailgun.svg)](https://www.nuget.org/packages/Odin.Email.Mailgun)   ![Nuget](https://img.shields.io/nuget/dt/Odin.Email.Mailgun)    |
@@ -111,13 +111,19 @@ Flexibility in the type of the Messages is included, with implementations for Re
         Times.Once);
 ```
 
-| Package                                                                                                        |                                                 Version                                                  |                       Downloads                        |
-|----------------------------------------------------------------------------------------------------------------|:--------------------------------------------------------------------------------------------------------:|:------------------------------------------------------:|
-| [Odin.Logging](https://www.nuget.org/packages/Odin.Logging) <br/> Provides ILoggerWrapper<T> around ILogger<T> | [![NuGet](https://img.shields.io/nuget/v/Odin.Logging.svg)](https://www.nuget.org/packages/Odin.Logging) | ![Nuget](https://img.shields.io/nuget/dt/Odin.Logging) |
+| Package                                                                     | Description                                              |                                                                                      Latest Version                                                                                      |
+|:----------------------------------------------------------------------------|:---------------------------------------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
+| [Odin.Logging](https://www.nuget.org/packages/Odin.Logging)                   | Provides ILoggerWrapper<T> around ILogger<T>                |           [![NuGet](https://img.shields.io/nuget/v/Odin.Logging.svg)](https://www.nuget.org/packages/Odin.Logging)            ![Nuget](https://img.shields.io/nuget/dt/Odin.Logging)           |
 
 ## Messaging - RabbitMQ
 
 ## Razor Templating
+
+| Package                                                                                     | Description |                                                                                                          Latest Version                                                                                                          |
+|:--------------------------------------------------------------------------------------------|:------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
+| [Odin.Templating.Razor](https://www.nuget.org/packages/Odin.Templating.Razor)               |             |              [![NuGet](https://img.shields.io/nuget/v/Odin.Templating.Razor.svg)](https://www.nuget.org/packages/Odin.Templating.Razor)            ![Nuget](https://img.shields.io/nuget/dt/Odin.Templating.Razor)               |
+| [Odin.Templating.Razor.Abstractions](https://www.nuget.org/packages/Odin.Templating.Razor.Abstractions) | Exposes I   | [![NuGet](https://img.shields.io/nuget/v/Odin.Templating.Razor.Abstractions.svg)](https://www.nuget.org/packages/Odin.Templating.Razor.Abstractions)            ![Nuget](https://img.shields.io/nuget/dt/Odin.Templating.Razor.Abstractions) |
+
 
 ## SQL Scripts Execution
 
