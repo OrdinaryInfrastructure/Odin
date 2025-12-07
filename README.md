@@ -119,11 +119,6 @@ Also provided is flexibility in the type of the Messages, with implementations f
 
 ## StringEnum
 
-# Package Listing
-
-| Package Name                              |                                               Version                                                |                      Downloads                       |
-|--------------------------------------------|:----------------------------------------------------------------------------------------------------:|:----------------------------------------------------:|
-| [Odin.Email](https://www.nuget.org/packages/Odin.Email) <br/> Email description   | [![NuGet](https://img.shields.io/nuget/v/Odin.Email.svg)](https://www.nuget.org/packages/Odin.Email) | ![Nuget](https://img.shields.io/nuget/dt/Odin.Email) |
 
 
 
