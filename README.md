@@ -77,7 +77,7 @@ Flexibility in the type of the Messages is included, with implementations for Re
 
 ```csharp
     IEmailMessage email = new EmailMessage(to, from, subject, htmlBody);
-    Result<string?> sendResult = await _emailSender.SendEmail(email);
+    ResultValue<string?> sendResult = await _emailSender.SendEmail(email);
 ```
 
 | Package                                                                     | Description                                              |                                                                                      Latest Version                                                                                      |
@@ -120,16 +120,24 @@ Flexibility in the type of the Messages is included, with implementations for Re
 |:----------------------------------------------------------------------------|:---------------------------------------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
 | [Odin.Logging](https://www.nuget.org/packages/Odin.Logging)                   | Provides ILoggerWrapper<T> around ILogger<T>                |           [![NuGet](https://img.shields.io/nuget/v/Odin.Logging.svg)](https://www.nuget.org/packages/Odin.Logging)            ![Nuget](https://img.shields.io/nuget/dt/Odin.Logging)           |
 
-## Messaging - RabbitMQ
-
 ## Razor Templating
+
+Provides an IRazorTemplateRenderer for rendering .cshtml Razor files outside of the context of ASP.Net. 
+
+```csharp
+    // 1 - Add to DI in startup... 
+    services.AddOdinRazorTemplating(typeof(AppBuilder).Assembly, "App.EmailViews.");
+    
+    // 2 - Render cshtml views by passing in a model
+    ResultValue<string> result = await _razorTemplateRenderer
+          .RenderAsync("AlertsEmail", alertingEmailModel);
+    myEmail.Body = result.Value;
+```
 
 | Package                                                                                     | Description |                                                                                                          Latest Version                                                                                                          |
 |:--------------------------------------------------------------------------------------------|:------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
 | [Odin.Templating.Razor](https://www.nuget.org/packages/Odin.Templating.Razor)               |             |              [![NuGet](https://img.shields.io/nuget/v/Odin.Templating.Razor.svg)](https://www.nuget.org/packages/Odin.Templating.Razor)            ![Nuget](https://img.shields.io/nuget/dt/Odin.Templating.Razor)               |
 | [Odin.Templating.Razor.Abstractions](https://www.nuget.org/packages/Odin.Templating.Razor.Abstractions) | Exposes I   | [![NuGet](https://img.shields.io/nuget/v/Odin.Templating.Razor.Abstractions.svg)](https://www.nuget.org/packages/Odin.Templating.Razor.Abstractions)            ![Nuget](https://img.shields.io/nuget/dt/Odin.Templating.Razor.Abstractions) |
-
-
 
 ## SQL Scripts Execution
 
@@ -140,6 +148,9 @@ Flexibility in the type of the Messages is included, with implementations for Re
 ## StringEnum
 
 ## Background Jobs
+
+## Messaging - RabbitMQ
+
 
 
 
