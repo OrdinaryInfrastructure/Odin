@@ -18,18 +18,23 @@
 
 As at Dec 2025, the library is a hodge-podge of miscellaneous useful bits and bobs. I hope you find something useful!
 
-Since the advent of .Net Core some years back, I have always really missed not having Code Contracts which existed from the .NET Framework days. So I am turning my attention to re-creating something these lines and hope to have them in Odin before 2025 is out.
+Since the advent of .Net Core some years back, I have always really missed not having Code Contracts which existed from the .NET Framework days. So I am turning my attention to creating a Design Contracts library with support for PreConditions, PostConditions, and ClassInvariants.
 
 In no particular order...
 
-## Design Contracts (coming soon)
+## Design Contracts (coming end 2025)
 
 ## Result and ResultValue
+
+[Odin.System.Result](https://www.nuget.org/packages/Odin.System.Result) provides Result and ResultValue<TValue> concepts, that encapsulate the outcome of an operation (success or failure), together with a list of string Messages.
+
+Also provided is flexibility in the type of the Messages, with implementations for Result<TMessageType> and ResultValue<TValue, TMessageType>.
 
 ## Email Sending
 
 [Odin.Email](https://www.nuget.org/packages/Odin.Email) provides an IEmailSender with email sending support currently for Mailgun and Office365.
 
+1 - Add configuration
 ```json
   "EmailSending": {
     "Provider": "Mailgun",
@@ -48,21 +53,23 @@ In no particular order...
     },
   }
 ```
+2 - Add package references to Odin.Email, and in this case Odin.Email.Mailgun
 
+3 - Add to DI in your startup code...
 ```csharp
-    // 1. Add to DI in your startup code...
     builder.Services.AddOdinEmailSending();
-
-    // 2. Send email
+```
+4 - Send email!
+```csharp
     IEmailMessage email = new EmailMessage(to, from, subject, htmlBody);
     Result<string?> sendResult = await _emailSender.SendEmail(email);
 ```
 
-| Package                                                                                                                         |                                                 Version                                                  |                       Downloads                        |
-|---------------------------------------------------------------------------------------------------------------------------------|:--------------------------------------------------------------------------------------------------------:|:------------------------------------------------------:|
-| [Odin.Email](https://www.nuget.org/packages/Odin.Email) <br/> TBA...                                                            | [![NuGet](https://img.shields.io/nuget/v/Odin.Email.svg)](https://www.nuget.org/packages/Odin.Email) | ![Nuget](https://img.shields.io/nuget/dt/Odin.Email) |
-| [Odin.Email](https://www.nuget.org/packages/Odin.Email.Mailgun) <br/> Mailgun email sending support                             | [![NuGet](https://img.shields.io/nuget/v/Odin.Email.Mailgun.svg)](https://www.nuget.org/packages/Odin.Email.Mailgun) | ![Nuget](https://img.shields.io/nuget/dt/Odin.Email.Mailgun) |
-| [Odin.Email](https://www.nuget.org/packages/Odin.Email.Office365) <br/> Microsoft Office365 email sending support (vi MS Graph) | [![NuGet](https://img.shields.io/nuget/v/Odin.Email.Office365.svg)](https://www.nuget.org/packages/Odin.Email.Office365) | ![Nuget](https://img.shields.io/nuget/dt/Odin.Email.Office365) |
+| Package                                                                                                                                    |                                                 Version                                                  |                       Downloads                        |
+|--------------------------------------------------------------------------------------------------------------------------------------------|:--------------------------------------------------------------------------------------------------------:|:------------------------------------------------------:|
+| [Odin.Email](https://www.nuget.org/packages/Odin.Email) <br/> TBA...                                                                       | [![NuGet](https://img.shields.io/nuget/v/Odin.Email.svg)](https://www.nuget.org/packages/Odin.Email) | ![Nuget](https://img.shields.io/nuget/dt/Odin.Email) |
+| [Odin.Email.Mailgun](https://www.nuget.org/packages/Odin.Email.Mailgun) <br/> Mailgun email sending support                                | [![NuGet](https://img.shields.io/nuget/v/Odin.Email.Mailgun.svg)](https://www.nuget.org/packages/Odin.Email.Mailgun) | ![Nuget](https://img.shields.io/nuget/dt/Odin.Email.Mailgun) |
+| [Odin.Email.Office365](https://www.nuget.org/packages/Odin.Email.Office365) <br/> Microsoft Office365 email sending support (via MS Graph) | [![NuGet](https://img.shields.io/nuget/v/Odin.Email.Office365.svg)](https://www.nuget.org/packages/Odin.Email.Office365) | ![Nuget](https://img.shields.io/nuget/dt/Odin.Email.Office365) |
 
 ## A Mockable ILogger Wrapper
 
