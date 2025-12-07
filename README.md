@@ -20,23 +20,19 @@ As at Dec 2025, the library is a hodge-podge of miscellaneous useful bits and bo
 
 Coming soon, a Design Contracts library with support for PreConditions, PostConditions, and ClassInvariants.
 
-## Contents
-
-
-| Package                                                         | Description                                              |                                                      Latest Version                                                      |                           Downloads                            |
-|---------------------------------------------------------------|:---------------------------------------------------------|:------------------------------------------------------------------------------------------------------------------------:|:--------------------------------------------------------------:|
-| [Odin.Email](https://www.nuget.org/packages/Odin.Email)       | IEmailSender and IEmailMessage concepts                  | [![NuGet](https://img.shields.io/nuget/v/Odin.Email.svg)](https://www.nuget.org/packages/Odin.Email)                     |      ![Nuget](https://img.shields.io/nuget/dt/Odin.Email)      |
-| [Odin.Email.Mailgun](https://www.nuget.org/packages/Odin.Email.Mailgun) | Mailgun email sending support                            | [![NuGet](https://img.shields.io/nuget/v/Odin.Email.Mailgun.svg)](https://www.nuget.org/packages/Odin.Email.Mailgun)     |  ![Nuget](https://img.shields.io/nuget/dt/Odin.Email.Mailgun)  |
-| [Odin.Email.Office365](https://www.nuget.org/packages/Odin.Email.Office365) | Microsoft Office365 email sending support (via MS Graph) | [![NuGet](https://img.shields.io/nuget/v/Odin.Email.Office365.svg)](https://www.nuget.org/packages/Odin.Email.Office365) | ![Nuget](https://img.shields.io/nuget/dt/Odin.Email.Office365) |
-
-
 ## Design Contracts
 
-## Result and ResultValue
 
-[Odin.System.Result](https://www.nuget.org/packages/Odin.System.Result) provides Result and ResultValue<TValue> concepts, that encapsulate the outcome of an operation (success or failure), together with a list of string Messages.
 
-Also provided is flexibility in the type of the Messages, with implementations for Result<TMessageType> and ResultValue<TValue, TMessageType>.
+## Result Pattern: Result and ResultValue
+
+[Odin.System.Result](https://www.nuget.org/packages/Odin.System.Result) provides Result and ResultValue<TValue> concepts, that encapsulate the outcome of an operation (success or failure), together with a list of Messages.
+
+Flexibility in the type of the Messages is included, with implementations for Result<TMessage> and ResultValue<TValue, TMessage>.
+
+| Package                                                                     | Description                                              |                                                      Latest Version                                                      |                           Downloads                            |
+|:----------------------------------------------------------------------------|:---------------------------------------------------------|:------------------------------------------------------------------------------------------------------------------------:|:--------------------------------------------------------------:|
+| [Odin.System.Result](https://www.nuget.org/packages/Odin.System.Result)                     | IEmailSender and IEmailMessage concepts                  | [![NuGet](https://img.shields.io/nuget/v/Odin.System.Result.svg)](https://www.nuget.org/packages/Odin.System.Result)                     |      ![Nuget](https://img.shields.io/nuget/dt/Odin.System.Result)      |
 
 ## Email Sending
 
@@ -79,15 +75,15 @@ Also provided is flexibility in the type of the Messages, with implementations f
     Result<string?> sendResult = await _emailSender.SendEmail(email);
 ```
 
-| Package                                                         | Description                                              |                                                      Latest Version                                                      |                           Downloads                            |
-|---------------------------------------------------------------|:---------------------------------------------------------|:------------------------------------------------------------------------------------------------------------------------:|:--------------------------------------------------------------:|
-| [Odin.Email](https://www.nuget.org/packages/Odin.Email)       | IEmailSender and IEmailMessage concepts                  | [![NuGet](https://img.shields.io/nuget/v/Odin.Email.svg)](https://www.nuget.org/packages/Odin.Email)                     |      ![Nuget](https://img.shields.io/nuget/dt/Odin.Email)      |
-| [Odin.Email.Mailgun](https://www.nuget.org/packages/Odin.Email.Mailgun) | Mailgun email sending support                            | [![NuGet](https://img.shields.io/nuget/v/Odin.Email.Mailgun.svg)](https://www.nuget.org/packages/Odin.Email.Mailgun)     |  ![Nuget](https://img.shields.io/nuget/dt/Odin.Email.Mailgun)  |
-| [Odin.Email.Office365](https://www.nuget.org/packages/Odin.Email.Office365) | Microsoft Office365 email sending support (via MS Graph) | [![NuGet](https://img.shields.io/nuget/v/Odin.Email.Office365.svg)](https://www.nuget.org/packages/Odin.Email.Office365) | ![Nuget](https://img.shields.io/nuget/dt/Odin.Email.Office365) |
+| Package                                                                     | Description                                              |                                                    Nuget                                                                                                                                 |
+|:----------------------------------------------------------------------------|:---------------------------------------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
+| [Odin.Email](https://www.nuget.org/packages/Odin.Email)                     | IEmailSender and IEmailMessage concepts                  |           [![NuGet](https://img.shields.io/nuget/v/Odin.Email.svg)](https://www.nuget.org/packages/Odin.Email)            ![Nuget](https://img.shields.io/nuget/dt/Odin.Email)           |
+| [Odin.Email.Mailgun](https://www.nuget.org/packages/Odin.Email.Mailgun)     | Mailgun email sending support                            |   [![NuGet](https://img.shields.io/nuget/v/Odin.Email.Mailgun.svg)](https://www.nuget.org/packages/Odin.Email.Mailgun)   ![Nuget](https://img.shields.io/nuget/dt/Odin.Email.Mailgun)    |
+| [Odin.Email.Office365](https://www.nuget.org/packages/Odin.Email.Office365) | Microsoft Office365 email sending support (via MS Graph) | [![NuGet](https://img.shields.io/nuget/v/Odin.Email.Office365.svg)](https://www.nuget.org/packages/Odin.Email.Office365)  ![Nuget](https://img.shields.io/nuget/dt/Odin.Email.Office365) |
 
 ## A Mockable ILogger Wrapper
 
-[Odin.Logging](https://www.nuget.org/packages/Odin.Logging) provides a ILoggerWrapper that extends .NET's ILogger of T with all the LogXXX(...) calls as provided by the .NET LoggerExtensions extension methods, for simpler logging call assertions.
+[Odin.Logging](https://www.nuget.org/packages/Odin.Logging) provides a ILoggerWrapper that extends .NET's ILogger of T with all the LogXXX(...) calls as provided by the .NET LoggerExtensions extension methods, for simpler logging assertion verifications.
 
 ```csharp
     // 1. Add to DI in your startup code...
