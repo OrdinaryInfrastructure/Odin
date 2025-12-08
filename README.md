@@ -14,11 +14,11 @@
 
 ## The Odin components
 
-... are a collection born after years of building many many line-of-business applications on .NET, and the result of componentising various recurring ordinary use-cases that we kept repeating.
+... are a collection born after years of building many many line-of-business applications on .NET, and the result of componentising various recurring ordinary use-cases that we kept repeating in client systems at [Soulv Software](https://soulv.co.za/).
 
 As at Dec 2025, the library is a hodge-podge of miscellaneous useful bits and bobs.
 
-Coming soon, a Design Contracts library with support for PreConditions, PostConditions, and ClassInvariants.
+Next up, a Design Contracts library with support for PreConditions, PostConditions, and ClassInvariants.
 
 <br/><br/>
 
