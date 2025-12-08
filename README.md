@@ -14,7 +14,7 @@
 
 ## The Odin components
 
-... are a collection born after years of building many many line-of-business applications on .NET, and the result of componentising various recurring ordinary use-cases for which no existing componentry seemed to exist in the .NET ecosystem at the time.
+... are a collection born after years of building many many line-of-business applications on .NET, and the result of componentising various recurring ordinary use-cases that we kept repeating.
 
 As at Dec 2025, the library is a hodge-podge of miscellaneous useful bits and bobs.
 
