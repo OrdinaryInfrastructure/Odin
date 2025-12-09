@@ -91,7 +91,7 @@ Flexibility in the type of the Messages is included, with implementations for Re
 
 ## ILoggerWrapper :clipboard:
 
-[Odin.Logging](https://www.nuget.org/packages/Odin.Logging) provides a ILoggerWrapper that extends .NET's ILogger of T with all the LogXXX(...) calls as provided by the .NET LoggerExtensions extension methods, for simpler logging assertion verifications.
+[Odin.Logging](Logging/) provides a ILoggerWrapper that extends .NET's ILogger of T with all the LogXXX(...) calls as provided by the .NET LoggerExtensions extension methods, for simpler logging assertion verifications.
 
 ```csharp
     // 1. Add to DI in your startup code...

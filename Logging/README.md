@@ -2,7 +2,7 @@
 
 [![NuGet](https://img.shields.io/nuget/v/Odin.Logging.svg)](https://www.nuget.org/packages/Odin.Logging)  ![Nuget](https://img.shields.io/nuget/dt/Odin.Logging)
 
-[Odin.Logging](https://www.nuget.org/packages/Odin.Logging) provides an ILoggerWrapper that extends .NET's ILogger of T with all the LogXXX(...) calls as provided by the .NET LoggerExtensions extension methods, for simpler assertion of logging calls.
+Odin.Logging provides an ILoggerWrapper that extends .NET's ILogger of T with all the LogXXX(...) calls as provided by the .NET LoggerExtensions extension methods, for simpler assertion of logging calls.
 
 ## How do we achieve Robustness?
 
@@ -10,7 +10,7 @@ Correctness, the prime quality of great software, is complemented by ROBUSTNESS.
 
 Highly robust software very accurately communicates arising issues outside of the specification through telemetry (logging). 
 
-A best practice to achieve and continuously maintain a high level of robustness in large applications it to assert all logging and telemetry scenarios in automated tests, which is the reason for the creation of ILoggerWrapper... 
+A best practice to achieve and continuously maintain a high level of robustness in large applications it to assert all logging and telemetry scenarios in automated tests, which is the reason for the creation of ILoggerWrapper, namely far less onerous verification of logging calls.
 
 ## Getting Started
 
@@ -29,7 +29,7 @@ Add the Odin.Logging package from NuGet to your project using the command...
     builder.Services.AddOdinLoggerWrapper();
 ```    
 
-### 2 - Configure .NET Logging and ILogger 
+#### 3 - Configure .NET Logging and ILogger 
 
 As you normally would in startup code and configuration. Eg...
 
@@ -47,7 +47,7 @@ As you normally would in startup code and configuration. Eg...
 }
 ```    
 
-### 3 - Log using ILoggerWrapper<T> instead of ILogger<T>
+#### 4 - Log using ILoggerWrapper<T> instead of ILogger<T>
 
 ```csharp
     
@@ -62,7 +62,7 @@ As you normally would in startup code and configuration. Eg...
     }
 ```
 
-### 4 - Assert logging calls more simply in tests
+#### 5 - Assert logging calls more simply in tests
 
 ```csharp
     _loggerWrapperMock.Verify(x => x.LogError(It.Is<string>(c => 
@@ -79,7 +79,3 @@ As you normally would in startup code and configuration. Eg...
             It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
         Times.Once);
 ```
-
-| Package                                                                     | Description                                              |                                                                                      Latest Version                                                                                      |
-|:----------------------------------------------------------------------------|:---------------------------------------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
-| [Odin.Logging](https://www.nuget.org/packages/Odin.Logging)                   | Provides ILoggerWrapper<T> around ILogger<T>                |           [![NuGet](https://img.shields.io/nuget/v/Odin.Logging.svg)](https://www.nuget.org/packages/Odin.Logging)            ![Nuget](https://img.shields.io/nuget/dt/Odin.Logging)           |
