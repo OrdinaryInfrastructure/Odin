@@ -2,7 +2,7 @@
 
 [![NuGet](https://img.shields.io/nuget/v/Odin.Logging.svg)](https://www.nuget.org/packages/Odin.Logging)  ![Nuget](https://img.shields.io/nuget/dt/Odin.Logging)
 
-Odin.Logging provides an **ILoggerWrapper<T>** that extends .NET's ILogger<T>> with all the LogXXX(...) calls as provided by the .NET LoggerExtensions extension methods (and a few more), for simpler logging assertion verifications.
+Odin.Logging provides an **ILoggerWrapper of T** that extends .NET's ILogger of T with all the LogXXX(...) calls as provided by the .NET LoggerExtensions extension methods (and a few more), for simpler logging assertion verifications.
 
 ## How do we achieve Robustness?
 
