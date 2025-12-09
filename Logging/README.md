@@ -4,11 +4,13 @@
 
 [Odin.Logging](https://www.nuget.org/packages/Odin.Logging) provides an ILoggerWrapper that extends .NET's ILogger of T with all the LogXXX(...) calls as provided by the .NET LoggerExtensions extension methods, for simpler assertion of logging calls.
 
-Correctness, the prime quality of great software, is complemented by ROBUSTNESS. Robustness is what software does outside of it's intended specification \ use cases. 
+## How do we achieve Robustness?
+
+Correctness, the prime quality of great software, is complemented by ROBUSTNESS. Robustness is a reflection of how well (or badly) software behaves outside of it's intended specification \ use cases. 
 
 Highly robust software very accurately communicates arising issues outside of the specification through telemetry (logging). 
 
-A best practice to achieve and continuously maintain a high level of robustness in large applications it to assert all logging and telemetry scenarios in automated tests, which is the reason for creation of ILoggerWrapper.
+A best practice to achieve and continuously maintain a high level of robustness in large applications it to assert all logging and telemetry scenarios in automated tests, which is the reason for the creation of ILoggerWrapper... 
 
 ## Getting Started
 
