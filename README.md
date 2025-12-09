@@ -91,9 +91,9 @@ Flexibility in the type of the Messages is included, with implementations for Re
 
 ## Logging :clipboard:
 
-[Odin.Logging](Logging/) provides an **ILoggerWrapper<T>** that extends .NET's ILogger<T> with all the LogXXX(...) calls as provided by the .NET LoggerExtensions extension methods (and a few more), for simpler logging assertion verifications.
+[Odin.Logging](Logging/)   [![NuGet](https://img.shields.io/nuget/v/Odin.Logging.svg)](https://www.nuget.org/packages/Odin.Logging)            ![Nuget](https://img.shields.io/nuget/dt/Odin.Logging)   
 
-[Read more...](Logging/)
+Provides an **ILoggerWrapper<T>** that extends .NET's ILogger<T> with all the LogXXX(...) calls as provided by the .NET LoggerExtensions extension methods (and a few more), for simpler logging assertion verifications. [Read more...](Logging/)
 
 ```csharp
     // 1. Add to DI in your startup code...
@@ -120,10 +120,6 @@ Flexibility in the type of the Messages is included, with implementations for Re
             It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
         Times.Once);
 ```
-
-| Package                                                                     | Description                                              |                                                                                      Latest Version                                                                                      |
-|:----------------------------------------------------------------------------|:---------------------------------------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
-| [Odin.Logging](https://www.nuget.org/packages/Odin.Logging)                   | Provides ILoggerWrapper<T> around ILogger<T>                |           [![NuGet](https://img.shields.io/nuget/v/Odin.Logging.svg)](https://www.nuget.org/packages/Odin.Logging)            ![Nuget](https://img.shields.io/nuget/dt/Odin.Logging)           |
 
 <p>&nbsp;</p>
 
