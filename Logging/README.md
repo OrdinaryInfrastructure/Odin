@@ -1,20 +1,62 @@
-# About
+## About Odin.Logging
 
-[Odin.Logging](https://www.nuget.org/packages/Odin.Logging) provides a ILoggerWrapper that extends .NET's ILogger of T with all the LogXXX(...) calls as provided by the .NET LoggerExtensions extension methods, for simpler logging assertion verifications.
+[![NuGet](https://img.shields.io/nuget/v/Odin.Logging.svg)](https://www.nuget.org/packages/Odin.Logging)  ![Nuget](https://img.shields.io/nuget/dt/Odin.Logging)
 
-# How to Use
+[Odin.Logging](https://www.nuget.org/packages/Odin.Logging) provides an ILoggerWrapper that extends .NET's ILogger of T with all the LogXXX(...) calls as provided by the .NET LoggerExtensions extension methods, for simpler logging assertion verifications.
+
+## Getting Started
+
+### 1 - Add package
+
+Add the Odin.Logging package from NuGet to your project using the command...
+
+```shell
+   dotnet add package Odin.Logging
+```    
+### 2 - Add ILoggerWrapper<T> to DI in your startup code
 
 ```csharp
-    // 1. Add to DI in your startup code...
+    var builder = WebApplication.CreateBuilder(args);
+    ...
     builder.Services.AddOdinLoggerWrapper();
+```    
 
-    // 2. Log as you always do in your app...
-    catch (Exception err)
-    {
-        _logger.LogError("Ford Prefect is missing!");
+### 2 - Configure .NET Logging and ILogger 
+
+As you normally would in startup code and configuration. Eg...
+
+```json
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Warning",
+      "MyApp": "Information",
+      "Microsoft": "Warning",
+      "Microsoft.Hosting": "Information",
+      "System": "Warning"
     }
+  }
+}
+```    
 
-    // 3. Assert logging calls much more simply in your tests...    
+### 3 - Log using ILoggerWrapper<T> instead of ILogger<T>
+
+```csharp
+    
+    public class HitchHikerService(ILoggerWrapper<HitchHikerService> logger) : IHitchHikerService
+    {
+        public async Task VisitRestaurantAtEndOfUniverse()
+        {
+            ...
+            _logger.LogError("Ford Prefect is missing!");
+            ...
+        }
+    }
+```
+
+### 4 - Assert logging calls more simply in tests
+
+```csharp
     _loggerWrapperMock.Verify(x => x.LogError(It.Is<string>(c => 
         c.Contains("Ford Prefect"))), Times.Once);
     
