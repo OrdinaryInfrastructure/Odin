@@ -5,6 +5,7 @@
     <ImplicitUsings>true</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PackageIcon>icon.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <Description>Provides ILoggerWrapper that extends .NET's ILogger of T 
       with all the LogXXX(...) calls as provided by the .NET LoggerExtensions extension methods.
       The primary reason being for much more convenient assertions of logger calls compared to mocking ILogger, 
@@ -21,6 +22,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="icon.png" Pack="true" PackagePath="" />
+    <None Include="..\README.md" Pack="true" PackagePath="" />
   </ItemGroup>
-
 </Project>
