@@ -89,30 +89,26 @@ Flexibility in the type of the Messages is included, with implementations for Re
 
 <p>&nbsp;</p>
 
-## [Odin.Logging](Logging/) :clipboard:
+## Odin.Logging :clipboard:
 
 [![NuGet](https://img.shields.io/nuget/v/Odin.Logging.svg)](https://www.nuget.org/packages/Odin.Logging)            ![Nuget](https://img.shields.io/nuget/dt/Odin.Logging)   
 
-Provides an **ILoggerWrapper<T>** that extends .NET's ILogger<T> with all the LogXXX(...) calls as provided by the .NET LoggerExtensions extension methods (and a few more), for simpler logging assertion verifications. [Read more...](Logging/)
+Provides an **ILoggerWrapper<T>** that extends .NET's ILogger<T> with all the LogXXX(...) calls as provided by the .NET LoggerExtensions extension methods (and a few more), for simpler logging assertion verifications. 
+
+[Read more...](Logging/)
 
 ```csharp
-    // 1. Add to DI in your startup code...
-    builder.Services.AddOdinLoggerWrapper();
+    // Log as you always do in your app...
+   _logger.LogWarning("Ford Prefect is missing!");
 
-    // 2. Log as you always do in your app...
-    catch (Exception err)
-    {
-        _logger.LogError("Ford Prefect is missing!");
-    }
-
-    // 3. Assert logging calls MUCH more easily in your tests...    
-    _loggerWrapperMock.Verify(x => x.LogError(It.Is<string>(c => 
+    // Assert logging calls more simply in your tests...    
+    _loggerWrapperMock.Verify(x => x.LogWarning(It.Is<string>(c => 
         c.Contains("Ford Prefect"))), Times.Once);
     
     // as opposed to this with ILogger
     _iLoggerMock.Verify(
         x => x.Log(
-            LogLevel.Error,
+            LogLevel.Warning,
             It.IsAny<EventId>(),
             It.Is<It.IsAnyType>((state, _) =>
                 state.ToString() == "Ford Prefect is missing!"),
