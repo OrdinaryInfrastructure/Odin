@@ -14,14 +14,14 @@ A best practice to achieve and continuously maintain a high level of robustness 
 
 ## Getting Started
 
-### 1 - Add package
+#### 1 - Add package
 
 Add the Odin.Logging package from NuGet to your project using the command...
 
 ```shell
    dotnet add package Odin.Logging
 ```    
-### 2 - Add ILoggerWrapper<T> to DI in your startup code
+#### 2 - Add ILoggerWrapper<T> to DI in your startup code
 
 ```csharp
     var builder = WebApplication.CreateBuilder(args);
