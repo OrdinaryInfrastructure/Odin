@@ -1,33 +1,36 @@
+using NetEscapades.EnumGenerators;
+
 namespace Odin.DesignContracts
 {
     /// <summary>
-    /// Defines the semantic category of a contract failure.
+    /// Defines the semantic category of a design contract failure.
     /// </summary>
-    public enum ContractFailureKind
+    [EnumExtensions]
+    public enum ContractFailureKind : short
     {
         /// <summary>
-        /// The failure occurred because a precondition was not satisfied.
+        /// A precondition was broken.
         /// </summary>
         Precondition = 0,
 
         /// <summary>
-        /// The failure occurred because a postcondition was not satisfied.
+        /// A postcondition was not satisfied.
         /// </summary>
         Postcondition = 1,
 
         /// <summary>
-        /// The failure occurred because an object invariant was not satisfied.
+        /// A class invariant check failed.
         /// </summary>
         Invariant = 2,
 
         /// <summary>
-        /// The failure occurred because an assertion did not hold.
+        /// An assertion did not hold.
         /// </summary>
-        Assert = 3,
+        Assertion = 3,
 
         /// <summary>
-        /// The failure occurred because an assumption did not hold.
+        /// An assumption did not hold.
         /// </summary>
-        Assume = 4
+        Assumption = 4
     }
 }

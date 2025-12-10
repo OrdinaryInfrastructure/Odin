@@ -9,7 +9,7 @@ namespace Odin.DesignContracts
     public sealed class ContractException : Exception
     {
         /// <summary>
-        /// Gets the category of the contract failure.
+        /// Precondition, Postcondition, Invariant, Assertion or Assumption
         /// </summary>
         public ContractFailureKind Kind { get; }
 
@@ -45,7 +45,7 @@ namespace Odin.DesignContracts
         private ContractException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
-            Kind = (ContractFailureKind)info.GetInt32(nameof(Kind));
+            Kind = (ContractFailureKind) info.GetInt16(nameof(Kind));
             UserMessage = info.GetString(nameof(UserMessage));
             ConditionText = info.GetString(nameof(ConditionText));
         }

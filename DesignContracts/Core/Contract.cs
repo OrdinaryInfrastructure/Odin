@@ -26,23 +26,23 @@ namespace Odin.DesignContracts
         /// Specifies a precondition that must hold true when the enclosing method is called.
         /// </summary>
         /// <param name="condition">The condition that must be <c>true</c>.</param>
-        /// <param name="userMessage">An optional message describing the precondition.</param>
-        /// <param name="conditionText">An optional text representation of the condition expression.</param>
+        /// <param name="conditionDescription">An optional English description of what the precondition is.</param>
+        /// <param name="conditionCode">An optional source code representation of the condition expression.</param>
         /// <exception cref="ContractException">
         /// Thrown when <paramref name="condition"/> is <c>false</c>.
         /// </exception>
-        public static void Requires(bool condition, string? userMessage = null, string? conditionText = null)
+        public static void Requires(bool condition, string? conditionDescription = null, string? conditionCode = null)
         {
-            if (!condition) ReportFailure(ContractFailureKind.Precondition, userMessage, conditionText);
+            if (!condition) ReportFailure(ContractFailureKind.Precondition, conditionDescription, conditionCode);
         }
-        
+
         /// <summary>
         /// Argument not null precondition.
         /// </summary>
         /// <param name="argument"></param>
         public static void RequiresNotNull(object? argument)
         {
-            Requires<ArgumentNullException>(argument != null,"Argument is null");
+            Requires<ArgumentNullException>(argument != null, "Argument should not be null");
         }
 
         /// <summary>
@@ -54,20 +54,20 @@ namespace Odin.DesignContracts
         /// The type must have a public constructor that accepts a single <see cref="string"/> parameter.
         /// </typeparam>
         /// <param name="condition">The condition that must be <c>true</c>.</param>
-        /// <param name="userMessage">An optional message describing the precondition.</param>
+        /// <param name="conditionDescription">An optional message describing the precondition.</param>
         /// <exception cref="ContractException">
         /// Thrown when the specified exception type cannot be constructed.
         /// </exception>
         /// <exception cref="Exception">
         /// An instance of <typeparamref name="TException"/> when <paramref name="condition"/> is <c>false</c>.
         /// </exception>
-        public static void Requires<TException>(bool condition, string? userMessage = null)
+        public static void Requires<TException>(bool condition, string? conditionDescription = null)
             where TException : Exception
         {
             if (condition) return;
 
             // Try to honor the requested exception type first.
-            string message = BuildFailureMessage(ContractFailureKind.Precondition, userMessage, conditionText: null);
+            string message = BuildFailureMessage(ContractFailureKind.Precondition, conditionDescription, conditionText: null);
 
             Exception? exception = null;
             try
@@ -85,14 +85,14 @@ namespace Odin.DesignContracts
             }
 
             // Fall back to standard handling if we cannot construct TException.
-            ReportFailure(ContractFailureKind.Precondition, userMessage, conditionText: null);
+            ReportFailure(ContractFailureKind.Precondition, conditionDescription, conditionText: null);
         }
 
 
         private static void ReportFailure(ContractFailureKind kind, string? userMessage, string? conditionText)
         {
             string message = BuildFailureMessage(kind, userMessage, conditionText);
-            ContractFailedEventArgs args    = new ContractFailedEventArgs(kind, message, userMessage, conditionText);
+            ContractFailedEventArgs args = new ContractFailedEventArgs(kind, message, userMessage, conditionText);
 
             ContractFailed?.Invoke(null, args);
 
@@ -107,7 +107,7 @@ namespace Odin.DesignContracts
 
         private static string BuildFailureMessage(ContractFailureKind kind, string? userMessage, string? conditionText)
         {
-            string kindText = kind.ToString();
+            string kindText = kind.ToStringFast();
 
             if (!string.IsNullOrWhiteSpace(userMessage) && !string.IsNullOrWhiteSpace(conditionText))
             {

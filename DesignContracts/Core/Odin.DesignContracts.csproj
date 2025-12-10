@@ -10,7 +10,12 @@
         </Description>
         <WarningsAsErrors>1591;1573;</WarningsAsErrors> <!-- Not to be removed. Documentation is required. -->
     </PropertyGroup>
+
     <ItemGroup>
-        <None Include="icon.png" Pack="true" PackagePath="" />
+        <PackageReference Include="NetEscapades.EnumGenerators" Version="1.0.0-beta16"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="icon.png" Pack="true" PackagePath=""/>
     </ItemGroup>
 </Project>
