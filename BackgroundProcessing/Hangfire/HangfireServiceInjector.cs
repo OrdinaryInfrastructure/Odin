@@ -16,8 +16,8 @@ namespace Odin.BackgroundProcessing
         public void TryAddBackgroundProcessor(IServiceCollection serviceCollection, IConfiguration configuration,
             IConfigurationSection backgroundProcessingSection, Func<IServiceProvider, string>? connectionStringFactory = null)
         {
-            PreCondition.RequiresNotNull(serviceCollection);
-            PreCondition.RequiresNotNull(backgroundProcessingSection);
+            Contract.RequiresNotNull(serviceCollection);
+            Contract.RequiresNotNull(backgroundProcessingSection);
             IConfigurationSection? providerSection =
                 backgroundProcessingSection.GetSection(BackgroundProcessingProviders.Hangfire);
             if (providerSection == null)

@@ -1,76 +1,29 @@
-﻿namespace Odin.DesignContracts
+﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+namespace Odin.DesignContracts
 {
     /// <summary>
     /// Represents a requirement needing to be met by a calling client.
     /// </summary>
     public static class PreCondition
     {
-        /// <summary>
-        /// 'Precondition failure'
-        /// </summary>
-        public const string FailureText = "Precondition failure";
+        private const string ObsoleteMessage = "Moved to Contract.Requires";
         
         /// <summary>
         /// Evaluates the contract condition required, else throws an Exception.
         /// </summary>
         /// <param name="condition"></param>
         /// <param name="failureMessage"></param>
+        [Obsolete(ObsoleteMessage)]
         public static void Requires(bool condition, string? failureMessage = null)
         {
-            if (condition) return;
-            if (string.IsNullOrWhiteSpace(failureMessage))
-            {
-                failureMessage = FailureText;
-            }
-
-            throw new Exception(failureMessage);
+            Contract.Requires(condition, failureMessage);
         }
 
-        /// <summary>
-        /// Evaluates the contract condition required, else throws a TException.
-        /// </summary>
-        /// <param name="condition"></param>
-        /// <param name="failureMessage"></param>
-        /// <typeparam name="TException"></typeparam>
+        [Obsolete(ObsoleteMessage)]
         public static void Requires<TException>(bool condition, string? failureMessage = null)
             where TException : Exception
         {
-            if (condition) return;
-            throw new ExceptionBuilder<TException>(failureMessage, FailureText).Build();
-        }
-
-        /// <summary>
-        /// Commonly used 'argument not null' precondition check.
-        /// </summary>
-        /// <param name="argument"></param>
-        /// <param name="failureMessage"></param>
-        public static void RequiresNotNull(object? argument, string? failureMessage = null)
-        {
-            if (argument != null) return;
-            if (string.IsNullOrWhiteSpace(failureMessage))
-            {
-                failureMessage = $"{nameof(argument)} is required";
-            }
-
-            ArgumentNullException ex = new ArgumentNullException(failureMessage);
-            throw ex;
-        }
-
-        /// <summary>
-        /// Commonly used 'argument not null or empty' precondition check.
-        /// </summary>
-        /// <param name="argument"></param>
-        /// <param name="failureMessage"></param>
-        public static void RequiresNotNullOrWhitespace(string? argument, string? failureMessage = null)
-        {
-            if (!string.IsNullOrWhiteSpace(argument)) return;
-            if (string.IsNullOrWhiteSpace(failureMessage))
-            {
-                failureMessage = $"{nameof(argument)} must not be null, empty or whitespace.";
-            }
-
-            ArgumentException ex = new ArgumentException(failureMessage);
-            throw ex;
+            Contract.Requires<TException>(condition, failureMessage);
         }
     }
 }

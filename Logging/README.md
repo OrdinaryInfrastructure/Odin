@@ -2,11 +2,11 @@
 
 [![NuGet](https://img.shields.io/nuget/v/Odin.Logging.svg)](https://www.nuget.org/packages/Odin.Logging)  ![Nuget](https://img.shields.io/nuget/dt/Odin.Logging)
 
-Odin.Logging provides an **ILoggerWrapper of T** that extends .NET's ILogger of T with all the LogXXX(...) calls as provided by the .NET LoggerExtensions extension methods (and a few more), for simpler logging assertion verifications.
+Odin.Logging, part of the [OrDinary INfrastructure](https://github.com/MarkDerman/OrdinaryInfrastructure) libraries,  provides an **ILoggerWrapper of T** that extends .NET's ILogger of T with all the LogXXX(...) calls as provided by the .NET LoggerExtensions extension methods (and a few more), for simpler logging assertion verifications.
 
-## How do we achieve Robustness?
+## On Robustness...
 
-Correctness, the prime quality of great software, is complemented by ROBUSTNESS. Robustness is a reflection of how well (or badly) software behaves outside of it's intended specification \ use cases. 
+Correctness, the prime quality of great software, is complemented by robustness. Robustness is a reflection of how well (or badly) software behaves outside of it's intended specification \ use cases. 
 
 Highly robust software very accurately communicates arising issues outside of the specification through telemetry (logging). 
 
@@ -14,14 +14,14 @@ A best practice to achieve and continuously maintain a high level of robustness 
 
 ## Getting Started
 
-#### 1 - Add package
+### 1 - Add package
 
 Add the Odin.Logging package from NuGet to your project using the command...
 
 ```shell
    dotnet add package Odin.Logging
 ```    
-#### 2 - Add ILoggerWrapper<T> to DI in your startup code
+### 2 - Add ILoggerWrapper<T> to DI in your startup code
 
 ```csharp
     var builder = WebApplication.CreateBuilder(args);
@@ -29,7 +29,7 @@ Add the Odin.Logging package from NuGet to your project using the command...
     builder.Services.AddOdinLoggerWrapper();
 ```    
 
-#### 3 - Configure .NET Logging and ILogger 
+### 3 - Configure .NET Logging and ILogger 
 
 As you normally would in startup code and configuration. Eg...
 
@@ -47,7 +47,7 @@ As you normally would in startup code and configuration. Eg...
 }
 ```    
 
-#### 4 - Log using ILoggerWrapper<T> instead of ILogger<T>
+### 4 - Log using ILoggerWrapper<T> instead of ILogger<T>
 
 ```csharp
     
@@ -62,7 +62,7 @@ As you normally would in startup code and configuration. Eg...
     }
 ```
 
-#### 5 - Assert logging calls more simply in tests
+### 5 - Assert logging calls more simply in tests
 
 ```csharp
     _loggerWrapperMock.Verify(x => x.LogError(It.Is<string>(c => 
