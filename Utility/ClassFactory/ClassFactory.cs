@@ -18,8 +18,8 @@ public class ClassFactory
     /// <returns></returns>
     public ResultValue<T> TryCreate<T>(string fullTypeName, string assemblyToLoadFrom) where T : class
     {
-        PreCondition.RequiresNotNullOrWhitespace(fullTypeName);
-        PreCondition.RequiresNotNullOrWhitespace(assemblyToLoadFrom);
+        Contract.Requires(!string.IsNullOrWhiteSpace(fullTypeName));
+        Contract.Requires(!string.IsNullOrWhiteSpace(assemblyToLoadFrom));
 
         AssemblyName assemblyToLoad = new AssemblyName(assemblyToLoadFrom);
         Assembly? assembly = AssemblyLoadContext.Default.LoadFromAssemblyName(assemblyToLoad);
@@ -46,7 +46,7 @@ public class ClassFactory
     /// <returns></returns>
     public ResultValue<T> TryCreate<T>(string fullTypeName) where T : class
     {
-        PreCondition.RequiresNotNullOrWhitespace(fullTypeName);
+        Contract.Requires(!string.IsNullOrWhiteSpace(fullTypeName));
         Type? typeToCreate = Type.GetType(fullTypeName);
         if (typeToCreate != null)
         {
@@ -71,7 +71,7 @@ public class ClassFactory
     /// <returns></returns>
     public ResultValue<T> TryCreate<T>(Type typeToCreate) where T : class
     {
-        PreCondition.RequiresNotNull(typeToCreate);
+        Contract.Requires(typeToCreate!=null!);
         try
         {
             object? obj = Activator.CreateInstance(typeToCreate);

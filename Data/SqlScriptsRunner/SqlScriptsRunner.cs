@@ -41,17 +41,17 @@ namespace Odin.Data
 
         private SqlScriptsRunner(Assembly assemblyWithEmbeddedScripts)
         {
-            // PreCondition.RequiresNotNull(logger);
+            // Contract.Requires(logger);
             // _logger = logger;
-            PreCondition.RequiresNotNull(assemblyWithEmbeddedScripts);
-            _assemblyWithEmbeddedScripts = assemblyWithEmbeddedScripts;
+            Contract.Requires(assemblyWithEmbeddedScripts!=null!);
+            _assemblyWithEmbeddedScripts = assemblyWithEmbeddedScripts!;
         }
 
         public static ResultValue<SqlScriptsRunner> CreateFromConnectionStringName(string connectionStringName,
             Assembly assemblyWithEmbeddedScripts, IConfiguration configuration)
         {
-            PreCondition.RequiresNotNull(configuration);
-            PreCondition.RequiresNotNull(assemblyWithEmbeddedScripts);
+            Contract.Requires(configuration!=null!);
+            Contract.Requires(assemblyWithEmbeddedScripts!=null!);
             SqlScriptsRunner runner = new SqlScriptsRunner(assemblyWithEmbeddedScripts)
             {
                 ConnectionString = configuration.GetConnectionString(connectionStringName)!
@@ -76,8 +76,8 @@ namespace Odin.Data
 
         public static ResultValue<SqlScriptsRunner> CreateFromConnectionString(string connectionString, Assembly assemblyWithEmbeddedScripts)
         {
-            PreCondition.RequiresNotNull(assemblyWithEmbeddedScripts);
-            PreCondition.RequiresNotNullOrWhitespace(connectionString);
+            Contract.Requires(assemblyWithEmbeddedScripts!=null!);
+            Contract.Requires(!string.IsNullOrWhiteSpace(connectionString));
             SqlScriptsRunner runner = new SqlScriptsRunner(assemblyWithEmbeddedScripts)
             {
                 ConnectionString = connectionString

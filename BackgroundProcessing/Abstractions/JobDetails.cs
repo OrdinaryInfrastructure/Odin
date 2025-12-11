@@ -14,7 +14,7 @@ namespace Odin.BackgroundProcessing
         /// <param name="scheduledFor"></param>
         public JobDetails(string jobId, DateTimeOffset scheduledFor)
         {
-            PreCondition.RequiresNotNullOrWhitespace(jobId);
+            Contract.Requires(!string.IsNullOrWhiteSpace(jobId));
             JobId = jobId;
             ScheduledFor = scheduledFor;
         }
