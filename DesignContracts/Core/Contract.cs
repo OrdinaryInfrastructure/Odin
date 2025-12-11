@@ -1,5 +1,3 @@
-using System;
-
 namespace Odin.DesignContracts
 {
     /// <summary>
@@ -11,7 +9,7 @@ namespace Odin.DesignContracts
     /// <c>System.Diagnostics.Contracts.Contract</c> from the classic .NET Framework,
     /// but it is implemented independently under the <c>Odin.DesignContracts</c> namespace.
     /// </remarks>
-    public static partial class Contract
+    public static class Contract
     {
         /// <summary>
         /// Occurs when a contract fails and before a <see cref="ContractException"/> is thrown.
@@ -25,15 +23,15 @@ namespace Odin.DesignContracts
         /// <summary>
         /// Specifies a precondition that must hold true when the enclosing method is called.
         /// </summary>
-        /// <param name="condition">The condition that must be <c>true</c>.</param>
+        /// <param name="precondition">The precondition that is required to be <c>true</c>.</param>
         /// <param name="conditionDescription">An optional English description of what the precondition is.</param>
         /// <param name="conditionCode">An optional source code representation of the condition expression.</param>
         /// <exception cref="ContractException">
-        /// Thrown when <paramref name="condition"/> is <c>false</c>.
+        /// Thrown when <paramref name="precondition"/> is <c>false</c>.
         /// </exception>
-        public static void Requires(bool condition, string? conditionDescription = null, string? conditionCode = null)
+        public static void Requires(bool precondition, string? conditionDescription = null, string? conditionCode = null)
         {
-            if (!condition) ReportFailure(ContractFailureKind.Precondition, conditionDescription, conditionCode);
+            if (!precondition) ReportFailure(ContractFailureKind.Precondition, conditionDescription, conditionCode);
         }
 
         /// <summary>
@@ -53,18 +51,18 @@ namespace Odin.DesignContracts
         /// The type of exception to throw when the precondition fails.
         /// The type must have a public constructor that accepts a single <see cref="string"/> parameter.
         /// </typeparam>
-        /// <param name="condition">The condition that must be <c>true</c>.</param>
+        /// <param name="precondition">The condition that must be <c>true</c>.</param>
         /// <param name="conditionDescription">An optional message describing the precondition.</param>
         /// <exception cref="ContractException">
         /// Thrown when the specified exception type cannot be constructed.
         /// </exception>
         /// <exception cref="Exception">
-        /// An instance of <typeparamref name="TException"/> when <paramref name="condition"/> is <c>false</c>.
+        /// An instance of <typeparamref name="TException"/> when <paramref name="precondition"/> is <c>false</c>.
         /// </exception>
-        public static void Requires<TException>(bool condition, string? conditionDescription = null)
+        public static void Requires<TException>(bool precondition, string? conditionDescription = null)
             where TException : Exception
         {
-            if (condition) return;
+            if (precondition) return;
 
             // Try to honor the requested exception type first.
             string message = BuildFailureMessage(ContractFailureKind.Precondition, conditionDescription, conditionText: null);
@@ -93,9 +91,7 @@ namespace Odin.DesignContracts
         {
             string message = BuildFailureMessage(kind, userMessage, conditionText);
             ContractFailedEventArgs args = new ContractFailedEventArgs(kind, message, userMessage, conditionText);
-
             ContractFailed?.Invoke(null, args);
-
             if (args.Handled)
             {
                 // A handler chose to manage the failure; do not throw by default.
@@ -111,7 +107,7 @@ namespace Odin.DesignContracts
 
             if (!string.IsNullOrWhiteSpace(userMessage) && !string.IsNullOrWhiteSpace(conditionText))
             {
-                return $"{kindText} failed: {userMessage}  Condition: {conditionText}";
+                return $"{kindText} failed: {userMessage} [Condition: {conditionText}]";
             }
 
             if (!string.IsNullOrWhiteSpace(userMessage))

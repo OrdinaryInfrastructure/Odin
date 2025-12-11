@@ -6,39 +6,44 @@ namespace Tests.Odin.DesignContracts
     [TestFixture]
     public sealed class ContractTests
     {
-        [Test][Ignore("Todo")]
-        [TestCase("not fred", null, "not fred")]
-        [TestCase(null,null,  "Precondition failure")]
-        [TestCase("", null, "Precondition failure")]
-        [TestCase("    ", null, "Precondition failure")]
+        [Test]
+        [TestCase("not fred.", "(arg != fred)", "Precondition failed: not fred. [Condition: (arg != fred)]")]
+        [TestCase("not fred.", "  ", "Precondition failed: not fred.")]
+        [TestCase("not fred.", null, "Precondition failed: not fred.")]
+        [TestCase("not fred.", "", "Precondition failed: not fred.")]
+        [TestCase("", "", "Precondition failed.")]
+        [TestCase("", null, "Precondition failed.")]
+        [TestCase(" ", null, "Precondition failed.")]
+        [TestCase(null, null, "Precondition failed.")]
+        [TestCase(null, "", "Precondition failed.")]
+        [TestCase(null, " ", "Precondition failed.")]
+        [TestCase(null, "(arg==0)", "Precondition failed: (arg==0)")]
         public void Requires_throws_exception_with_correct_message_on_precondition_failure(string conditionDescription, string? conditionCode, string expectedExceptionMessage)
         {
-            ContractException? ex = Assert.Throws<ContractException>(() => Contract.Requires(false, conditionDescription));
+            ContractException? ex = Assert.Throws<ContractException>(() => Contract.Requires(false, conditionDescription,conditionCode));
             Assert.That(ex, Is.Not.Null);
-            Assert.That(ex!.Message, Is.EqualTo(conditionCode), "Exception message is incorrect");
+            Assert.That(ex!.Message, Is.EqualTo(expectedExceptionMessage), "Exception message is incorrect");
         }
-        
+
         [Test]
         public void Requires_does_not_throw_exception_on_precondition_success()
         {
             Assert.DoesNotThrow(() => Contract.Requires(true, "Message"), "Precondition success must not throw an Exception");
         }
-        
+    }
+
+    [TestFixture(typeof(ArgumentNullException))]
+    [TestFixture(typeof(ArgumentException))]
+    [TestFixture(typeof(DivideByZeroException))]
+    public sealed class ContractRequiresGenericTests<TException> where TException : Exception
+    {
         [Test]
-        [TestCase("not fred", "not fred")]
-        [TestCase(null, "Precondition failure")]
-        [TestCase("", "Precondition failure")]
-        [TestCase("    ", "Precondition failure")]
-        public void Requires_throws_specific_exception_on_precondition_failure(string errorMessage, string exceptionMessage)
+        public void Requires_throws_specific_exception_on_precondition_failure()
         {
-            Exception? argEx = Assert.Throws<ArgumentNullException>(() => Contract.Requires<ArgumentNullException>(false, errorMessage));
-            Exception? argEx2 = Assert.Throws<ArgumentException>(() => Contract.Requires<ArgumentException>(false, errorMessage));
-            Exception? divEx = Assert.Throws<DivideByZeroException>(() => Contract.Requires<DivideByZeroException>(false, errorMessage));
-            
-            Assert.That(argEx, Is.InstanceOf<ArgumentNullException>(), "argEx is not  ArgumentNullException");
-            Assert.That(argEx2, Is.InstanceOf<ArgumentException>(), "argEx is not  ArgumentException");
-            Assert.That(divEx, Is.InstanceOf<DivideByZeroException>(), "argEx is not  DivideByZeroException");
+            TException? ex = Assert.Throws<TException>(() => Contract.Requires<TException>(false, "msg"));
+
+            Assert.That(ex, Is.Not.Null);
+            Assert.That(ex, Is.InstanceOf<TException>());
         }
-        
     }
 }

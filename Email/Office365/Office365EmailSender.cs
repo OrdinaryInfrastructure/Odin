@@ -3,7 +3,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Graph;
 using Microsoft.Graph.Models;
 using Microsoft.Graph.Users.Item.SendMail;
-using Odin.DesignContracts;
 using Odin.Logging;
 using Odin.System;
 using Contract = Odin.DesignContracts.Contract;
