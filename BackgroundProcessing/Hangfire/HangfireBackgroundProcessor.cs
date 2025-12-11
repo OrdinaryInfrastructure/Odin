@@ -25,9 +25,9 @@ namespace Odin.BackgroundProcessing
         /// <param name="logger"></param>
         public HangfireBackgroundProcessor(IRecurringJobManagerV2 recurringJobManager, IBackgroundJobClient jobClient, ILoggerWrapper<HangfireBackgroundProcessor> logger)
         {
-            PreCondition.RequiresNotNull(recurringJobManager);
-            PreCondition.RequiresNotNull(jobClient);
-            PreCondition.RequiresNotNull(logger);
+            Contract.RequiresNotNull(recurringJobManager);
+            Contract.RequiresNotNull(jobClient);
+            Contract.RequiresNotNull(logger);
             _recurringJobManager = recurringJobManager;
             _jobClient = jobClient;
             _logger = logger;

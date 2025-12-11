@@ -15,7 +15,7 @@ namespace Odin.Email
         public void TryAddEmailSender(IServiceCollection serviceCollection,
             IConfigurationSection emailConfigurationSection)
         {
-            PreCondition.RequiresNotNull(emailConfigurationSection);
+            Contract.RequiresNotNull(emailConfigurationSection);
 
             MailgunOptions mailGunSenderSettings = new MailgunOptions();
             emailConfigurationSection.Bind(MailgunOptions.MailgunName,
