@@ -9,7 +9,7 @@ namespace Odin.Templating;
 /// </summary>
 public class RazorTemplateRenderer : IRazorTemplateRenderer
 {
-    private readonly IRazorLightEngine _razorLightEngine;
+    internal readonly IRazorLightEngine _razorLightEngine;
 
     /// <summary>
     /// Constructor used in DI.
@@ -32,8 +32,11 @@ public class RazorTemplateRenderer : IRazorTemplateRenderer
 
     internal static IRazorLightEngine BuildRazorLightEngine(Assembly embeddedResourcesAssembly, string? rootNamespace = null)
     {
+        RazorLightOptions options = new RazorLightOptions();
+        options.EnableDebugMode = true;
         return new RazorLightEngineBuilder()
             .UseEmbeddedResourcesProject(embeddedResourcesAssembly, rootNamespace)
+            .UseOptions(options)
             .UseMemoryCachingProvider()
             .Build();
     }
