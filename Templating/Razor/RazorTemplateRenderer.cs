@@ -48,7 +48,7 @@ public class RazorTemplateRenderer : IRazorTemplateRenderer
         }
         catch (Exception err)
         {
-            return ResultValue<string>.Fail(err.Message);
+            return ResultValue<string>.Failure(err.Message);
         }
     }
 }

@@ -26,7 +26,7 @@ namespace Tests.Odin.Templating.Razor
             
             ResultValue<string> result = await sut.RenderAsync(templateKey, new TestViewModel(){ Title = "World"});
 
-            Assert.That(result.Success, Is.EqualTo(shouldSucceed));
+            Assert.That(result.IsSuccess, Is.EqualTo(shouldSucceed));
             if (shouldSucceed)
             {
                 Assert.That(result.Value, Does.Contain("<div>Hello World</div>"), result.MessagesToString());
